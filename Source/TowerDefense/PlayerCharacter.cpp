@@ -1,7 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PlayerCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -9,6 +9,14 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Spring Arm"));
+	SpringArm->SetupAttachment(RootComponent.Get());
+	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->bUsePawnControlRotation = true;
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
+	Camera->SetupAttachment(this->SpringArm, USpringArmComponent::SocketName);
+	Camera->bUsePawnControlRotation = false;
 }
 
 // Called when the game starts or when spawned
