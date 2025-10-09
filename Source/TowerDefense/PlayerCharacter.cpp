@@ -72,20 +72,39 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 }
 
-
 void APlayerCharacter::MovementAction(const FInputActionValue& Value)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("WSAD"));
+
+	const FVector2D MovementVector = Value.Get<FVector2D>();
+
+	const FVector Forward = GetActorForwardVector();
+	const FVector Right = GetActorRightVector();
+
+	AddMovementInput(Forward, MovementVector.Y);
+	AddMovementInput(Right, MovementVector.X);
 }
 
 void APlayerCharacter::MouseLookAction(const FInputActionValue& Value)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Mouse"));
+
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	AddControllerPitchInput(LookAxisVector.Y);
+	AddControllerYawInput(LookAxisVector.X);
+
 }
 
 void APlayerCharacter::JumpingAction()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Space"));
+
+	const FVector Up = GetActorUpVector();
+	const float JumpVelocity = GetCharacterMovement()->JumpZVelocity;
+
+	AddMovementInput(Up, 1000.0f);
+
 }
 
 void APlayerCharacter::RuningAction()
