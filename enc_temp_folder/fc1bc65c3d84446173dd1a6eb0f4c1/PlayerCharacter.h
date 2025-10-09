@@ -55,9 +55,9 @@ protected:
 
 
 	void MovementAction(const FInputActionValue& Value);
-	void MouseLookAction(const FInputActionValue& Value);
-	void JumpingAction();
-	void RuningAction();
+	/*void MouseLookAction(const FInputActionValue& Value);
+	void JumpAction(const FInputActionValue& Value);
+	void RunAction(const FInputActionValue& Value);*/
 	
 
 };

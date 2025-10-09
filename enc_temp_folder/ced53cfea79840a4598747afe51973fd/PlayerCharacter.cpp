@@ -22,12 +22,14 @@ APlayerCharacter::APlayerCharacter()
 	Camera->SetupAttachment(this->SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 
-	GetCharacterMovement()->JumpZVelocity = 500.f;
+	/*GetCharacterMovement()->JumpZVelocity = 500.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
-	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
+	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;*/
+
+
 }
 
 // Called when the game starts or when spawned
@@ -61,13 +63,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) 
 	{
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::MovementAction);
-
-		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::MouseLookAction);
-
-		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::JumpingAction);
-
-		Input->BindAction(RunAction, ETriggerEvent::Triggered, this, &APlayerCharacter::RuningAction);
-
 	}
 
 }
@@ -75,20 +70,5 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::MovementAction(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("WSAD"));
-}
-
-void APlayerCharacter::MouseLookAction(const FInputActionValue& Value)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Mouse"));
-}
-
-void APlayerCharacter::JumpingAction()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Space"));
-}
-
-void APlayerCharacter::RuningAction()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Shift"));
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("Test"));
 }
