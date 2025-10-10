@@ -31,6 +31,8 @@ public:
 
 protected:
 
+
+	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* DefualtMappingContext;
 
@@ -47,6 +49,15 @@ protected:
 	class UInputAction* RunAction;
 
 
+	//Editable Vars for the players Movement Speed and Jump Height
+	UPROPERTY(EditAnywhere, Category = "PlayerStats")
+	int MaxSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "PlayerStats")
+	int JumpHeight;
+
+
+
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* Camera;
 
@@ -56,8 +67,8 @@ protected:
 
 	void MovementAction(const FInputActionValue& Value);
 	void MouseLookAction(const FInputActionValue& Value);
-	void JumpingAction();
-	void RuningAction();
+	void RunningAction();
+	void RunningActionStop();
 	
 
 };

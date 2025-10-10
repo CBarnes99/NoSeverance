@@ -15,19 +15,22 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Spring Arm"));
 	SpringArm->SetupAttachment(RootComponent.Get());
-	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->TargetArmLength = 300.0f;
 	SpringArm->bUsePawnControlRotation = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
 	Camera->SetupAttachment(this->SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
+	
+	
+	MaxSpeed = GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	JumpHeight = GetCharacterMovement()->JumpZVelocity = 500.f;
 
-	GetCharacterMovement()->JumpZVelocity = 500.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
+
 }
 
 // Called when the game starts or when spawned
@@ -35,7 +38,6 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-
 }
 
 // Called every frame
@@ -64,9 +66,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::MouseLookAction);
 
-		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::JumpingAction);
+		Input->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::Jump);
+		Input->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopJumping);
 
-		Input->BindAction(RunAction, ETriggerEvent::Triggered, this, &APlayerCharacter::RuningAction);
+		Input->BindAction(RunAction, ETriggerEvent::Triggered, this, &APlayerCharacter::RunningAction);
+		Input->BindAction(RunAction, ETriggerEvent::Completed, this, &APlayerCharacter::RunningActionStop);
 
 	}
 
@@ -96,18 +100,14 @@ void APlayerCharacter::MouseLookAction(const FInputActionValue& Value)
 
 }
 
-void APlayerCharacter::JumpingAction()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Space"));
-
-	const FVector Up = GetActorUpVector();
-	const float JumpVelocity = GetCharacterMovement()->JumpZVelocity;
-
-	AddMovementInput(Up, 1000.0f);
-
-}
-
-void APlayerCharacter::RuningAction()
+void APlayerCharacter::RunningAction()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Shift"));
+	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed * 3;
+}
+
+void APlayerCharacter::RunningActionStop()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Shift"));
+	GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
 }
