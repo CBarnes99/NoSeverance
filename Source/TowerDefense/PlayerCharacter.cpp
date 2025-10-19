@@ -34,10 +34,6 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
 
-
-	//for testing
-	startWave = false;
-
 }
 
 // Called when the game starts or when spawned
@@ -123,28 +119,29 @@ void APlayerCharacter::RunningActionStop()
 
 void APlayerCharacter::HandleSpawnEnemyFromSpawner()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, TEXT("ENTER PRESSED"));
 
-	if (!startWave)
+
+	//Get the enemy spawner from the world
+	if (!EnemySpawner)
 	{
-		startWave = true;
-		if (!EnemySpawner)
+		for (TActorIterator<AEnemySpawner> i(GetWorld()); i; ++i)
 		{
-			for (TActorIterator<AEnemySpawner> i(GetWorld()); i; ++i)
+			EnemySpawner = *i;
+			if (EnemySpawner)
 			{
-				EnemySpawner = *i;
-				if (EnemySpawner)
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Reference to Spawner Found"));
-					break; // Stop after first found
-				}
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Reference to Spawner Found"));
+				break; // Stop after first found
 			}
 		}
+	}
 
+	if (!EnemySpawner->isSpawning)
+	{
 		EnemySpawner->StartSpawning();
 	}
 	else
 	{
-		startWave = false;
 		EnemySpawner->StopSpawning();
 	}
 }

@@ -22,13 +22,8 @@ AEnemySpawner::AEnemySpawner()
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	//Start periodic check and spawn timer
-	
 
-
-
-	isSpawning = true;
+	isSpawning = false;
 
 	currentWave = 1;
 	//spawnAmount = waveAndEnemys.Contains(currentWave);
@@ -47,13 +42,17 @@ void AEnemySpawner::Tick(float DeltaTime)
 
 }
 
+//When Enter is pressed in player character, this function starts
 void AEnemySpawner::StartSpawning()
 {
+	isSpawning = true;
 	GetWorld()->GetTimerManager().SetTimer(SpawnCheckTimerHandle, this, &AEnemySpawner::Spawning, checkInterval, true);
 }
 
+//When Enter is pressed when wave has started, it will stop spawning. Will eventually change to when all the enemies have spawned, stop spawning.
 void AEnemySpawner::StopSpawning()
 {
+	isSpawning = false;
 	GetWorld()->GetTimerManager().ClearTimer(SpawnCheckTimerHandle);
 }
 

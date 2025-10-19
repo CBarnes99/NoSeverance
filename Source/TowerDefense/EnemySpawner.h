@@ -24,6 +24,10 @@ public:
 
 	FTimerHandle SpawnCheckTimerHandle;
 
+	
+	
+	bool isSpawning;
+
 	void StartSpawning();
 	void StopSpawning();
 
@@ -45,8 +49,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* SpawningCollision;
 
+	
 
-	bool isSpawning;
+	
+
+
+	
 	int spawnAmount;
 	int currentWave;
 	

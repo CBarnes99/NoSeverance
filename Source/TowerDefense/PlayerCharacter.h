@@ -27,8 +27,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "References")
 	class AEnemySpawner* EnemySpawner;
 
-	//for testing
-	bool startWave;
 
 
 protected:
