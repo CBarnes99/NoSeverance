@@ -52,6 +52,11 @@ void AEnemySpawner::StartSpawning()
 	GetWorld()->GetTimerManager().SetTimer(SpawnCheckTimerHandle, this, &AEnemySpawner::Spawning, checkInterval, true);
 }
 
+void AEnemySpawner::StopSpawning()
+{
+	GetWorld()->GetTimerManager().ClearTimer(SpawnCheckTimerHandle);
+}
+
 
 void AEnemySpawner::Spawning()
 {
@@ -83,12 +88,5 @@ AActor* AEnemySpawner::SpawnEnemyActor()
 	return spawnedEnemy;*/
 
 	//GetWorld()->SpawnActor<AEnemyCharacterBase>(this->GetActorLocation(), this->GetActorRotation(), spawnParams);
-}
-
-
-
-bool AEnemySpawner::IsSpawnAreaClear()
-{
-	return true;
 }
 

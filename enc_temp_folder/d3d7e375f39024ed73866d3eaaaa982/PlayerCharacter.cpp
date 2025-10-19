@@ -147,4 +147,9 @@ void APlayerCharacter::HandleSpawnEnemyFromSpawner()
 		startWave = false;
 		EnemySpawner->StopSpawning();
 	}
+
+
+	
+
+	
 }

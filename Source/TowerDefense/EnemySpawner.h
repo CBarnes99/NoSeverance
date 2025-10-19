@@ -25,6 +25,7 @@ public:
 	FTimerHandle SpawnCheckTimerHandle;
 
 	void StartSpawning();
+	void StopSpawning();
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,9 +55,7 @@ protected:
 
 	
 
+	
 	void Spawning();
-
 	AActor* SpawnEnemyActor();
-
-	bool IsSpawnAreaClear();
 };
