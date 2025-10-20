@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "SpawnerManager.h"
 #include "CombatGameMode.generated.h"
 
 /**
@@ -20,7 +21,12 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere)
+	ASpawnerManager* spawnerManager;
 
 	UPROPERTY(VisibleAnywhere)
 	int currentWave;
+
+	UFUNCTION(BlueprintCallable)
+	void startEnemyWave();
 };

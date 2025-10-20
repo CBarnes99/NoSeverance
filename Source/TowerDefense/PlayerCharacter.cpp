@@ -2,13 +2,7 @@
 
 #include "PlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-#include "EnhancedInputComponent.h"
-#include "InputMappingContext.h"
-#include "EnhancedInputSubsystems.h"
-#include "EnemySpawner.h"
-#include "EngineUtils.h" 
-#include <Kismet/GameplayStatics.h>
+#include "Camera/CameraComponent.h" 
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()

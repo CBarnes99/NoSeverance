@@ -8,6 +8,7 @@
 #include "PlayerCharacter.h"
 #include "EngineUtils.h" 
 #include "EnemySpawner.h"
+#include "CombatGameMode.h"
 //#include <Kismet/GameplayStatics.h>
 
 void ACombatPlayerController::BeginPlay()
@@ -43,7 +44,7 @@ void ACombatPlayerController::SetupInputComponent()
 		Input->BindAction(RunActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RunningAction);
 		Input->BindAction(RunActionInput, ETriggerEvent::Completed, this, &ACombatPlayerController::RunningActionStop);
 
-		Input->BindAction(StartEnemyWaveActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::HandleSpawnEnemyFromSpawner);
+		Input->BindAction(StartEnemyWaveActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::CallGameModeToStartSpawningEnemies);
 
 	}
 }
@@ -120,32 +121,13 @@ void ACombatPlayerController::StopJumpingAction()
 }
 
 
-void ACombatPlayerController::HandleSpawnEnemyFromSpawner()
+void ACombatPlayerController::CallGameModeToStartSpawningEnemies()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, TEXT("ENTER PRESSED"));
 
-	//Get the enemy spawner from the world
-	if (!EnemySpawner)
-	{
-		for (TActorIterator<AEnemySpawner> i(GetWorld()); i; ++i)
-		{
-			EnemySpawner = *i;
-			if (EnemySpawner)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Reference to Spawner Found"));
-				break; // Stop after first found
-			}
-		}
-	}
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
 
-	if (!EnemySpawner->isSpawning)
-	{
-		EnemySpawner->StartSpawning();
-	}
-	else
-	{
-		EnemySpawner->StopSpawning();
-	}
-}
+	ACombatGameMode* MyGameMode = Cast<ACombatGameMode>(GameModeBase);
 
-
+	MyGameMode->startEnemyWave();
+};

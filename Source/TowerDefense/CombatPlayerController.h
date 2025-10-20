@@ -51,7 +51,7 @@ protected:
 	void MouseLookAction(const FInputActionValue& Value);
 	void RunningAction();
 	void RunningActionStop();
-	void HandleSpawnEnemyFromSpawner();
+	void CallGameModeToStartSpawningEnemies();
 	void JumpAction();
 	void StopJumpingAction();
 };

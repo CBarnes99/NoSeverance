@@ -7,7 +7,6 @@
 #include "Containers/Map.h"
 #include "EnemyCharacterBase.h"
 #include "AmountOfEnemysSpawning.h"
-//#include "Components/SphereComponent.h"
 #include "Engine/DataTable.h"
 #include "EnemySpawner.generated.h"
 
@@ -33,19 +32,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StopSpawning();
 
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	TArray<TSubclassOf<AEnemyCharacterBase>> enemyCharacters;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	TMap<int, FAmountOfEnemysSpawning> waveAndEnemyQueue;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	TArray<AEnemyCharacterBase*> enemyQueue;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Spawner")
-	TArray<TSubclassOf<AEnemyCharacterBase>> enemyCharacters;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Spawner")
-	TMap<int, FAmountOfEnemysSpawning> waveAndEnemyQueue;
-
-
-	UPROPERTY(EditDefaultsOnly, Category = "Spawner")
-	TArray<AEnemyCharacterBase*> enemyQueue;
 
 	int spawnAmount;
 	int currentWave;
