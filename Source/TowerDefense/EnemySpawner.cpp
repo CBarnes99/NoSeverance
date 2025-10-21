@@ -11,11 +11,7 @@ AEnemySpawner::AEnemySpawner()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	/*SpawningCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Spawning Collision"));
-	SpawningCollision->InitSphereRadius(400.f);*/
-
-	spawnInterval = 0.5f; //Checks every 0.5 seconds
-
+	spawnInterval = 0.5f; //Spawns every 0.5 seconds
 }
 
 // Called when the game starts or when spawned
@@ -54,8 +50,7 @@ void AEnemySpawner::Spawning()
 
 int AEnemySpawner::amountOfEnemiesInWave()
 {
-	// CHANGE THIS 1 TO THE CURRENT WAVE NUMBER LOCATED IN THE GAME MODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (FAmountOfEnemysSpawning* enemyStruct = waveAndEnemyQueue.Find(1))
+	if (FAmountOfEnemysSpawning* enemyStruct = waveAndEnemyQueue.Find(currentWaveBeingSpawned))
 	{
 		int amount = 0;
 		for (TSubclassOf<AEnemyCharacterBase> enemys : enemyStruct->enemyTypeArray)
@@ -73,8 +68,7 @@ int AEnemySpawner::amountOfEnemiesInWave()
 //Spawns the Enemy Actors from the Array of characters that are assigned in the BP Editor
 AActor* AEnemySpawner::SpawnEnemyActor()
 {
-	// CHANGE THIS 1 TO THE CURRENT WAVE NUMBER LOCATED IN THE GAME MODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (FAmountOfEnemysSpawning* enemyStruct = waveAndEnemyQueue.Find(1))
+	if (FAmountOfEnemysSpawning* enemyStruct = waveAndEnemyQueue.Find(currentWaveBeingSpawned))
 	{
 		if (enemyStruct->enemyTypeArray.IsValidIndex(0)) {
 

@@ -55,9 +55,19 @@ void ACombatGameMode::startEnemyWave()
 		spawnerManager->setAllSpawners();
 	}
 
-	lastWave = spawnerManager->calculateLastWave();
+	if (!lastWave)
+	{
+		lastWave = spawnerManager->calculateLastWave();
+		UE_LOG(LogTemp, Warning, TEXT("The last wave of this level is: %d"), lastWave);
+	}
 
-	UE_LOG(LogTemp, Warning, TEXT("The last wave of this level is: %d"), lastWave);
-
-	spawnerManager->startSpawningEnemies();
+	if (!spawnerManager->isWaveActive())
+	{
+		currentWave++;
+		spawnerManager->startSpawningEnemies(currentWave);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Wave is already active!"));
+	}
 }

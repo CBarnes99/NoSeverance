@@ -19,7 +19,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void startSpawningEnemies();
+	void startSpawningEnemies(int currentWave);
 
 	UPROPERTY(VisibleAnywhere)
 	bool waveActive;
@@ -32,6 +32,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<AActor*> enemySpawners;
+
+	UFUNCTION(BlueprintCallable)
+	bool isWaveActive();
 
 protected:
 	// Called when the game starts or when spawned

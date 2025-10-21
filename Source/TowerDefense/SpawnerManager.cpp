@@ -29,8 +29,12 @@ void ASpawnerManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+bool ASpawnerManager::isWaveActive()
+{
+	return waveActive;
+}
 
-void ASpawnerManager::startSpawningEnemies()
+void ASpawnerManager::startSpawningEnemies(int currentWave)
 {
 	//if the spawners haven't been set, set the spawners
 	if (!enemySpawners.IsValidIndex(0))
@@ -38,42 +42,35 @@ void ASpawnerManager::startSpawningEnemies()
 		setAllSpawners();
 	}
 	
+	//If there isnt a wave currently active, start the wave
 	if (!waveActive)
 	{
 		waveActive = true;
-		
-		//Gets the amount of enemies that are in this round
+
+		UE_LOG(LogTemp, Warning, TEXT("current wave = %d"), currentWave);
+
+		//Gets the amount of enemies that are in this round and starts spawning
 		for (AActor* Actor : enemySpawners)
 		{
 			AEnemySpawner* spawner = Cast<AEnemySpawner>(Actor);
 			if (spawner)
 			{
+				spawner->currentWaveBeingSpawned = currentWave;
 				amountOfEnemysInRound += spawner->amountOfEnemiesInWave();
+				spawner->StartSpawning();
 			}
 			else
 			{
 				UE_LOG(LogTemp, Warning, TEXT("No Spawner Found when spawning calulcating amount of enemies"));
 			}
 		}
-
 		UE_LOG(LogTemp, Warning, TEXT("There are %d enemies this round"), amountOfEnemysInRound);
-	
-		//Tells the spawners to start spawning
-		for (AActor* Actor : enemySpawners)
-		{
-			AEnemySpawner* spawner = Cast<AEnemySpawner>(Actor);
-			if (spawner)
-			{
-				spawner->StartSpawning();
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("No Spawner Found when spawning enemies"));
-			}
-		}
 	}
-	
-}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Wave is currently active!"));
+	}
+};
 
 void ASpawnerManager::setAllSpawners()
 {

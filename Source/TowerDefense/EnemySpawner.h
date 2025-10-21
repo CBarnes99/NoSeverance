@@ -38,6 +38,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawner")
 	TMap<int, FAmountOfEnemysSpawning> waveAndEnemyQueue;
 
+	//This is set by the spawner manager which recives input from the game mode which holds the current wave
+	UPROPERTY(VisibleAnywhere, Category = "Spawner")
+	int currentWaveBeingSpawned;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -47,4 +51,5 @@ protected:
 
 	void Spawning();
 	AActor* SpawnEnemyActor();
+
 };
