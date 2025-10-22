@@ -12,24 +12,11 @@
 ACombatGameMode::ACombatGameMode()
 {
 	/*static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Player/BP_PlayerCharacter"));
-	if (PlayerPawnClassFinder.Class)
-	{
-		DefaultPawnClass = PlayerPawnClassFinder.Class;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to find player character Blueprint at /Game/Player/BP_PlayerCharacter"));
-	}
+	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
-	static ConstructorHelpers::FClassFinder<ACombatPlayerController> CombatPlayerControllerClass(TEXT("/Script/Engine.Blueprint/Game/BP_CombatPlayerController"));
-	if (CombatPlayerControllerClass.Class)
-	{
-		PlayerControllerClass = CombatPlayerControllerClass.Class;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to find player controller Blueprint at /Game/BP_CombatPlayerController"));
-	}*/
+	static ConstructorHelpers::FClassFinder<ACombatPlayerController> CombatPlayerControllerClass(TEXT("/Game/BP_CombatPlayerController.BP_CombatPlayerController"));
+	PlayerControllerClass = CombatPlayerControllerClass.Class;*/
+
 
 	currentWave = 0;
 }
