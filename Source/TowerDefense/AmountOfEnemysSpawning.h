@@ -3,12 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "Engine/DataTable.h"
 #include "EnemyCharacterBase.h"
 #include "AmountOfEnemysSpawning.generated.h"
 
 USTRUCT(BlueprintType)
-struct FAmountOfEnemysSpawning //: public FTableRowBase
+struct FAmountOfEnemysSpawning
 {
 	GENERATED_BODY()
 		

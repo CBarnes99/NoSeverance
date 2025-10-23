@@ -19,7 +19,7 @@ class TOWERDEFENSE_API ACombatPlayerController : public APlayerController
 public:
 
 	UPROPERTY(EditAnywhere, Category = "References")
-	class AEnemySpawner* EnemySpawner;
+	class AEnemySpawner* enemySpawner;
 
 protected:
 
@@ -30,28 +30,42 @@ protected:
 
 	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
 	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputMappingContext* DefualtMappingContext;
+	class UInputMappingContext* defualtMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputAction* MoveActionInput;
+	class UInputAction* moveActionInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputAction* LookActionInput;
+	class UInputAction* lookActionInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputAction* JumpActionInput;
+	class UInputAction* jumpActionInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputAction* RunActionInput;
+	class UInputAction* runActionInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputAction* StartEnemyWaveActionInput;
+	class UInputAction* startEnemyWaveActionInput;
 
+
+	UFUNCTION(BlueprintCallable)
 	void MovementAction(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
 	void MouseLookAction(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
 	void RunningAction();
+
+	UFUNCTION(BlueprintCallable)
 	void RunningActionStop();
+
+	UFUNCTION(BlueprintCallable)
 	void CallGameModeToStartSpawningEnemies();
+
+	UFUNCTION(BlueprintCallable)
 	void JumpAction();
+
+	UFUNCTION(BlueprintCallable)
 	void StopJumpingAction();
 };

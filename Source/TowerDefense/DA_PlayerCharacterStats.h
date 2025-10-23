@@ -14,25 +14,25 @@ class TOWERDEFENSE_API UDA_PlayerCharacterStats : public UDataAsset
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	FString Name;
+	FString name;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float Health;
+	float health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float Mana;
+	float mana;
 
 	//probably be in the weapon?
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float DamageDelt;
+	float damageDelt;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float MovementSpeed;
+	float movementSpeed;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float RunSpeed;
+	float runSpeed;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float JumpHeight;
+	float jumpHeight;
 	
 };

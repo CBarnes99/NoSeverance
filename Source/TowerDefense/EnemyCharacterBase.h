@@ -18,6 +18,7 @@ public:
 	// Sets default values for this character's properties
 	AEnemyCharacterBase();
 
+	UFUNCTION(BlueprintCallable)
 	UBehaviorTree* GetBehaviourTree() const;
 
 	// Called every frame
@@ -32,10 +33,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = "AI")
-	UBehaviorTree* EnemyBehaviorTree;
+	UBehaviorTree* enemyBehaviorTree;
 
 	//Assign a Data Asset in Blueprints for each of the enemys information
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
-	TObjectPtr<UDA_EnemyCharacterStats> EnemyInfo;
+	TObjectPtr<UDA_EnemyCharacterStats> enemyInfo;
 
 };

@@ -8,7 +8,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
-	
+	//Asign the blackboard to the behaviour tree
 	if (AEnemyCharacterBase* const Enemy = Cast<AEnemyCharacterBase>(InPawn))
 	{
 		if (UBehaviorTree* const Tree = Enemy->GetBehaviourTree())
@@ -17,8 +17,6 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 			UseBlackboard(Tree->BlackboardAsset, b);
 			Blackboard = b;
 			RunBehaviorTree(Tree);
-
-			//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, TEXT("BLACKBOARD WORKING IN ENEMY AI CONTROLLER"));
 		}
 		else
 		{

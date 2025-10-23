@@ -7,7 +7,6 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "EnemyAIController.generated.h"
 
-//class UBehaviorTree;
 /**
  * 
  */

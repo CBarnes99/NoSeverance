@@ -33,14 +33,14 @@ void AEnemySpawner::Tick(float DeltaTime)
 void AEnemySpawner::StartSpawning()
 {
 	isSpawning = true;
-	GetWorld()->GetTimerManager().SetTimer(SpawnCheckTimerHandle, this, &AEnemySpawner::Spawning, spawnInterval, true);
+	GetWorld()->GetTimerManager().SetTimer(spawnEnemyTimerHandle, this, &AEnemySpawner::Spawning, spawnInterval, true);
 }
 
 //When all enemies have spawned, stop spawning
 void AEnemySpawner::StopSpawning()
 {
 	isSpawning = false;
-	GetWorld()->GetTimerManager().ClearTimer(SpawnCheckTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(spawnEnemyTimerHandle);
 }
 
 void AEnemySpawner::Spawning()
@@ -74,25 +74,31 @@ AActor* AEnemySpawner::SpawnEnemyActor()
 
 			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Valid Index In Spawner "));
 			FActorSpawnParameters spawnParams;
-			AActor* spawnedEnemy = GetWorld()->SpawnActor<AEnemyCharacterBase>(enemyStruct->enemyTypeArray[0].Get(), this->GetActorLocation(), this->GetActorRotation(), spawnParams);
+			AActor* spawnedEnemy = GetWorld()->SpawnActor<AEnemyCharacterBase>(enemyStruct->enemyTypeArray[0].Get(),
+																							this->GetActorLocation(), 
+																							this->GetActorRotation(), 
+																							spawnParams);
 			enemyStruct->enemyTypeArray.RemoveAt(0);
 			return spawnedEnemy;
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("NO Valid Index In Spawner"));
-			StopSpawning();
-			isSpawning = false;
+			errorSpawningLog("NO Valid Index In Spawner");
 			return NULL;
 		}
 	}
 
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("NO Valid Index In waveAndEnemyQueue"));
-		StopSpawning();
-		isSpawning = false;
+		errorSpawningLog("NO Valid Index In waveAndEnemyQueue");
 		return NULL;
 	}
+}
+
+void AEnemySpawner::errorSpawningLog(FString log)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, log);
+	StopSpawning();
+	isSpawning = false;
 }
 

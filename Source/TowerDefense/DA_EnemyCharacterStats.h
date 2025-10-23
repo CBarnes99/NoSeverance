@@ -14,15 +14,15 @@ class TOWERDEFENSE_API UDA_EnemyCharacterStats : public UDataAsset
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	FString Name;
+	FString name;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float Health;
+	float health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float DamageDelt;
+	float damageDelt;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float MovementSpeed;
+	float movementSpeed;
 
 };

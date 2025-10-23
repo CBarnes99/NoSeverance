@@ -8,7 +8,6 @@ AEnemyCharacterBase::AEnemyCharacterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -21,17 +20,15 @@ void AEnemyCharacterBase::BeginPlay()
 void AEnemyCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 UBehaviorTree* AEnemyCharacterBase::GetBehaviourTree() const
 {
-	return EnemyBehaviorTree;
+	return enemyBehaviorTree;
 }
 // Called to bind functionality to input
 void AEnemyCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 

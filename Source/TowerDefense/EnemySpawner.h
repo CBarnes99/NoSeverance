@@ -22,9 +22,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	FTimerHandle SpawnCheckTimerHandle;
+	//A timer that is called evey x seconds to spawn an enemy
+	UPROPERTY(EditAnywhere)
+	FTimerHandle spawnEnemyTimerHandle;
 	
+	UPROPERTY(VisibleAnywhere)
 	bool isSpawning;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	TMap<int, FAmountOfEnemysSpawning> waveAndEnemyQueue;
+
+	//This is set by the spawner manager which recives input from the game mode which holds the current wave
+	UPROPERTY(VisibleAnywhere, Category = "Spawner")
+	int currentWaveBeingSpawned;
+
 
 	UFUNCTION(BlueprintCallable)
 	void StartSpawning();
@@ -35,13 +46,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int amountOfEnemiesInWave();
 
-	UPROPERTY(EditAnywhere, Category = "Spawner")
-	TMap<int, FAmountOfEnemysSpawning> waveAndEnemyQueue;
-
-	//This is set by the spawner manager which recives input from the game mode which holds the current wave
-	UPROPERTY(VisibleAnywhere, Category = "Spawner")
-	int currentWaveBeingSpawned;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -49,7 +53,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawner")
 	float spawnInterval;
 
+	UFUNCTION(BlueprintCallable)
 	void Spawning();
+
+	UFUNCTION(BlueprintCallable)
 	AActor* SpawnEnemyActor();
+
+	UFUNCTION(BlueprintCallable)
+	void errorSpawningLog(FString log);
 
 };

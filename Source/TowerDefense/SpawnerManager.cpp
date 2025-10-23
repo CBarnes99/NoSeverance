@@ -20,7 +20,6 @@ ASpawnerManager::ASpawnerManager()
 void ASpawnerManager::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
@@ -29,17 +28,17 @@ void ASpawnerManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-bool ASpawnerManager::isWaveActive()
+bool ASpawnerManager::IsWaveActive()
 {
 	return waveActive;
 }
 
-void ASpawnerManager::startSpawningEnemies(int currentWave)
+void ASpawnerManager::StartSpawningEnemies(int currentWave)
 {
 	//if the spawners haven't been set, set the spawners
 	if (!enemySpawners.IsValidIndex(0))
 	{
-		setAllSpawners();
+		SetAllSpawners();
 	}
 	
 	//If there isnt a wave currently active, start the wave
@@ -72,14 +71,14 @@ void ASpawnerManager::startSpawningEnemies(int currentWave)
 	}
 };
 
-void ASpawnerManager::setAllSpawners()
+void ASpawnerManager::SetAllSpawners()
 {
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemySpawner::StaticClass(), enemySpawners);
 
 	UE_LOG(LogTemp, Warning, TEXT("Found %d actors from class AEnemySpawner"), enemySpawners.Num());
 }
 
-int ASpawnerManager::calculateLastWave()
+int ASpawnerManager::CalculateLastWave()
 {
 	int maxWave = 0;
 	for (AActor* actor : enemySpawners)

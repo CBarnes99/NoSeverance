@@ -24,12 +24,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	ASpawnerManager* spawnerManager;
 
-	UFUNCTION(BlueprintCallable)
-	void startEnemyWave();
-
 	UPROPERTY(VisibleAnywhere)
 	int currentWave;
 
 	UPROPERTY(VisibleAnywhere)
 	int lastWave;
+
+	UFUNCTION(BlueprintCallable)
+	void StartEnemyWave();
 };

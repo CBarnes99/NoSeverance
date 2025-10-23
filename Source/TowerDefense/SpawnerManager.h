@@ -18,23 +18,25 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	void startSpawningEnemies(int currentWave);
-
 	UPROPERTY(VisibleAnywhere)
 	bool waveActive;
-
-	UFUNCTION(BlueprintCallable)
-	int calculateLastWave();
-
-	UFUNCTION(BlueprintCallable)
-	void setAllSpawners();
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<AActor*> enemySpawners;
 
+
+
 	UFUNCTION(BlueprintCallable)
-	bool isWaveActive();
+	void StartSpawningEnemies(int currentWave);
+
+	UFUNCTION(BlueprintCallable)
+	int CalculateLastWave();
+
+	UFUNCTION(BlueprintCallable)
+	void SetAllSpawners();
+
+	UFUNCTION(BlueprintCallable)
+	bool IsWaveActive();
 
 protected:
 	// Called when the game starts or when spawned

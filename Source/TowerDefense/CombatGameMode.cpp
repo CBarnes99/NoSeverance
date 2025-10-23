@@ -27,7 +27,7 @@ void ACombatGameMode::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ACombatGameMode::startEnemyWave()
+void ACombatGameMode::StartEnemyWave()
 {
 	//Check to see if there is a valid spawner manager
 	if (!spawnerManager)
@@ -39,19 +39,21 @@ void ACombatGameMode::startEnemyWave()
 	//Check to see if the spawner manager has all the spawners refereneced
 	if (!spawnerManager->enemySpawners.IsValidIndex(0))
 	{
-		spawnerManager->setAllSpawners();
+		spawnerManager->SetAllSpawners();
 	}
-
+	
+	//cCeck to see if the last wave has been initilized
 	if (!lastWave)
 	{
-		lastWave = spawnerManager->calculateLastWave();
-		UE_LOG(LogTemp, Warning, TEXT("The last wave of this level is: %d"), lastWave);
+		lastWave = spawnerManager->CalculateLastWave();
+		UE_LOG(LogTemp, Warning, TEXT("The last wave of this level is: %i"), lastWave);		
 	}
 
-	if (!spawnerManager->isWaveActive())
+	//Check to see if a wave is already active
+	if (!spawnerManager->IsWaveActive())
 	{
 		currentWave++;
-		spawnerManager->startSpawningEnemies(currentWave);
+		spawnerManager->StartSpawningEnemies(currentWave);
 	}
 	else
 	{

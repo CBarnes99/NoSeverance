@@ -23,13 +23,13 @@ public:
 
 	//Player Stats, Edit in Blueprints Data Asset
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
-	TObjectPtr<UDA_PlayerCharacterStats> DA_PlayerInfo;
+	TObjectPtr<UDA_PlayerCharacterStats> DA_playerInfo;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float MovementSpeed;
+	float movementSpeed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float RunSpeed;
+	float runSpeed;
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,24 +37,26 @@ protected:
 
 	//Components added to player
 	UPROPERTY(EditAnywhere)
-	class UCameraComponent* Camera;
+	class UCameraComponent* camera;
 
 	UPROPERTY(EditAnywhere)
-	class USpringArmComponent* SpringArm;
+	class USpringArmComponent* springArm;
+
+
+	//These properties are assigned in the begin play by referencing the DA_playerInfo Data Asset
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
+	FString name;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	FString Name;
+	float health;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float Health;
+	float mana;
+
+	//probably be in the weapon in the future?
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
+	float damageDelt;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float Mana;
-
-	//probably be in the weapon?
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float DamageDelt;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float JumpHeight;
+	float jumpHeight;
 };

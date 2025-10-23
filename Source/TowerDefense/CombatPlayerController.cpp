@@ -19,9 +19,9 @@ void ACombatPlayerController::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (DefualtMappingContext)
+			if (defualtMappingContext)
 			{
-				Subsystem->AddMappingContext(DefualtMappingContext, 0);
+				Subsystem->AddMappingContext(defualtMappingContext, 0);
 			}
 		}
 	}
@@ -31,19 +31,20 @@ void ACombatPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
+	//Binds the Input Actions assigned in the editor to the corisponding functions
 	if (UEnhancedInputComponent* Input = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
-		Input->BindAction(MoveActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::MovementAction);
+		Input->BindAction(moveActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::MovementAction);
 
-		Input->BindAction(LookActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::MouseLookAction);
+		Input->BindAction(lookActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::MouseLookAction);
 
-		Input->BindAction(JumpActionInput, ETriggerEvent::Started, this, &ACombatPlayerController::JumpAction);
-		Input->BindAction(JumpActionInput, ETriggerEvent::Completed, this, &ACombatPlayerController::StopJumpingAction);
+		Input->BindAction(jumpActionInput, ETriggerEvent::Started, this, &ACombatPlayerController::JumpAction);
+		Input->BindAction(jumpActionInput, ETriggerEvent::Completed, this, &ACombatPlayerController::StopJumpingAction);
 
-		Input->BindAction(RunActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RunningAction);
-		Input->BindAction(RunActionInput, ETriggerEvent::Completed, this, &ACombatPlayerController::RunningActionStop);
+		Input->BindAction(runActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RunningAction);
+		Input->BindAction(runActionInput, ETriggerEvent::Completed, this, &ACombatPlayerController::RunningActionStop);
 
-		Input->BindAction(StartEnemyWaveActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::CallGameModeToStartSpawningEnemies);
+		Input->BindAction(startEnemyWaveActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::CallGameModeToStartSpawningEnemies);
 
 	}
 }
@@ -89,7 +90,7 @@ void ACombatPlayerController::RunningAction()
 
 	if (APlayerCharacter* MyCharacter = Cast<APlayerCharacter>(GetPawn()))
 	{
-		MyCharacter->GetCharacterMovement()->MaxWalkSpeed = MyCharacter->RunSpeed;
+		MyCharacter->GetCharacterMovement()->MaxWalkSpeed = MyCharacter->runSpeed;
 	}
 	
 }
@@ -100,7 +101,7 @@ void ACombatPlayerController::RunningActionStop()
 
 	if (APlayerCharacter* MyCharacter = Cast<APlayerCharacter>(GetPawn()))
 	{
-		MyCharacter->GetCharacterMovement()->MaxWalkSpeed = MyCharacter->MovementSpeed;
+		MyCharacter->GetCharacterMovement()->MaxWalkSpeed = MyCharacter->movementSpeed;
 	}
 }
 
@@ -129,5 +130,5 @@ void ACombatPlayerController::CallGameModeToStartSpawningEnemies()
 
 	ACombatGameMode* MyGameMode = Cast<ACombatGameMode>(GameModeBase);
 
-	MyGameMode->startEnemyWave();
+	MyGameMode->StartEnemyWave();
 };
