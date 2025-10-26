@@ -22,10 +22,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float mana;
 
-	//probably be in the weapon?
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
-	float damageDelt;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float movementSpeed;
 

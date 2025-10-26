@@ -11,7 +11,7 @@ AProjectileBase::AProjectileBase()
 
 
 	collisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collision"));
-	collisionComponent->InitSphereRadius(50.f);
+	collisionComponent->InitSphereRadius(20.f);
 	collisionComponent->SetSimulatePhysics(false);
 	collisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	collisionComponent->SetCollisionProfileName(TEXT("BlockAllDynamic"));
@@ -68,7 +68,9 @@ void AProjectileBase::OnHit(UPrimitiveComponent* hitComponent, AActor* OtherActo
 {
 	//To prevent the projectile from destorying itself when its spawned from the instigator
 	if (!OtherActor || OtherActor == this || OtherActor == this->GetInstigator())
+	{
 		return;
+	}
 
 	UE_LOG(LogTemp, Warning, TEXT("OtherActor is %s"), *OtherActor->GetName())
 	if (targetClassToDestroy && OtherActor->IsA(targetClassToDestroy))

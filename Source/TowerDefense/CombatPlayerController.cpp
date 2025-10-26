@@ -9,6 +9,7 @@
 #include "EnemySpawner.h"
 #include "CombatGameMode.h"
 #include "ProjectileBase.h"
+#include "DrawDebugHelpers.h"
 
 void ACombatPlayerController::BeginPlay()
 {
@@ -92,7 +93,7 @@ void ACombatPlayerController::RunningAction()
 
 	if (APlayerCharacter* myCharacter = Cast<APlayerCharacter>(GetPawn()))
 	{
-		myCharacter->GetCharacterMovement()->MaxWalkSpeed = myCharacter->runSpeed;
+		myCharacter->GetCharacterMovement()->MaxWalkSpeed = myCharacter->GetRunSpeed();
 	}
 	
 }
@@ -103,7 +104,7 @@ void ACombatPlayerController::RunningActionStop()
 
 	if (APlayerCharacter* myCharacter = Cast<APlayerCharacter>(GetPawn()))
 	{
-		myCharacter->GetCharacterMovement()->MaxWalkSpeed = myCharacter->movementSpeed;
+		myCharacter->GetCharacterMovement()->MaxWalkSpeed = myCharacter->GetMovementSpeed();
 	}
 }
 
@@ -129,30 +130,7 @@ void ACombatPlayerController::AttackAction()
 
 	if (APlayerCharacter* myCharacter = Cast<APlayerCharacter>(GetPawn()))
 	{
-		if (!myCharacter->projectile)
-		{
-			UE_LOG(LogTemp, Error, TEXT("Projectile class is not set on player character!"));
-			return;
-		}
-
-		FVector spawnLocation = myCharacter->GetActorLocation() + myCharacter->GetActorForwardVector() * 100.f;
-		FRotator spawnRotation = myCharacter->GetActorRotation();
-
-		FActorSpawnParameters spawnParams;
-		spawnParams.Owner = myCharacter;
-		spawnParams.Instigator = myCharacter;
-
-		AProjectileBase* projectile = GetWorld()->SpawnActor<AProjectileBase>(myCharacter->projectile, spawnLocation, spawnRotation, spawnParams);
-
-		if (projectile)
-		{
-			projectile->FireInDirection(myCharacter->GetActorForwardVector());
-			//UE_LOG(LogTemp, Warning, TEXT("Projectile spawned at %s"), *spawnLocation.ToString());
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to spawn projectile."));
-		}
+		myCharacter->equippedWeapon->spawnProjectile(myCharacter->GetCameraRotation());
 	}
 }
 

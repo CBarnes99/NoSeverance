@@ -5,7 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DA_PlayerCharacterStats.h"
 #include "Components/StaticMeshComponent.h"
-#include "ProjectileBase.h"
+#include "WeaponBase.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -27,15 +27,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
 	TObjectPtr<UDA_PlayerCharacterStats> DA_playerInfo;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float movementSpeed;
+	UFUNCTION(BlueprintCallable)
+	float& GetMovementSpeed();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float runSpeed;
+	UFUNCTION(BlueprintCallable)
+	float& GetRunSpeed();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	class TSubclassOf<AProjectileBase> projectile;
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	AWeaponBase* equippedWeapon;
 
+	UFUNCTION(BlueprintCallable)
+	FRotator GetCameraRotation() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -48,10 +50,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USpringArmComponent* springArm;
 
+	//This is the socket name on the skeleton, if the socket name changes, can be edited in the editor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStaticMeshComponent* weapon;
-
-
+	FName weaponSocket;
 
 	//These properties are assigned in the begin play by referencing the DA_playerInfo Data Asset
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
@@ -63,10 +64,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
 	float mana;
 
-	//probably be in the weapon in the future?
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
-	float damageDelt;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
 	float jumpHeight;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
+	float movementSpeed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerStats")
+	float runSpeed;
+
+	//Set the class of the weapon in the BP Editor
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	class TSubclassOf<AWeaponBase> weaponClass;
+
+	//On begin play, this function spawns the weapon above and equips it to the right hand socket of the skeleton
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void EquipWeapon();
+
 };

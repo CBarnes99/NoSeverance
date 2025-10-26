@@ -11,12 +11,27 @@
 
 ACombatGameMode::ACombatGameMode()
 {
-	/*static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Player/BP_PlayerCharacter"));
-	DefaultPawnClass = PlayerPawnClassFinder.Class;
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Player/BP_PlayerCharacter"));
+	if (PlayerPawnClassFinder.Class)
+	{
+		DefaultPawnClass = PlayerPawnClassFinder.Class;	
+		UE_LOG(LogTemp, Warning, TEXT("Player Pawn/Character found in Game Mode!"))
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Player Pawn/Character NOT found in Game Mode!"))
+	}
 
-	static ConstructorHelpers::FClassFinder<ACombatPlayerController> CombatPlayerControllerClass(TEXT("/Game/BP_CombatPlayerController.BP_CombatPlayerController"));
-	PlayerControllerClass = CombatPlayerControllerClass.Class;*/
-
+	static ConstructorHelpers::FClassFinder<APlayerController> CombatPlayerControllerClass(TEXT("/Game/BP_CombatPlayerController"));
+	if (CombatPlayerControllerClass.Class)
+	{
+		PlayerControllerClass = CombatPlayerControllerClass.Class;
+		UE_LOG(LogTemp, Warning, TEXT("Player Controller class found in Game Mode!"))
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Player Controller class NOT found in Game Mode!"))
+	}
 
 	currentWave = 0;
 }

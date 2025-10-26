@@ -39,17 +39,15 @@ protected:
 
 	FTimerHandle lifeTimeTimerHandle;
 
-	UFUNCTION(BlueprintCallable)
-	void destoryProjectileActor();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float lifeTime;
+
+	UFUNCTION(BlueprintCallable)
+	void destoryProjectileActor();
 
 	UFUNCTION(BlueprintCallable)
 	void OnHit(UPrimitiveComponent* hitComp, AActor* otherActor, UPrimitiveComponent* otherComp, FVector normalImpulse, const FHitResult& hit);
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AEnemyCharacterBase> targetClassToDestroy;
-
-
 };

@@ -28,6 +28,7 @@ protected:
 	virtual void SetupInputComponent() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
+
 	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputMappingContext* defualtMappingContext;
@@ -51,6 +52,8 @@ protected:
 	class UInputAction* attackActionInput;
 
 
+
+	//Input Actions Functions
 	UFUNCTION(BlueprintCallable)
 	void MovementAction(const FInputActionValue& Value);
 
