@@ -18,16 +18,11 @@ void AEnemyCharacterBase::BeginPlay()
 	Super::BeginPlay();
 	
 	name = enemyInfo->name;
-	//health = enemyInfo->health;
 	healthComponent->SetHealth(enemyInfo->health);
 	movementSpeed = enemyInfo->movementSpeed;
 	damageDelt = enemyInfo->damageDelt;
 
 	GetCharacterMovement()->MaxWalkSpeed = movementSpeed;
-
-
-	//Change this when I use object pooling
-	//OnDestroyed.AddDynamic();
 }
 
 // Called every frame
@@ -55,7 +50,7 @@ float AEnemyCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& Da
 	UE_LOG(LogTemp, Warning, TEXT("DamageCauser = %s"), *DamageCauser->GetName());
 	*/
 	healthComponent->RecieveDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	//health -= DamageAmount;	
+
 	if (healthComponent->GetHealth() <= 0)
 	{
 		OnDeath();

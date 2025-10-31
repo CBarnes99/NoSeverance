@@ -83,7 +83,7 @@ void ASpawnerManager::SetAllSpawners()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Fatal, TEXT("Cast to Enemy Spawner Failed!"));
+			UE_LOG(LogTemp, Error, TEXT("Cast to Enemy Spawner Failed!"));
 		}
 	}
 
@@ -127,7 +127,7 @@ void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 	}
 	else 
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("Binding Delegate to spawner manager not bound correctly"));
+		UE_LOG(LogTemp, Error, TEXT("Binding Delegate to spawner manager not bound correctly"));
 	}
 }
 

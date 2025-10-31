@@ -15,7 +15,7 @@ APlayerCharacter::APlayerCharacter()
 	if (weaponBP.Class)
 	{
 		weaponClass = weaponBP.Class;
-		UE_LOG(LogTemp, Warning, TEXT("Weapon BP found in player character"));
+		UE_LOG(LogTemp, Display, TEXT("Weapon BP found in player character"));
 
 	}
 	else
@@ -64,7 +64,7 @@ void APlayerCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = movementSpeed;
 	GetCharacterMovement()->JumpZVelocity = jumpHeight;
 	UE_LOG(LogTemp, Warning, TEXT("Name: %s, Health: %f, Mana: %f, Movement Speed: %f, Run Speed: %f, Jump Height: %f"),
-		*name, /*health*/ healthComponent->GetHealth(), mana, movementSpeed, runSpeed, jumpHeight);
+		*name, healthComponent->GetHealth(), mana, movementSpeed, runSpeed, jumpHeight);
 	
 	EquipWeapon();
 }
@@ -101,7 +101,7 @@ void APlayerCharacter::EquipWeapon()
 
 	if (equippedWeapon)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Weapon Equipped Successfully!!"));
+		UE_LOG(LogTemp, Display, TEXT("Weapon Equipped Successfully!!"));
 	}
 	else
 	{
@@ -121,9 +121,9 @@ FVector APlayerCharacter::GetCameraForwardVector() const
 	return camera->GetForwardVector();
 }
 
-UCameraComponent* APlayerCharacter::GetPlayerCamera() const
+FVector APlayerCharacter::GetCameraLocation()
 {
-	return camera;
+	return camera->GetComponentLocation();
 }
 
 float& APlayerCharacter::GetMovementSpeed()
@@ -139,9 +139,6 @@ float& APlayerCharacter::GetRunSpeed()
 float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	healthComponent->RecieveDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	//health -= DamageAmount;
-
-	//UE_LOG(LogTemp, Warning, TEXT("Player Health = %f"), health);
 
 	if (healthComponent->GetHealth() <= 0)
 	{

@@ -44,7 +44,7 @@ public:
 	FVector GetCameraForwardVector() const;
 
 	UFUNCTION(BlueprintCallable)
-	UCameraComponent* GetPlayerCamera() const;
+	FVector GetCameraLocation();
 
 protected:
 	// Called when the game starts or when spawned
@@ -64,14 +64,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName weaponSocket;
 
-
-
 	//These properties are assigned in the begin play by referencing the DA_playerInfo Data Asset
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	FString name;
-
-	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
-	float health;*/
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float mana;

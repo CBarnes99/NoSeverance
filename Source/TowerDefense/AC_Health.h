@@ -25,9 +25,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetHealth(float healthAmount);
 
+	/**
+	* Uses the built in Apply Damage function parameters to deal damage to the actor
+	*/
 	UFUNCTION(BlueprintCallable)
 	void RecieveDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
+	/**
+	* Updates the health of the player when it is healed
+	*/
 	UFUNCTION(BlueprintCallable)
 	void RecieveHealing(float healAmount);
 

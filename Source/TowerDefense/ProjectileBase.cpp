@@ -41,7 +41,7 @@ void AProjectileBase::BeginPlay()
 	Super::BeginPlay();	
 
 	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::destoryProjectileActor, lifeTime, false);
-	//UE_LOG(LogTemp, Error, TEXT("In Projectile Base!! Owner = %s, Instigator - %s"), *GetOwner()->GetName(), *GetInstigator()->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("In Projectile Base!! Owner = %s, Instigator - %s"), *GetOwner()->GetName(), *GetInstigator()->GetName());
 
 }
 
@@ -52,12 +52,11 @@ void AProjectileBase::Tick(float DeltaTime)
 
 }
 
-
 //These two fucntions are called when the weapon class spawns the projectile and sets the damage and speed values from the weapon data asset
 void AProjectileBase::SetDamage(float damageAmount)
 {
 	damageDelt = damageAmount;
-	//UE_LOG(LogTemp, Error, TEXT("Damage Amount = %f"), damageDelt);
+	//UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f"), damageDelt);
 
 }
 
@@ -66,8 +65,6 @@ void AProjectileBase::SetProjectileSpeed(float speed)
 	projectileMovementComponent->InitialSpeed = speed;
 	projectileMovementComponent->MaxSpeed = speed;
 }
-
-
 
 void AProjectileBase::destoryProjectileActor()
 {

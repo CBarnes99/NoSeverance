@@ -89,7 +89,7 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("NO Valid Index In %s"), *this->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("NO Valid Index In %s"), *this->GetName());
 			StopSpawning();
 			return NULL;
 		}
@@ -97,7 +97,7 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO Valid Index In waveAndEnemyQueue"));
+		UE_LOG(LogTemp, Warning, TEXT("NO Valid Index In waveAndEnemyQueue"));
 		StopSpawning();
 		return NULL;
 	}

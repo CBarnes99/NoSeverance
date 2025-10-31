@@ -7,6 +7,7 @@
 #include "DA_WeaponStats.h"
 #include "ProjectileBase.h"
 #include "Camera/CameraComponent.h"
+#include "AC_SpawnProjectile.h"
 #include "WeaponBase.generated.h"
 
 UCLASS()
@@ -21,8 +22,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning")
+	UAC_SpawnProjectile* spawnProjectileComponent;
+
 	UFUNCTION(BlueprintCallable)
-	void spawnProjectile(const UCameraComponent* playerCamera);
+	FVector GetWeaponMuzzleLocation();
+
+	UFUNCTION(BlueprintCallable)
+	float GetDamageDelt();
+
+	UFUNCTION(BlueprintCallable)
+	float GetProjectileSpeed();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,14 +41,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* weaponMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class TSubclassOf<AProjectileBase> projectile;
-
 	//Weapon stats below are set from the Data Asset at begin play
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UDA_WeaponStats* weaponStats;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FName weaponMuzzleName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -50,7 +57,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int maxAmmo;
 
-	//Gets the target location to where the projectile will be aimed towards
-	UFUNCTION (BlueprintCallable)
-	FVector GetTraceTargetLocation(const UCameraComponent* playerCamera);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float projectileSpeed;
 };

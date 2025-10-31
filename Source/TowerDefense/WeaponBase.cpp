@@ -12,6 +12,8 @@ AWeaponBase::AWeaponBase()
 
 	weaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
 	RootComponent = weaponMesh;
+
+	spawnProjectileComponent = CreateDefaultSubobject<UAC_SpawnProjectile>(TEXT("Spawn Projectile Component"));
 }
 
 // Called when the game starts or when spawned
@@ -22,9 +24,10 @@ void AWeaponBase::BeginPlay()
 	damageDelt = weaponStats->damageDelt;
 	currentAmmo = weaponStats->ammoMax;
 	maxAmmo = weaponStats->ammoMax;
+	projectileSpeed = weaponStats->projectileSpeed;
 	weaponMuzzleName = weaponStats->muzzleName;
 
-	//UE_LOG(LogTemp, Error, TEXT("In Weapon Base!! Owner = %s, Instigator - %s"), *GetOwner()->GetName(), *GetInstigator()->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("In Weapon Base!! Owner = %s, Instigator - %s"), *GetOwner()->GetName(), *GetInstigator()->GetName());
 }
 
 // Called every frame
@@ -33,48 +36,17 @@ void AWeaponBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-
-void AWeaponBase::spawnProjectile(const UCameraComponent* playerCamera)
+FVector AWeaponBase::GetWeaponMuzzleLocation()
 {
-	if (!projectile)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Projectile class is not set on Weapon Base!"));
-		return;
-	}
-
-	FVector muzzleLocation = weaponMesh->GetSocketLocation(weaponMuzzleName);
-
-	FVector targetLocation = GetTraceTargetLocation(playerCamera);
-
-	FVector shootDirection = (targetLocation - muzzleLocation).GetSafeNormal();
-
-	FRotator spawnRotation = shootDirection.Rotation();
-
-	FVector spawnLocation = muzzleLocation + shootDirection * 100.0f;
-
-	FActorSpawnParameters spawnParams;
-	spawnParams.Owner = this;
-	spawnParams.Instigator = GetInstigator();
-
-	AProjectileBase* spawnedProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, spawnLocation, spawnRotation, spawnParams);
-	spawnedProjectile->SetDamage(damageDelt);
-	spawnedProjectile->SetProjectileSpeed(weaponStats->projectileSpeed);
-	spawnedProjectile->FireInDirection(shootDirection);
-
+	return weaponMesh->GetSocketLocation(weaponMuzzleName);
 }
 
-FVector AWeaponBase::GetTraceTargetLocation(const UCameraComponent* playerCamera)
+float AWeaponBase::GetDamageDelt()
 {
-	FVector targetPos = FVector::ZeroVector;
-	FHitResult hit;
-	FVector traceStart = playerCamera->GetComponentLocation();
-	FVector traceEnd = traceStart + playerCamera->GetForwardVector() * 100000.f;
+	return damageDelt;
+}
 
-	GetWorld()->LineTraceSingleByChannel(hit, traceStart, traceEnd, ECC_Pawn);
-
-	DrawDebugLine(GetWorld(), traceStart, traceEnd, FColor::Red, false, 2.f, 1.f);
-
-	targetPos = hit.bBlockingHit ? hit.ImpactPoint : traceEnd;
-
-	return targetPos;
+float AWeaponBase::GetProjectileSpeed()
+{
+	return projectileSpeed;
 }
