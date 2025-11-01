@@ -26,6 +26,7 @@ ACombatGameMode::ACombatGameMode()
 	if (CombatPlayerControllerClass.Class)
 	{
 		PlayerControllerClass = CombatPlayerControllerClass.Class;
+		
 		UE_LOG(LogTemp, Warning, TEXT("Player Controller class found in Game Mode!"))
 	}
 	else
@@ -40,6 +41,8 @@ void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	currentWave = 0;
+	combatPlayerController = Cast<ACombatPlayerController>(GetWorld()->GetFirstPlayerController());
+	combatPlayerController->StartWaveEvent.AddDynamic(this, &ACombatGameMode::StartEnemyWave);
 }
 
 void ACombatGameMode::StartEnemyWave()

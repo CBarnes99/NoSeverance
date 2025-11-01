@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "SpawnerManager.h"
+#include "CombatPlayerController.h"
 #include "CombatGameMode.generated.h"
 
 /**
@@ -21,7 +22,7 @@ public:
 
 	virtual void BeginPlay() override;
 
-//protected:
+protected:
 	/**
 	* The spawner manager in the level
 	*/
@@ -45,6 +46,9 @@ public:
 	*/
 	UPROPERTY(VisibleAnywhere)
 	int lastWave;
+
+	UPROPERTY(VisibleAnywhere)
+	ACombatPlayerController* combatPlayerController;
 
 	UFUNCTION(BlueprintCallable)
 	void PrepareNewWave();

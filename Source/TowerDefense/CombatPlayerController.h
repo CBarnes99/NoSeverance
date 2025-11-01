@@ -9,7 +9,7 @@
 #include "InputActionValue.h"
 #include "CombatPlayerController.generated.h"
 
-//create delegate for starting wave instead of having the player controller know about the game mode
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStartWaveSigniture);
 
 /**
  * 
@@ -23,6 +23,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "References")
 	class AEnemySpawner* enemySpawner;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FStartWaveSigniture StartWaveEvent;
 
 protected:
 
