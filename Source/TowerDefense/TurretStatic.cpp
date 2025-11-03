@@ -39,12 +39,23 @@ void ATurretStatic::BeginPlay()
 	rechargeTime = turretStats->rechargeTime;
 	cost = turretStats->cost;
 
+	turretActive = true;
+	turretRecharging = false;
+
 }
+
+
 
 void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     if (OtherActor->IsA(AEnemyCharacterBase::StaticClass()) && !damagedActors.Contains(OtherActor))
     {
+		if (turretActive)
+		{
+			turretActive = false;
+			GetWorld()->GetTimerManager().SetTimer(activeAndRechargeTimerHandle, this, &ATurretStatic::disableTurret, activeTime, false);
+		}
+
 		if (GetLocalRole() == ROLE_Authority)
 		{
 			UE_LOG(LogTemp, Error, TEXT("%s Overlaps %s"), *OtherActor->GetName(), *this->GetName());
@@ -53,6 +64,23 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 			damagedActors.Add(OtherActor);
 		}
     }
+}
+
+void ATurretStatic::disableTurret()
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s is disabled"), *this->GetName());
+	collisionBox->SetGenerateOverlapEvents(false);
+	turretRecharging = true;
+	damagedActors.Empty();
+	GetWorld()->GetTimerManager().SetTimer(activeAndRechargeTimerHandle, this, &ATurretStatic::enableTurret, rechargeTime, false);
+}
+
+void ATurretStatic::enableTurret()
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s is enabled"), *this->GetName());
+	collisionBox->SetGenerateOverlapEvents(true);
+	turretRecharging = false;
+	turretActive = true;
 }
 
 // Called every frame

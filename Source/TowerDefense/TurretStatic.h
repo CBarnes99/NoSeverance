@@ -47,6 +47,22 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
 	int cost;
 
+	UPROPERTY(EditAnywhere)
+	FTimerHandle activeAndRechargeTimerHandle;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
+	bool turretActive;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
+	bool turretRecharging;
+
+	UFUNCTION(BlueprintCallable)
+	void disableTurret();
+
+	UFUNCTION(BlueprintCallable)
+	void enableTurret();
+	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSet<AActor*> damagedActors;
 
