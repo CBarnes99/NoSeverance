@@ -35,8 +35,9 @@ void UAC_Health::SetHealth(float healthAmount)
 
 void UAC_Health::RecieveDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	FString eventInstigatorString = EventInstigator ? EventInstigator->GetName() : "No Instigator";
 	health = FMath::Clamp(health - DamageAmount, 0, maxHealth);
-	UE_LOG(LogTemp, Display, TEXT("%s health = %f"), *GetOwner()->GetName(), health);
+	UE_LOG(LogTemp, Display, TEXT("%s health = %f, Damaged By = %s"), *GetOwner()->GetName(), health, *eventInstigatorString);
 }
 
 void UAC_Health::RecieveHealing(float healAmount)

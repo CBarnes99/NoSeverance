@@ -22,7 +22,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 	UAC_SpawnProjectile* spawnProjectileComponent;
 
 	UFUNCTION(BlueprintCallable)

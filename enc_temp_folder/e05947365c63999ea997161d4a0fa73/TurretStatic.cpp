@@ -1,0 +1,64 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "TurretStatic.h"
+#include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/ArrowComponent.h"
+#include "EnemyCharacterBase.h"
+#include "Kismet/GameplayStatics.h"
+
+// Sets default values
+ATurretStatic::ATurretStatic()
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+	turretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret Mesh"));
+	RootComponent = turretMesh;
+
+	collisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
+	collisionBox->SetCollisionProfileName(TEXT("Trigger"));
+	collisionBox->SetGenerateOverlapEvents(true);
+
+	collisionBox->OnComponentBeginOverlap.AddDynamic(this, &ATurretStatic::OnOverlap);
+
+    arrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Forward Arrow"));
+
+    collisionBox->SetupAttachment(turretMesh);
+    arrowComponent->SetupAttachment(turretMesh);
+}
+
+// Called when the game starts or when spawned
+void ATurretStatic::BeginPlay()
+{
+	Super::BeginPlay();
+
+	damageAmount = turretStats->damageAmount;
+	activeTime = turretStats->activeTime;
+	rechargeTime = turretStats->rechargeTime;
+	cost = turretStats->cost;
+
+}
+
+void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    if (OtherActor->IsA(AEnemyCharacterBase::StaticClass()) && !damagedActors.Contains(OtherActor))
+    {
+		if (GetLocalRole() == ROLE_Authority)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%s Overlaps %s"), *OtherActor->GetName(), *this->GetName());
+
+			UGameplayStatics::ApplyDamage(OtherActor, damageAmount, GetInstigatorController(), this, UDamageType::StaticClass());
+			damagedActors.Add(OtherActor);
+		}
+    }
+}
+
+// Called every frame
+void ATurretStatic::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+

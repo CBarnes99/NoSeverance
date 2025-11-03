@@ -88,6 +88,10 @@ int AEnemySpawner::CalculateAmountOfEnemiesInWave()
 		{
 			amount++;
 		}
+		//Store how many enemies are in the wave and how many have spawned for debugging
+		amountOfEnemiesInWave = amount;
+		amountOfEnemiesSpawned = 0;
+
 		return amount;
 	}
 	else 
@@ -102,8 +106,8 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 	if (FAmountOfEnemysSpawning* enemyStruct = waveAndEnemyQueue.Find(currentWaveBeingSpawned))
 	{
 		if (enemyStruct->enemyTypeArray.IsValidIndex(0)) {
-
-			UE_LOG(LogTemp, Display, TEXT("Valid Index 0 In %s"), *this->GetName());
+			amountOfEnemiesSpawned++;
+			//UE_LOG(LogTemp, Display, TEXT("Valid Index 0 In %s"), *this->GetName());
 			FActorSpawnParameters spawnParams;
 			spawnParams.Instigator = GetInstigator();
 
@@ -114,7 +118,8 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("NO Valid Index In %s"), *this->GetName());
+			//UE_LOG(LogTemp, Warning, TEXT("NO Valid Index In %s"), *this->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("Amount Of Enemies in %s is %d, Amount Spawned = %d"), *this->GetName(), amountOfEnemiesInWave, amountOfEnemiesSpawned);
 			StopSpawning();
 			return NULL;
 		}
@@ -122,7 +127,7 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NO Valid Index In waveAndEnemyQueue"));
+		UE_LOG(LogTemp, Error, TEXT("No enemies spawning in %s for wave %d"), *this->GetName(), currentWaveBeingSpawned);
 		StopSpawning();
 		return NULL;
 	}

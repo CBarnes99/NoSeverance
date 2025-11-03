@@ -69,4 +69,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	bool IsEnemyCollisionOverlap();
 
+	//Gets the amount of enemies in wave to check if all enemies have been spawned, mainly for debugging
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	int amountOfEnemiesInWave;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	int amountOfEnemiesSpawned;
+
 };

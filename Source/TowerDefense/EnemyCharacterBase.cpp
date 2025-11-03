@@ -44,11 +44,7 @@ void AEnemyCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 float AEnemyCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	/*
-	UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f"), DamageAmount);
-	UE_LOG(LogTemp, Warning, TEXT("EventInstigator = %s"), *EventInstigator->GetName())
-	UE_LOG(LogTemp, Warning, TEXT("DamageCauser = %s"), *DamageCauser->GetName());
-	*/
+	
 	healthComponent->RecieveDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	if (healthComponent->GetHealth() <= 0)
@@ -60,14 +56,12 @@ float AEnemyCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& Da
 
 void AEnemyCharacterBase::OnDeath()
 {
-	/*
-	play death animation (ragdoll?)
-	tell spawner manager that it has died
-	spawner manager - 1 to enemy count
-	if 0 end round and can start the next	
-	*/
-
 	OnEnemyDeathEvent.Broadcast(this);
 
 	Destroy();
+	/*
+	UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f"), DamageAmount);
+	UE_LOG(LogTemp, Warning, TEXT("EventInstigator = %s"), *EventInstigator->GetName())
+	UE_LOG(LogTemp, Warning, TEXT("DamageCauser = %s"), *DamageCauser->GetName());
+	*/
 }

@@ -126,10 +126,4 @@ void ACombatPlayerController::CallGameModeToStartSpawningEnemies()
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, TEXT("ENTER PRESSED"));
 
 	StartWaveEvent.Broadcast();
-
-	/*AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
-
-	ACombatGameMode* MyGameMode = Cast<ACombatGameMode>(GameModeBase);
-
-	MyGameMode->StartEnemyWave();*/
 };
