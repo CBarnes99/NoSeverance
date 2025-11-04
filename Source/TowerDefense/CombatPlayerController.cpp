@@ -49,6 +49,8 @@ void ACombatPlayerController::SetupInputComponent()
 
 		Input->BindAction(attackActionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::AttackAction);
 
+		Input->BindAction(scrollWheelSelectionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::ScrollWheelSelectionAction);
+
 	}
 }
 
@@ -80,6 +82,14 @@ void ACombatPlayerController::MouseLookAction(const FInputActionValue& Value)
 
 	myPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
 	myPlayerCharacter->AddControllerYawInput(LookAxisVector.X);
+
+	if (myPlayerCharacter->hotbarSelectionIndex > 1)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("In Mouse Movement for HotbarSelection"));
+		myPlayerCharacter->UpdateTurretPlacement();
+
+	}
+
 }
 
 void ACombatPlayerController::RunningAction()
@@ -120,10 +130,28 @@ void ACombatPlayerController::AttackAction()
 	);	
 }
 
-
 void ACombatPlayerController::CallGameModeToStartSpawningEnemies()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, TEXT("ENTER PRESSED"));
 
 	StartWaveEvent.Broadcast();
+};
+
+void ACombatPlayerController::ScrollWheelSelectionAction(const FInputActionValue& Value)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *Value.ToString());
+
+	if (Value.Get<float>() > 0)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Scroll Up %s"), *Value.ToString());
+		myPlayerCharacter->hotbarSelectionIndex = FMath::Clamp(myPlayerCharacter->hotbarSelectionIndex + 1, 1, 2);
+	}
+	else
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Scroll Down %s"), *Value.ToString());
+		myPlayerCharacter->hotbarSelectionIndex = FMath::Clamp(myPlayerCharacter->hotbarSelectionIndex - 1, 1, 2);
+
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Hotbar Index is %d"), myPlayerCharacter->hotbarSelectionIndex);
+
 };

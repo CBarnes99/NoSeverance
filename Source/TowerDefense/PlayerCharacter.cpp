@@ -3,9 +3,11 @@
 #include "PlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h" 
+
+#include "Kismet/GameplayStatics.h"
+
 #include "UObject/ConstructorHelpers.h"
 
-// Sets default values
 APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -24,6 +26,20 @@ APlayerCharacter::APlayerCharacter()
 	}
 	weaponSocket = "weapon_righthand";
 
+	static ConstructorHelpers::FClassFinder<AActor> turretBP(TEXT("/Game/Turrets/BP_TurretStatic"));
+	if (turretBP.Class)
+	{
+		turretClass = turretBP.Class;
+		UE_LOG(LogTemp, Display, TEXT("Turret BP found in player character"));
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Turret BP not found in player character"));
+	}
+
+
+
 
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f ));
@@ -41,6 +57,7 @@ APlayerCharacter::APlayerCharacter()
 
 	healthComponent = CreateDefaultSubobject<UAC_Health>(TEXT("Health Component"));
 	manaComponent = CreateDefaultSubobject<UAC_Mana >(TEXT("Mana Component"));
+	lineTraceComponent = CreateDefaultSubobject<UAC_LineTrace>(TEXT("Line Trace Component"));
 
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
@@ -49,7 +66,6 @@ APlayerCharacter::APlayerCharacter()
 
 }
 
-// Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -61,15 +77,43 @@ void APlayerCharacter::BeginPlay()
 	runSpeed = DA_playerInfo->runSpeed;
 	jumpHeight = DA_playerInfo->jumpHeight;
 
+	hotbarSelectionIndex = 1;
+
 	GetCharacterMovement()->MaxWalkSpeed = movementSpeed;
 	GetCharacterMovement()->JumpZVelocity = jumpHeight;
 	UE_LOG(LogTemp, Warning, TEXT("Name: %s, Health: %f, Mana: %f, Movement Speed: %f, Run Speed: %f, Jump Height: %f"),
 		*name, healthComponent->GetHealth(), manaComponent->GetMana(), movementSpeed, runSpeed, jumpHeight);
 	
 	EquipWeapon();
+
+	//Temporary until I have a database of turrets to pull from
+	previewTurretActor = nullptr;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), turretClass, turretsToIgnore);
+
+	FString TurretListString;
+	for (auto* Turret : turretsToIgnore)
+	{
+		if (Turret)
+		{
+			TurretListString += Turret->GetName() + TEXT(", ");
+		}
+	}
+	if (TurretListString.Len() > 2)
+	{
+		TurretListString.LeftChopInline(2); // Remove trailing ", "
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("turrets to ignore = %s"), *TurretListString);
+
+
+
+	//lineTraceComponent->SetIgnoredActor(previewTurretActor);
+	//Temporary until I have a database of turrets to pull from
+
 }
 
-// Called every frames
+
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -146,4 +190,25 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 		//Do Death function here
 	}
 	return DamageAmount;
+}
+
+void APlayerCharacter::UpdateTurretPlacement()
+{
+
+	if (!lineTraceComponent->HasImpactPoint(GetCameraLocation(), GetCameraForwardVector(), 2000.f)) return;
+
+
+	FVector placeTurretPos = lineTraceComponent->GetTraceTargetLocation(GetCameraLocation(), GetCameraForwardVector(), 2000.f);
+
+
+	if (!previewTurretActor && turretClass)
+	{
+		previewTurretActor = GetWorld()->SpawnActor<ATurretStatic>(turretClass, placeTurretPos, FRotator::ZeroRotator);
+	}
+	else if (previewTurretActor)
+	{
+		lineTraceComponent->SetIgnoredActor(previewTurretActor);
+		previewTurretActor->SetActorLocation(placeTurretPos);
+	}
+
 }

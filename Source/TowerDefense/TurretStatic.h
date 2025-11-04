@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DA_TurretStats.h"
+#include "AC_PreviewMesh.h"
 #include "TurretStatic.generated.h"
 
 UCLASS()
@@ -34,6 +35,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
 	UDA_TurretStats* turretStats;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
+	UAC_PreviewMesh* previewMeshComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
 	float damageAmount;

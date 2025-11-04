@@ -8,6 +8,13 @@
 #include "WeaponBase.h"
 #include "AC_Health.h"
 #include "AC_Mana.h"
+#include "AC_LineTrace.h"
+
+//Temporary until I have a database of turrets to pull from
+#include "TurretStatic.h"
+//Temporary until I have a database of turrets to pull from
+
+
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -47,6 +54,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetCameraLocation();
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Turret")
+	int hotbarSelectionIndex;
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateTurretPlacement();
+
+	//Temporary until I have a database of turrets to pull from
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	TSubclassOf<ATurretStatic> turretClass;
+
+	UPROPERTY()
+	ATurretStatic* previewTurretActor;
+
+	UPROPERTY()
+	TArray<AActor*> turretsToIgnore;
+	//Temporary until I have a database of turrets to pull from
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -63,6 +88,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	class UAC_Mana* manaComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UAC_LineTrace* lineTraceComponent;
 
 	//This is the socket name on the skeleton, if the socket name changes, can be edited in the editor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

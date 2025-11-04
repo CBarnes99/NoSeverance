@@ -58,6 +58,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* attackActionInput;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* scrollWheelSelectionInput;
+
+
 
 
 	//Input Actions Functions
@@ -84,4 +88,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void AttackAction();
+
+	UFUNCTION(BlueprintCallable)
+	void ScrollWheelSelectionAction(const FInputActionValue& Value);
 };

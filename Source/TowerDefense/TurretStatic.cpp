@@ -27,6 +27,8 @@ ATurretStatic::ATurretStatic()
 
     collisionBox->SetupAttachment(turretMesh);
     arrowComponent->SetupAttachment(turretMesh);
+
+	previewMeshComponent = CreateDefaultSubobject<UAC_PreviewMesh>(TEXT("Preview Mesh Component"));
 }
 
 // Called when the game starts or when spawned
