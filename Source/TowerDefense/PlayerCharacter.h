@@ -60,6 +60,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateTurretPlacement();
 
+	UFUNCTION(BlueprintCallable)
+	void DestroyTurretPlacement();
+
+	UFUNCTION(BlueprintCallable)
+	void PlaceTurret();
+
 	//Temporary until I have a database of turrets to pull from
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
 	TSubclassOf<ATurretStatic> turretClass;

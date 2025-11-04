@@ -51,6 +51,8 @@ void ACombatPlayerController::SetupInputComponent()
 
 		Input->BindAction(scrollWheelSelectionInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::ScrollWheelSelectionAction);
 
+		Input->BindAction(confirmTurretPlacementInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::ConfirmTurretPlacementAction);
+
 	}
 }
 
@@ -88,6 +90,13 @@ void ACombatPlayerController::MouseLookAction(const FInputActionValue& Value)
 		//UE_LOG(LogTemp, Warning, TEXT("In Mouse Movement for HotbarSelection"));
 		myPlayerCharacter->UpdateTurretPlacement();
 
+	}
+	else
+	{
+		if (myPlayerCharacter->previewTurretActor)
+		{
+			myPlayerCharacter->DestroyTurretPlacement();
+		}
 	}
 
 }
@@ -153,5 +162,13 @@ void ACombatPlayerController::ScrollWheelSelectionAction(const FInputActionValue
 
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Hotbar Index is %d"), myPlayerCharacter->hotbarSelectionIndex);
+
+}
+void ACombatPlayerController::ConfirmTurretPlacementAction()
+{
+	if (myPlayerCharacter->hotbarSelectionIndex > 1)
+	{
+		myPlayerCharacter->PlaceTurret();
+	}
 
 };

@@ -92,3 +92,15 @@ void ATurretStatic::Tick(float DeltaTime)
 
 }
 
+void ATurretStatic::SetMaterial(bool isPreview)
+{
+	if (isPreview)
+	{
+		turretMesh->SetMaterial(0, previewMeshComponent->outlineMaterial);
+	}
+	else
+	{
+		turretMesh->SetMaterial(0, previewMeshComponent->normalMaterial);
+	}
+}
+

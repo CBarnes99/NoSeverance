@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* scrollWheelSelectionInput;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* confirmTurretPlacementInput;
+
 
 
 
@@ -91,4 +94,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void ScrollWheelSelectionAction(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void ConfirmTurretPlacementAction();
 };

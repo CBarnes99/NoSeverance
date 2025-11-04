@@ -204,11 +204,31 @@ void APlayerCharacter::UpdateTurretPlacement()
 	if (!previewTurretActor && turretClass)
 	{
 		previewTurretActor = GetWorld()->SpawnActor<ATurretStatic>(turretClass, placeTurretPos, FRotator::ZeroRotator);
+		previewTurretActor->SetMaterial(true);
+		//Set preview material here
 	}
 	else if (previewTurretActor)
 	{
 		lineTraceComponent->SetIgnoredActor(previewTurretActor);
 		previewTurretActor->SetActorLocation(placeTurretPos);
 	}
+}
+
+void APlayerCharacter::DestroyTurretPlacement()
+{
+	hotbarSelectionIndex = 1;
+	previewTurretActor->Destroy();
+	previewTurretActor = nullptr;
+}
+
+void APlayerCharacter::PlaceTurret()
+{
+	DestroyTurretPlacement();
+	FVector placeTurretPos = lineTraceComponent->GetTraceTargetLocation(GetCameraLocation(), GetCameraForwardVector(), 2000.f);
+	ATurretStatic* spawnedTurret = GetWorld()->SpawnActor<ATurretStatic>(turretClass, placeTurretPos, FRotator::ZeroRotator);
+	lineTraceComponent->SetIgnoredActor(spawnedTurret);
+	spawnedTurret->SetActorLocation(placeTurretPos);
+	spawnedTurret->SetMaterial(false);
+
 
 }
