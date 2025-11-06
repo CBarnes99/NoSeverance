@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
+#include "Engine/DataTable.h"
+#include "TurretStatic.h"
 #include "F_TurretObjectPath.generated.h"
 
 USTRUCT(BlueprintType)
@@ -12,9 +13,12 @@ struct TOWERDEFENSE_API F_TurretObjectPath : public FTableRowBase
 public:
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	FString nameOfTurret;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	//FString nameOfTurret;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	FString turretObjectFilePath;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	//FString turretObjectFilePath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftClassPtr<ATurretStatic> turretClass;
 };

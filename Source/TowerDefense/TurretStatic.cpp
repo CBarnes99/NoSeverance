@@ -15,8 +15,7 @@ ATurretStatic::ATurretStatic()
 	PrimaryActorTick.bCanEverTick = true;
 
 	turretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret Mesh"));
-	//RootComponent = turretMesh;
-	turretMesh->SetupAttachment(RootComponent);
+	RootComponent = turretMesh;
 
 	collisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
 	collisionBox->SetCollisionProfileName(TEXT("Trigger"));

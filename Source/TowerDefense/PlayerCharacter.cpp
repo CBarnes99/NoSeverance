@@ -27,7 +27,7 @@ APlayerCharacter::APlayerCharacter()
 	weaponSocket = "weapon_righthand";
 
 	//Change this to a data table, possibly remove it entirely
-	/*static ConstructorHelpers::FClassFinder<AActor> turretBP(TEXT("/Game/Turrets/MyTurretStatic"));
+	static ConstructorHelpers::FClassFinder<AActor> turretBP(TEXT("/Game/Turrets/MyTurretStatic"));
 	if (turretBP.Class)
 	{
 		turretClass = turretBP.Class;
@@ -37,21 +37,7 @@ APlayerCharacter::APlayerCharacter()
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Turret BP not found in player character"));
-	}*/
-
-	static ConstructorHelpers::FClassFinder<UDataTable> turretDataTable(TEXT("/Game/Data/DataTables/DT_TurretObjectPath"));
-	if (turretDataTable.Class)
-	{
-		turretDataTableClass = turretDataTable.Class;
-		UE_LOG(LogTemp, Display, TEXT("turretDataTable BP found in player character"));
-
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("turretDataTable BP not found in player character"));
-	}
-
-
 
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f ));
@@ -101,22 +87,22 @@ void APlayerCharacter::BeginPlay()
 	//Temporary until I have a database of turrets to pull from
 	previewTurretActor = nullptr;
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), turretClass, turretsToIgnore);
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), turretClass, turretsToIgnore);
 
-	FString TurretListString;
-	for (auto* Turret : turretsToIgnore)
-	{
-		if (Turret)
-		{
-			TurretListString += Turret->GetName() + TEXT(", ");
-		}
-	}
-	if (TurretListString.Len() > 2)
-	{
-		TurretListString.LeftChopInline(2); // Remove trailing ", "
-	}
+	//FString TurretListString;
+	//for (auto* Turret : turretsToIgnore)
+	//{
+	//	if (Turret)
+	//	{
+	//		TurretListString += Turret->GetName() + TEXT(", ");
+	//	}
+	//}
+	//if (TurretListString.Len() > 2)
+	//{
+	//	TurretListString.LeftChopInline(2); // Remove trailing ", "
+	//}
 
-	UE_LOG(LogTemp, Warning, TEXT("turrets to ignore = %s"), *TurretListString);
+	//UE_LOG(LogTemp, Warning, TEXT("turrets to ignore = %s"), *TurretListString);
 
 
 

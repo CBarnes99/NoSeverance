@@ -78,7 +78,7 @@ public:
 	//Temporary until I have a database of turrets to pull from
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret")
-	class TSubclassOf<FDataTable> turretDataTableClass;
+	class UDataTable* turretDataTableClass;
 
 protected:
 	// Called when the game starts or when spawned
