@@ -64,7 +64,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* confirmTurretPlacementInput;
 
-
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* rotateTurretRightInput; 
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* rotateTurretLeftInput;
 
 
 	//Input Actions Functions
@@ -97,4 +101,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void ConfirmTurretPlacementAction();
+
+	UFUNCTION(BlueprintCallable)
+	void RotateTurret(const FInputActionValue& Value);
 };

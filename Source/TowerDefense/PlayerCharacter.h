@@ -66,6 +66,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PlaceTurret();
 
+	UFUNCTION(BlueprintCallable)
+	void RotateTurret(float dir);
+
 	//Temporary until I have a database of turrets to pull from
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
 	TSubclassOf<ATurretStatic> turretClass;
@@ -127,5 +130,4 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-
 };

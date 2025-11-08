@@ -203,7 +203,8 @@ void APlayerCharacter::UpdateTurretPlacement()
 	{
 		previewTurretActor = GetWorld()->SpawnActor<ATurretStatic>(turretClass, placeTurretPos, FRotator::ZeroRotator);
 		previewTurretActor->SetMaterial(true);
-		//Set preview material here
+		previewTurretActor->SetActorEnableCollision(false);
+		previewTurretActor->SetActorTickEnabled(false);
 	}
 	else if (previewTurretActor)
 	{
@@ -227,4 +228,19 @@ void APlayerCharacter::PlaceTurret()
 	
 	ATurretStatic* spawnedTurret = GetWorld()->SpawnActor<ATurretStatic>(turretClass, spawnLoc, spawnRot);
 	spawnedTurret->SetMaterial(false);
+}
+
+void APlayerCharacter::RotateTurret(float dir)
+{
+	if (!previewTurretActor) return;	
+
+	FRotator rotation = previewTurretActor->GetActorRotation();
+	UE_LOG(LogTemp, Warning, TEXT("Current Rotation is = %s"), *rotation.ToString());
+
+	rotation.Yaw += (45.f * dir);
+	UE_LOG(LogTemp, Warning, TEXT("New Rotation is is = %s"), *rotation.ToString());
+
+	previewTurretActor->SetActorRotation(rotation);
+
+
 }

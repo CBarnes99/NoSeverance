@@ -53,6 +53,9 @@ void ACombatPlayerController::SetupInputComponent()
 
 		Input->BindAction(confirmTurretPlacementInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::ConfirmTurretPlacementAction);
 
+		Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RotateTurret);
+		Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RotateTurret);
+
 	}
 }
 
@@ -171,4 +174,24 @@ void ACombatPlayerController::ConfirmTurretPlacementAction()
 		myPlayerCharacter->PlaceTurret();
 	}
 
-};
+}
+void ACombatPlayerController::RotateTurret(const FInputActionValue& Value)
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
+	myPlayerCharacter->RotateTurret(Value.Get<float>());
+
+	//if (Value.Get<float>() > 0)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
+	//	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Yes"));
+	//	myPlayerCharacter->RotateTurret(Value.Get<float>());
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
+	//	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("No"));
+	//	myPlayerCharacter->RotateTurret(Value.Get<float>());
+	//}
+}
+;
