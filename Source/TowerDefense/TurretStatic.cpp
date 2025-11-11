@@ -70,7 +70,7 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 
 		if (GetLocalRole() == ROLE_Authority)
 		{
-			UE_LOG(LogTemp, Error, TEXT("%s Overlaps %s"), *OtherActor->GetName(), *this->GetName());
+			UE_LOG(LogTemp, Display, TEXT("%s Overlaps %s"), *OtherActor->GetName(), *this->GetName());
 
 			UGameplayStatics::ApplyDamage(OtherActor, damageAmount, GetInstigatorController(), this, UDamageType::StaticClass());
 			damagedActors.Add(OtherActor);
@@ -80,7 +80,7 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 
 void ATurretStatic::disableTurret()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s is disabled"), *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("%s is disabled"), *this->GetName());
 	collisionBox->SetGenerateOverlapEvents(false);
 	turretRecharging = true;
 	damagedActors.Empty();
@@ -89,7 +89,7 @@ void ATurretStatic::disableTurret()
 
 void ATurretStatic::enableTurret()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s is enabled"), *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("%s is enabled"), *this->GetName());
 	collisionBox->SetGenerateOverlapEvents(true);
 	turretRecharging = false;
 	turretActive = true;

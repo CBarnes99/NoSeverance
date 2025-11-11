@@ -42,38 +42,52 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void UpdateHotbarSelection();
 
-	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
-	UPROPERTY(EditAnywhere, Category = "Input")
-	class UInputMappingContext* defualtMappingContext;
+	UFUNCTION(BlueprintCallable)
+	void UseCombatMappingContext(bool confirm);
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UFUNCTION(BlueprintCallable)
+	void HaveMappingContextsBeenAsigned();
+
+	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
+	class UInputMappingContext* defaultMappingContext;
+
+	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
+	UPROPERTY(EditAnywhere, Category = "Input_Combat")
+	class UInputMappingContext* combatMappingContext;
+
+	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
+	UPROPERTY(EditAnywhere, Category = "Input_Turret")
+	class UInputMappingContext* turretMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* moveActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* lookActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* jumpActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* runActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* startEnemyWaveActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Combat")
 	class UInputAction* attackActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* scrollWheelSelectionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	class UInputAction* confirmTurretPlacementInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	class UInputAction* rotateTurretRightInput; 
 	
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	class UInputAction* rotateTurretLeftInput;
 
 

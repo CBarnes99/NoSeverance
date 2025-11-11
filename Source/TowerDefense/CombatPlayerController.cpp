@@ -15,15 +15,15 @@ void ACombatPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	HaveMappingContextsBeenAsigned();
+
 	//Set defualt mapping context
-	if (ULocalPlayer* LocalPlayer = GetLocalPlayer())
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+		if (defaultMappingContext)
 		{
-			if (defualtMappingContext)
-			{
-				Subsystem->AddMappingContext(defualtMappingContext, 0);
-			}
+			Subsystem->AddMappingContext(defaultMappingContext, 0);
+			Subsystem->AddMappingContext(combatMappingContext, 1);
 		}
 	}
 
@@ -182,10 +182,13 @@ void ACombatPlayerController::UpdateHotbarSelection()
 {
 	if (myPlayerCharacter->hotbarSelectionIndex > 1)
 	{
+		UseCombatMappingContext(false);
 		myPlayerCharacter->UpdateTurretPlacement();
 	}
 	else
 	{
+		UseCombatMappingContext(true);
+
 		if (!myPlayerCharacter->turretManager)
 		{
 			myPlayerCharacter->SetTurretManager();
@@ -195,6 +198,39 @@ void ACombatPlayerController::UpdateHotbarSelection()
 		{
 			myPlayerCharacter->turretManager->NoLongerPlacingTurrets();
 		}
+	}
+}
+void ACombatPlayerController::UseCombatMappingContext(bool confirm)
+{
+	UEnhancedInputLocalPlayerSubsystem* inputSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	if (confirm)
+	{
+		if (!inputSubsystem->HasMappingContext(combatMappingContext) && inputSubsystem->HasMappingContext(turretMappingContext))
+		{
+			inputSubsystem->RemoveMappingContext(turretMappingContext);
+			inputSubsystem->AddMappingContext(combatMappingContext, 1);
+			return;
+		}
+	}
+	else if (!inputSubsystem->HasMappingContext(turretMappingContext) && inputSubsystem->HasMappingContext(combatMappingContext))
+	{
+		inputSubsystem->RemoveMappingContext(combatMappingContext);
+		inputSubsystem->AddMappingContext(turretMappingContext, 1);
+		return;
+	}
+}
+void ACombatPlayerController::HaveMappingContextsBeenAsigned()
+{
+	if (!defaultMappingContext)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NO DEFUALT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+	}
+	if (!combatMappingContext)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NO COMBAT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+	}if (!turretMappingContext)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NO TURRET MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 }
 ;
