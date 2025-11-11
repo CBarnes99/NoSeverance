@@ -18,9 +18,6 @@ public:
 	// Sets default values for this actor's properties
 	AProjectileBase();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void FireInDirection(const FVector& shootDir);
 
@@ -29,6 +26,19 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void SetProjectileSpeed(float speed);
+
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	bool IsProjectileActive();
+
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	void ActivateProjectile();
+
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	void DeactivateProjectile();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UProjectileMovementComponent* projectileMovementComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,23 +50,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USphereComponent* collisionComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UProjectileMovementComponent* projectileMovementComponent;
+
 
 	FTimerHandle lifeTimeTimerHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float lifeTime;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isActive;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float damageDelt;
 
 	UFUNCTION(BlueprintCallable)
-	void destoryProjectileActor();
-
-	UFUNCTION(BlueprintCallable)
 	void OnHit(UPrimitiveComponent* hitComp, AActor* otherActor, UPrimitiveComponent* otherComp, FVector normalImpulse, const FHitResult& hit);
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AEnemyCharacterBase> targetClassToDestroy;
 };

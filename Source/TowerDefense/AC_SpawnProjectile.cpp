@@ -1,38 +1,37 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "AC_SpawnProjectile.h"
 #include "DrawDebugHelpers.h"
 
-// Sets default values for this component's properties
 UAC_SpawnProjectile::UAC_SpawnProjectile()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	poolSize = 50;
 }
 
-
-// Called when the game starts
 void UAC_SpawnProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 	
+	if (!projectile)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Projectile Class Within - %s"), *this->GetOwner()->GetName());
+	}
+
+	for (int i = 0; i < poolSize; i++)
+	{
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = GetOwner();
+		spawnParams.Instigator = GetOwner()->GetInstigator();
+		AProjectileBase* pooledProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+		FString lable = FString::Printf(TEXT("%s - %d"), *projectile->GetName(), i);
+		pooledProjectile->SetActorLabel(lable);
+		projectilePool.Add(pooledProjectile);
+
+		//UE_LOG(LogTemp, Error, TEXT("%s owner = %s"), *this->GetName(), *this->GetOwner()->GetName());
+	}
 }
 
-// Called every frame
-void UAC_SpawnProjectile::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
-void UAC_SpawnProjectile::SpawnProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed)
+void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed)
 {
 	if (!projectile)
 	{
@@ -46,23 +45,42 @@ void UAC_SpawnProjectile::SpawnProjectile(FVector traceStartLocation, FVector we
 
 	FRotator spawnRotation = shootDirection.Rotation();
 
-	FVector spawnLocation = weaponMuzzleLocation + shootDirection * 10.0f;
+	FVector spawnLocation = weaponMuzzleLocation + shootDirection * 30.0f;
 
-	FActorSpawnParameters spawnParams;
+	/*FActorSpawnParameters spawnParams;
 	spawnParams.Owner = GetOwner();
 	spawnParams.Instigator = GetOwner()->GetInstigator();
 
-	AProjectileBase* spawnedProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, spawnLocation, spawnRotation, spawnParams);
-	spawnedProjectile->SetDamage(damageDelt);
-	spawnedProjectile->SetProjectileSpeed(projectileSpeed);
-	spawnedProjectile->FireInDirection(shootDirection);
+	AProjectileBase* currentProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, spawnLocation, spawnRotation, spawnParams);*/
+
+	AProjectileBase* currentProjectile = GetInactiveProjectile();
+
+	currentProjectile->SetActorLocation(spawnLocation);
+	currentProjectile->SetActorRotation(spawnRotation);
+	currentProjectile->SetDamage(damageDelt);
+	currentProjectile->SetProjectileSpeed(projectileSpeed);
+
+	currentProjectile->ActivateProjectile();
+	currentProjectile->FireInDirection(shootDirection);
+
+	DrawDebugSphere(GetWorld(), targetLocation, 15.f, 12, FColor::Green, false, 2.f);
+}
+
+AProjectileBase* UAC_SpawnProjectile::GetInactiveProjectile()
+{
+	for (AProjectileBase* p : projectilePool)
+	{
+		if (!p->IsProjectileActive()) return p;
+	}
+	UE_LOG(LogTemp, Error, TEXT("No Inactive Projectiles Within %s. Create A Larger Pool Size"), *this->GetOwner()->GetName());
+	return nullptr;
 }
 
 FVector UAC_SpawnProjectile::GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector)
 {
 	FVector targetPos = FVector::ZeroVector;
 	FHitResult hit;
-	FVector traceEnd = traceStartLocation + actorForwardVector * 100000.f;
+	FVector traceEnd = traceStartLocation + actorForwardVector * 5000.f;
 
 	GetWorld()->LineTraceSingleByChannel(hit, traceStartLocation, traceEnd, ECC_Pawn);
 

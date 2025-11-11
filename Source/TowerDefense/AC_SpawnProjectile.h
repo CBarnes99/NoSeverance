@@ -14,11 +14,7 @@ class TOWERDEFENSE_API UAC_SpawnProjectile : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UAC_SpawnProjectile();
-
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	/**
 	* @brief Spawns a projectile, and sends it towards a target location
@@ -29,8 +25,7 @@ public:
 	* @param projectileSpeed A Float of the speed you want the projectile to travel.
 	*/
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed);
-
+	void FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -39,11 +34,19 @@ protected:
 	class TSubclassOf<AProjectileBase> projectile;
 
 	UFUNCTION(BlueprintCallable)
+	AProjectileBase* GetInactiveProjectile();
+
+	UFUNCTION(BlueprintCallable)
 	FVector GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector);
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TArray<AProjectileBase*> traceIgnoreActors;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Spawning")
+	TArray<AProjectileBase*> projectilePool;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawning")
+	int poolSize;
 };
 
 

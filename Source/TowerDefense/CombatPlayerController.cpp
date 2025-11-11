@@ -127,7 +127,7 @@ void ACombatPlayerController::AttackAction()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Left Mouse Click"));
 
-	myPlayerCharacter->equippedWeapon->spawnProjectileComponent->SpawnProjectile
+	myPlayerCharacter->equippedWeapon->spawnProjectileComponent->FireProjectile
 	(
 		myPlayerCharacter->GetCameraLocation(),
 		myPlayerCharacter->equippedWeapon->GetWeaponMuzzleLocation(),

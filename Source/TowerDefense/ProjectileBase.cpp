@@ -1,15 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ProjectileBase.h"
 #include <Kismet/GameplayStatics.h>
 
 // Sets default values
 AProjectileBase::AProjectileBase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 
 	collisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collision"));
 	collisionComponent->InitSphereRadius(20.f);
@@ -30,26 +25,17 @@ AProjectileBase::AProjectileBase()
 	projectileMesh->SetupAttachment(RootComponent.Get());
 	projectileMesh->SetSimulatePhysics(false);
 
+	isActive = false;
 
 	lifeTime = 5.f;
 
 }
 
-// Called when the game starts or when spawned
 void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();	
 
-	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::destoryProjectileActor, lifeTime, false);
-	//UE_LOG(LogTemp, Warning, TEXT("In Projectile Base!! Owner = %s, Instigator - %s"), *GetOwner()->GetName(), *GetInstigator()->GetName());
-
-}
-
-// Called every frame
-void AProjectileBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	DeactivateProjectile();
 }
 
 //These two fucntions are called when the weapon class spawns the projectile and sets the damage and speed values from the weapon data asset
@@ -57,7 +43,6 @@ void AProjectileBase::SetDamage(float damageAmount)
 {
 	damageDelt = damageAmount;
 	//UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f"), damageDelt);
-
 }
 
 void AProjectileBase::SetProjectileSpeed(float speed)
@@ -66,10 +51,36 @@ void AProjectileBase::SetProjectileSpeed(float speed)
 	projectileMovementComponent->MaxSpeed = speed;
 }
 
-void AProjectileBase::destoryProjectileActor()
+bool AProjectileBase::IsProjectileActive()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s is destroyed"), *this->GetName());
-	AProjectileBase::Destroy();
+	return isActive;
+}
+
+void AProjectileBase::ActivateProjectile()
+{
+	isActive = true;
+	SetActorEnableCollision(true);
+	SetActorHiddenInGame(false);
+	SetActorTickEnabled(true);
+	collisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
+	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::DeactivateProjectile, lifeTime, false);
+
+	//UE_LOG(LogTemp, Display, TEXT("Using - %s"), *this->GetName());
+}
+
+void AProjectileBase::DeactivateProjectile()
+{
+	SetProjectileSpeed(0.f);
+	projectileMovementComponent->StopMovementImmediately();
+	isActive = false;
+	SetActorEnableCollision(false);
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+
+	if (GetWorld()->GetTimerManager().IsTimerActive(lifeTimeTimerHandle))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(lifeTimeTimerHandle);
+	}
 }
 
 void AProjectileBase::FireInDirection(const FVector& shootDir)
@@ -88,5 +99,5 @@ void AProjectileBase::OnHit(UPrimitiveComponent* hitComponent, AActor* OtherActo
 	UE_LOG(LogTemp, Display, TEXT("OtherActor that projectile is colliding with is %s"), *OtherActor->GetName())
 	UGameplayStatics::ApplyDamage(OtherActor, damageDelt, GetInstigator()->GetController(), this, NULL /*CHANGE THIS TO A DAMAGE TYPE LATER ON*/);
 
-	destoryProjectileActor();
+	DeactivateProjectile();
 }

@@ -19,9 +19,6 @@ public:
 	// Sets default values for this actor's properties
 	AWeaponBase();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 	UAC_SpawnProjectile* spawnProjectileComponent;
 
