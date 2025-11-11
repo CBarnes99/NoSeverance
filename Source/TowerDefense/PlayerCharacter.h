@@ -9,6 +9,7 @@
 #include "AC_Health.h"
 #include "AC_Mana.h"
 #include "AC_LineTrace.h"
+#include "TurretManager.h"
 
 //Temporary until I have a database of turrets to pull from
 #include "TurretStatic.h"
@@ -69,19 +70,26 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RotateTurret(float dir);
 
-	//Temporary until I have a database of turrets to pull from
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
-	TSubclassOf<ATurretStatic> turretClass;
+	UFUNCTION(BlueprintCallable)
+	void SetTurretManager();
 
-	UPROPERTY()
-	ATurretStatic* previewTurretActor;
 
-	UPROPERTY()
-	TArray<AActor*> turretsToIgnore;
+	////Temporary until I have a database of turrets to pull from
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	//TSubclassOf<ATurretStatic> turretClass;
+
+	//UPROPERTY()
+	//ATurretStatic* previewTurretActor;
+
+	//UPROPERTY()
+	//TArray<AActor*> turretsToIgnore;
 	//Temporary until I have a database of turrets to pull from
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret")
 	class UDataTable* turretDataTableClass;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	class ATurretManager* turretManager;
 
 protected:
 	// Called when the game starts or when spawned

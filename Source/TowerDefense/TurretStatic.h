@@ -21,7 +21,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SetMaterial(bool isPreview);
+	void SetPreviewMaterial(bool isPreview);
 
 	UFUNCTION(BlueprintCallable)
 	void pooledTurretDisable();

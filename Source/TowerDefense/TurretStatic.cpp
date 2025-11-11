@@ -34,7 +34,6 @@ ATurretStatic::ATurretStatic()
     collisionBox->SetupAttachment(turretMesh);
 	collisionMesh->SetupAttachment(collisionBox);
     arrowComponent->SetupAttachment(turretMesh);
-
 	previewMeshComponent = CreateDefaultSubobject<UAC_PreviewMesh>(TEXT("Preview Mesh Component"));
 }
 
@@ -103,7 +102,7 @@ void ATurretStatic::Tick(float DeltaTime)
 
 }
 
-void ATurretStatic::SetMaterial(bool isPreview)
+void ATurretStatic::SetPreviewMaterial(bool isPreview)
 {
 	if (isPreview)
 	{

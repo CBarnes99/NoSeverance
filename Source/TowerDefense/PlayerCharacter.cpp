@@ -26,18 +26,18 @@ APlayerCharacter::APlayerCharacter()
 	}
 	weaponSocket = "weapon_righthand";
 
-	//Change this to a data table, possibly remove it entirely
-	static ConstructorHelpers::FClassFinder<AActor> turretBP(TEXT("/Game/Turrets/MyTurretStatic"));
-	if (turretBP.Class)
-	{
-		turretClass = turretBP.Class;
-		UE_LOG(LogTemp, Display, TEXT("Turret BP found in player character"));
+	////Change this to a data table, possibly remove it entirely
+	//static ConstructorHelpers::FClassFinder<AActor> turretBP(TEXT("/Game/Turrets/MyTurretStatic"));
+	//if (turretBP.Class)
+	//{
+	//	turretClass = turretBP.Class;
+	//	UE_LOG(LogTemp, Display, TEXT("Turret BP found in player character"));
 
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Turret BP not found in player character"));
-	}
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("Turret BP not found in player character"));
+	//}
 
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f ));
@@ -54,7 +54,7 @@ APlayerCharacter::APlayerCharacter()
 	camera->bUsePawnControlRotation = false;
 
 	healthComponent = CreateDefaultSubobject<UAC_Health>(TEXT("Health Component"));
-	manaComponent = CreateDefaultSubobject<UAC_Mana >(TEXT("Mana Component"));
+	manaComponent = CreateDefaultSubobject<UAC_Mana>(TEXT("Mana Component"));
 	lineTraceComponent = CreateDefaultSubobject<UAC_LineTrace>(TEXT("Line Trace Component"));
 
 	GetCharacterMovement()->AirControl = 0.35f;
@@ -85,30 +85,7 @@ void APlayerCharacter::BeginPlay()
 	EquipWeapon();
 
 	//Temporary until I have a database of turrets to pull from
-	previewTurretActor = nullptr;
-
-	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), turretClass, turretsToIgnore);
-
-	//FString TurretListString;
-	//for (auto* Turret : turretsToIgnore)
-	//{
-	//	if (Turret)
-	//	{
-	//		TurretListString += Turret->GetName() + TEXT(", ");
-	//	}
-	//}
-	//if (TurretListString.Len() > 2)
-	//{
-	//	TurretListString.LeftChopInline(2); // Remove trailing ", "
-	//}
-
-	//UE_LOG(LogTemp, Warning, TEXT("turrets to ignore = %s"), *TurretListString);
-
-
-
-	//lineTraceComponent->SetIgnoredActor(previewTurretActor);
-	//Temporary until I have a database of turrets to pull from
-
+	//previewTurretActor = nullptr;
 }
 
 
@@ -195,14 +172,15 @@ void APlayerCharacter::UpdateTurretPlacement()
 
 	if (!lineTraceComponent->HasImpactPoint(GetCameraLocation(), GetCameraForwardVector(), 2000.f)) return;
 
-
 	FVector placeTurretPos = lineTraceComponent->GetTraceTargetLocation(GetCameraLocation(), GetCameraForwardVector(), 2000.f);
 
+	turretManager->UpdatePreviewTurretLocation(placeTurretPos, hotbarSelectionIndex - 2);
 
-	if (!previewTurretActor && turretClass)
+
+	/*if (!previewTurretActor && turretClass)
 	{
 		previewTurretActor = GetWorld()->SpawnActor<ATurretStatic>(turretClass, placeTurretPos, FRotator::ZeroRotator);
-		previewTurretActor->SetMaterial(true);
+		previewTurretActor->SetPreviewMaterial(true);
 		previewTurretActor->SetActorEnableCollision(false);
 		previewTurretActor->SetActorTickEnabled(false);
 	}
@@ -210,29 +188,39 @@ void APlayerCharacter::UpdateTurretPlacement()
 	{
 		lineTraceComponent->SetIgnoredActor(previewTurretActor);
 		previewTurretActor->SetActorLocation(placeTurretPos);
-	}
+	}*/
 }
 
 void APlayerCharacter::DestroyTurretPlacement()
 {
 	hotbarSelectionIndex = 1;
-	previewTurretActor->Destroy();
-	previewTurretActor = nullptr;
+
+	turretManager->NoLongerPlacingTurrets();
+
+
+	/*previewTurretActor->Destroy();
+	previewTurretActor = nullptr;*/
 }
 
 void APlayerCharacter::PlaceTurret()
 {
-	FVector spawnLoc = previewTurretActor->GetActorLocation();
+	if (!turretManager->GetisPreviewTurretActive()) return;
+
+	turretManager->SpawnTurretByRow(hotbarSelectionIndex - 2);
+	hotbarSelectionIndex = 1;
+	/*FVector spawnLoc = previewTurretActor->GetActorLocation();
 	FRotator spawnRot = previewTurretActor->GetActorRotation();
 	DestroyTurretPlacement();
 	
 	ATurretStatic* spawnedTurret = GetWorld()->SpawnActor<ATurretStatic>(turretClass, spawnLoc, spawnRot);
-	spawnedTurret->SetMaterial(false);
+	spawnedTurret->SetPreviewMaterial(false);*/
 }
 
 void APlayerCharacter::RotateTurret(float dir)
 {
-	if (!previewTurretActor) return;	
+	turretManager->RotatePreviewTurret(dir);
+
+	/*if (!previewTurretActor) return;	
 
 	FRotator rotation = previewTurretActor->GetActorRotation();
 	UE_LOG(LogTemp, Warning, TEXT("Current Rotation is = %s"), *rotation.ToString());
@@ -240,7 +228,23 @@ void APlayerCharacter::RotateTurret(float dir)
 	rotation.Yaw += (45.f * dir);
 	UE_LOG(LogTemp, Warning, TEXT("New Rotation is is = %s"), *rotation.ToString());
 
-	previewTurretActor->SetActorRotation(rotation);
+	previewTurretActor->SetActorRotation(rotation);*/
 
 
+}
+
+void APlayerCharacter::SetTurretManager()
+{
+	AActor* actor = UGameplayStatics::GetActorOfClass(GetWorld(), ATurretManager::StaticClass());
+
+	if (!actor)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Couldn't find turret manager"));
+		return;
+	}
+	turretManager = Cast<ATurretManager>(actor);
+	if (!turretManager)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cast Failed for turret manager in player character!"));
+	}
 }

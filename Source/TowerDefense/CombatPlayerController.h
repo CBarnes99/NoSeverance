@@ -11,9 +11,6 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStartWaveSigniture);
 
-/**
- * 
- */
 UCLASS()
 class TOWERDEFENSE_API ACombatPlayerController : public APlayerController
 {
@@ -35,6 +32,15 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class APlayerCharacter* myPlayerCharacter;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class UDataTable* turretDataTable;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int dataTableSize;
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateHotbarSelection();
 
 	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
 	UPROPERTY(EditAnywhere, Category = "Input")

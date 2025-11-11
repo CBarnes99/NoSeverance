@@ -26,6 +26,17 @@ void ACombatPlayerController::BeginPlay()
 			}
 		}
 	}
+
+	if (!turretDataTable)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Data Table Assigned in Player Controller"));
+	}
+	else
+	{
+		TArray<FName> rowNames = turretDataTable->GetRowNames();
+		dataTableSize = rowNames.Num();
+		UE_LOG(LogTemp, Display, TEXT("Amount Of Turrets In DataTable = %d"), dataTableSize);
+	}
 }
 
 void ACombatPlayerController::SetupInputComponent()
@@ -55,14 +66,12 @@ void ACombatPlayerController::SetupInputComponent()
 
 		Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RotateTurret);
 		Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RotateTurret);
-
 	}
 }
 
 void ACombatPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
 	myPlayerCharacter = Cast<APlayerCharacter>(InPawn);
 }
 
@@ -87,21 +96,7 @@ void ACombatPlayerController::MouseLookAction(const FInputActionValue& Value)
 
 	myPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
 	myPlayerCharacter->AddControllerYawInput(LookAxisVector.X);
-
-	if (myPlayerCharacter->hotbarSelectionIndex > 1)
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("In Mouse Movement for HotbarSelection"));
-		myPlayerCharacter->UpdateTurretPlacement();
-
-	}
-	else
-	{
-		if (myPlayerCharacter->previewTurretActor)
-		{
-			myPlayerCharacter->DestroyTurretPlacement();
-		}
-	}
-
+	UpdateHotbarSelection();
 }
 
 void ACombatPlayerController::RunningAction()
@@ -156,15 +151,16 @@ void ACombatPlayerController::ScrollWheelSelectionAction(const FInputActionValue
 	if (Value.Get<float>() > 0)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Scroll Up %s"), *Value.ToString());
-		myPlayerCharacter->hotbarSelectionIndex = FMath::Clamp(myPlayerCharacter->hotbarSelectionIndex + 1, 1, 2);
+		myPlayerCharacter->hotbarSelectionIndex = FMath::Clamp(myPlayerCharacter->hotbarSelectionIndex + 1, 1, dataTableSize + 1);
 	}
 	else
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Scroll Down %s"), *Value.ToString());
-		myPlayerCharacter->hotbarSelectionIndex = FMath::Clamp(myPlayerCharacter->hotbarSelectionIndex - 1, 1, 2);
+		myPlayerCharacter->hotbarSelectionIndex = FMath::Clamp(myPlayerCharacter->hotbarSelectionIndex - 1, 1, dataTableSize + 1);
 
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Hotbar Index is %d"), myPlayerCharacter->hotbarSelectionIndex);
+	UpdateHotbarSelection();
 
 }
 void ACombatPlayerController::ConfirmTurretPlacementAction()
@@ -180,18 +176,25 @@ void ACombatPlayerController::RotateTurret(const FInputActionValue& Value)
 
 	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
 	myPlayerCharacter->RotateTurret(Value.Get<float>());
+}
 
-	//if (Value.Get<float>() > 0)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
-	//	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Yes"));
-	//	myPlayerCharacter->RotateTurret(Value.Get<float>());
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
-	//	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("No"));
-	//	myPlayerCharacter->RotateTurret(Value.Get<float>());
-	//}
+void ACombatPlayerController::UpdateHotbarSelection()
+{
+	if (myPlayerCharacter->hotbarSelectionIndex > 1)
+	{
+		myPlayerCharacter->UpdateTurretPlacement();
+	}
+	else
+	{
+		if (!myPlayerCharacter->turretManager)
+		{
+			myPlayerCharacter->SetTurretManager();
+		}
+
+		if (myPlayerCharacter->turretManager->GetisPreviewTurretActive())
+		{
+			myPlayerCharacter->turretManager->NoLongerPlacingTurrets();
+		}
+	}
 }
 ;

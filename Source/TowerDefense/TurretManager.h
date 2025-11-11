@@ -18,10 +18,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	ATurretStatic* SpawnTurretByRow(int rowIndex, FVector spawnLoc, FRotator spawnRot);
+	ATurretStatic* SpawnTurretByRow(int rowIndex);
 
-	//UFUNCTION(BlueprintCallable)
-	//void UpdatePreviewTurretLocation(FVector previewTurretPos, int index);
+	UFUNCTION(BlueprintCallable)
+	void UpdatePreviewTurretLocation(FVector placeTurretLoc, int turretIndex);
 
 	UFUNCTION(BlueprintCallable)
 	void DisablePreviewTurret(ATurretStatic* turret);
@@ -29,8 +29,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EnablePreviewTurret(ATurretStatic* turret);
 
-	/*UFUNCTION(BlueprintCallable)
-	void PlaceTurret();*/
+	UFUNCTION(BlueprintCallable)
+	void NoLongerPlacingTurrets();
+
+	UFUNCTION(BlueprintCallable)
+	bool GetisPreviewTurretActive();
+
+	UFUNCTION(BlueprintCallable)
+	void RotatePreviewTurret(float dir);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UDataTable* turretDataTable;
@@ -39,19 +45,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-
-
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TArray<FName> dataTableRowNames;
-
-	//UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	//ATurretStatic* previewTurretActor;
 
 	UFUNCTION(BlueprintCallable)
 	void PoolAllPreivewTurrets();
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TArray<ATurretStatic*> pooledPreviewTurrets;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	int currentPreviewTurretIndex;
+
+	//UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	//int previousPreviewTurretSelection;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	bool isPreviewTurretActive;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TArray<ATurretStatic*> allPlacedTurrets;
