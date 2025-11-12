@@ -39,6 +39,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	FVector GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector);
 
+	UFUNCTION(BlueprintCallable)
+	void InitializePool();
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TArray<AProjectileBase*> traceIgnoreActors;
 

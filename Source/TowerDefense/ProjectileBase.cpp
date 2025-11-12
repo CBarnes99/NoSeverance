@@ -35,9 +35,15 @@ void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();	
 
+	projectileMovementComponent->StopMovementImmediately();
+
 	DeactivateProjectile();
 }
 
+void AProjectileBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
 //These two fucntions are called when the weapon class spawns the projectile and sets the damage and speed values from the weapon data asset
 void AProjectileBase::SetDamage(float damageAmount)
 {
@@ -58,11 +64,18 @@ bool AProjectileBase::IsProjectileActive()
 
 void AProjectileBase::ActivateProjectile()
 {
-	isActive = true;
+	
 	SetActorEnableCollision(true);
 	SetActorHiddenInGame(false);
 	SetActorTickEnabled(true);
 	collisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
+
+	projectileMovementComponent->StopMovementImmediately();
+	projectileMovementComponent->Activate(true);
+
+
+	isActive = true;
+
 	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::DeactivateProjectile, lifeTime, false);
 
 	//UE_LOG(LogTemp, Display, TEXT("Using - %s"), *this->GetName());
@@ -70,9 +83,8 @@ void AProjectileBase::ActivateProjectile()
 
 void AProjectileBase::DeactivateProjectile()
 {
-	SetProjectileSpeed(0.f);
 	projectileMovementComponent->StopMovementImmediately();
-	isActive = false;
+	projectileMovementComponent->Velocity = FVector::ZeroVector;
 	SetActorEnableCollision(false);
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
@@ -81,11 +93,17 @@ void AProjectileBase::DeactivateProjectile()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(lifeTimeTimerHandle);
 	}
+
+	isActive = false;
 }
+
+
 
 void AProjectileBase::FireInDirection(const FVector& shootDir)
 {
 	projectileMovementComponent->Velocity = shootDir * projectileMovementComponent->InitialSpeed;
+	projectileMovementComponent->Activate(true);
+	UE_LOG(LogTemp, Warning, TEXT("Firing Projectile with velocity: %s"), *projectileMovementComponent->Velocity.ToString());
 }
 
 void AProjectileBase::OnHit(UPrimitiveComponent* hitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

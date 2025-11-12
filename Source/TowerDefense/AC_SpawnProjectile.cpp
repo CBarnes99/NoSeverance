@@ -12,6 +12,11 @@ void UAC_SpawnProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	InitializePool();
+}
+
+void UAC_SpawnProjectile::InitializePool()
+{
 	if (!projectile)
 	{
 		UE_LOG(LogTemp, Error, TEXT("No Projectile Class Within - %s"), *this->GetOwner()->GetName());
@@ -45,7 +50,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	FRotator spawnRotation = shootDirection.Rotation();
 
-	FVector spawnLocation = weaponMuzzleLocation + shootDirection * 30.0f;
+	FVector spawnLocation = weaponMuzzleLocation + shootDirection * 300.0f;
 
 	/*FActorSpawnParameters spawnParams;
 	spawnParams.Owner = GetOwner();
@@ -55,15 +60,21 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	AProjectileBase* currentProjectile = GetInactiveProjectile();
 
+
 	currentProjectile->SetActorLocation(spawnLocation);
 	currentProjectile->SetActorRotation(spawnRotation);
 	currentProjectile->SetDamage(damageDelt);
 	currentProjectile->SetProjectileSpeed(projectileSpeed);
 
 	currentProjectile->ActivateProjectile();
+
 	currentProjectile->FireInDirection(shootDirection);
 
+	
+
 	DrawDebugSphere(GetWorld(), targetLocation, 15.f, 12, FColor::Green, false, 2.f);
+	UE_LOG(LogTemp, Display, TEXT("Velocity = %s"), *currentProjectile->projectileMovementComponent->Velocity.ToString());
+
 }
 
 AProjectileBase* UAC_SpawnProjectile::GetInactiveProjectile()

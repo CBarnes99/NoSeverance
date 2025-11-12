@@ -18,6 +18,9 @@ public:
 	// Sets default values for this actor's properties
 	AProjectileBase();
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void FireInDirection(const FVector& shootDir);
 
@@ -36,21 +39,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void DeactivateProjectile();
 
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	class UProjectileMovementComponent* projectileMovementComponent;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class UStaticMeshComponent* projectileMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	class USphereComponent* collisionComponent;
-
-
 
 	FTimerHandle lifeTimeTimerHandle;
 
