@@ -26,6 +26,7 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable)
 	void FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

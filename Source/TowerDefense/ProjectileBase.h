@@ -42,6 +42,9 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	class UProjectileMovementComponent* projectileMovementComponent;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	bool hasDefaultsBeenSet;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

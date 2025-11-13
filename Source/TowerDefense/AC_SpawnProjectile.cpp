@@ -22,18 +22,26 @@ void UAC_SpawnProjectile::InitializePool()
 		UE_LOG(LogTemp, Error, TEXT("No Projectile Class Within - %s"), *this->GetOwner()->GetName());
 	}
 
+	int amount = 0;
+
+
 	for (int i = 0; i < poolSize; i++)
 	{
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = GetOwner();
 		spawnParams.Instigator = GetOwner()->GetInstigator();
 		AProjectileBase* pooledProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
-		FString lable = FString::Printf(TEXT("%s - %d"), *projectile->GetName(), i);
+
+		FString lable = FString::Printf(TEXT("%s - %d"), *projectile->GetName(), i + 1);
 		pooledProjectile->SetActorLabel(lable);
 		projectilePool.Add(pooledProjectile);
 
+		amount++;
+
 		//UE_LOG(LogTemp, Error, TEXT("%s owner = %s"), *this->GetName(), *this->GetOwner()->GetName());
 	}
+	UE_LOG(LogTemp, Warning, TEXT("There are %d projectiles pooled"), amount);
+
 }
 
 void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed)
@@ -50,27 +58,31 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	FRotator spawnRotation = shootDirection.Rotation();
 
-	FVector spawnLocation = weaponMuzzleLocation + shootDirection * 300.0f;
+	FVector spawnLocation = weaponMuzzleLocation + shootDirection * 10.0f;
 
+
+	//FOR DEBUGGING, SPAWNS IN THE PROJECTILE INSTEAD OF FROM THE POOL
 	/*FActorSpawnParameters spawnParams;
 	spawnParams.Owner = GetOwner();
 	spawnParams.Instigator = GetOwner()->GetInstigator();
-
 	AProjectileBase* currentProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, spawnLocation, spawnRotation, spawnParams);*/
 
 	AProjectileBase* currentProjectile = GetInactiveProjectile();
 
+	if (!currentProjectile) return;
+	UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
 
 	currentProjectile->SetActorLocation(spawnLocation);
 	currentProjectile->SetActorRotation(spawnRotation);
-	currentProjectile->SetDamage(damageDelt);
-	currentProjectile->SetProjectileSpeed(projectileSpeed);
 
-	currentProjectile->ActivateProjectile();
-
+	if (!currentProjectile->hasDefaultsBeenSet)
+	{
+		currentProjectile->SetDamage(damageDelt);
+		currentProjectile->SetProjectileSpeed(projectileSpeed);
+		currentProjectile->hasDefaultsBeenSet = true;
+	}
 	currentProjectile->FireInDirection(shootDirection);
-
-	
+	currentProjectile->ActivateProjectile();
 
 	DrawDebugSphere(GetWorld(), targetLocation, 15.f, 12, FColor::Green, false, 2.f);
 	UE_LOG(LogTemp, Display, TEXT("Velocity = %s"), *currentProjectile->projectileMovementComponent->Velocity.ToString());

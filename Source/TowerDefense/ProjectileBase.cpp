@@ -25,8 +25,6 @@ AProjectileBase::AProjectileBase()
 	projectileMesh->SetupAttachment(RootComponent.Get());
 	projectileMesh->SetSimulatePhysics(false);
 
-	isActive = false;
-
 	lifeTime = 5.f;
 
 }
@@ -35,7 +33,8 @@ void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();	
 
-	projectileMovementComponent->StopMovementImmediately();
+	isActive = false;
+	hasDefaultsBeenSet = false;
 
 	DeactivateProjectile();
 }
@@ -59,22 +58,20 @@ void AProjectileBase::SetProjectileSpeed(float speed)
 
 bool AProjectileBase::IsProjectileActive()
 {
-	return isActive;
+	return isActive; 
 }
 
 void AProjectileBase::ActivateProjectile()
 {
 	
-	SetActorEnableCollision(true);
+	isActive = true;
+
 	SetActorHiddenInGame(false);
 	SetActorTickEnabled(true);
+	SetActorEnableCollision(true);
 	collisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
 
-	projectileMovementComponent->StopMovementImmediately();
-	projectileMovementComponent->Activate(true);
-
-
-	isActive = true;
+	projectileMovementComponent->Activate();
 
 	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::DeactivateProjectile, lifeTime, false);
 
@@ -83,8 +80,7 @@ void AProjectileBase::ActivateProjectile()
 
 void AProjectileBase::DeactivateProjectile()
 {
-	projectileMovementComponent->StopMovementImmediately();
-	projectileMovementComponent->Velocity = FVector::ZeroVector;
+	projectileMovementComponent->Deactivate();
 	SetActorEnableCollision(false);
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
@@ -95,6 +91,7 @@ void AProjectileBase::DeactivateProjectile()
 	}
 
 	isActive = false;
+	UE_LOG(LogTemp, Warning, TEXT("Deactivated! - %s"), *this->GetName());
 }
 
 
@@ -102,8 +99,7 @@ void AProjectileBase::DeactivateProjectile()
 void AProjectileBase::FireInDirection(const FVector& shootDir)
 {
 	projectileMovementComponent->Velocity = shootDir * projectileMovementComponent->InitialSpeed;
-	projectileMovementComponent->Activate(true);
-	UE_LOG(LogTemp, Warning, TEXT("Firing Projectile with velocity: %s"), *projectileMovementComponent->Velocity.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Firing Projectile with velocity: %s"), *projectileMovementComponent->Velocity.ToString());
 }
 
 void AProjectileBase::OnHit(UPrimitiveComponent* hitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
