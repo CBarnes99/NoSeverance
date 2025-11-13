@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -28,27 +26,46 @@ public:
 	void FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed);
 
 protected:
-	// Called when the game starts
+
 	virtual void BeginPlay() override;
 
+	/**
+	* @brief The projectile class you want to fire
+	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	class TSubclassOf<AProjectileBase> projectile;
 
+	/**
+	* @brief Returns the projectile that isn't currently in use within the pool
+	* @return The projectile that is currently inactive within the pool, as a AProjectileBase*
+	*/
 	UFUNCTION(BlueprintCallable)
 	AProjectileBase* GetInactiveProjectile();
 
+	/**
+	* @brief Gets the target location at the end of a line trace
+	* @param traceStartLocation The starting location for the line trace
+	* @param actorForwardVector The forward vector of the actor you want to trace from
+	* @return Returns the location of impact or the end distance if no collision, as FVector
+	*/
 	UFUNCTION(BlueprintCallable)
 	FVector GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector);
 
+	/**
+	* @brief Creates the pool of projectiles, called on Begin Play
+	*/
 	UFUNCTION(BlueprintCallable)
 	void InitializePool();
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	TArray<AProjectileBase*> traceIgnoreActors;
-
+	/**
+	*@brief An array of all the pooled projectiles
+	*/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Spawning")
 	TArray<AProjectileBase*> projectilePool;
 
+	/**
+	* @breif The the of the projectile pool
+	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawning")
 	int poolSize;
 };

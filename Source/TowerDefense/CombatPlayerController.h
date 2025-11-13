@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -18,9 +16,15 @@ class TOWERDEFENSE_API ACombatPlayerController : public APlayerController
 
 public:
 
+	/**
+	* @brief A pointer to the enemy spawner
+	*/
 	UPROPERTY(EditAnywhere, Category = "References")
 	class AEnemySpawner* enemySpawner;
 
+	/**
+	* @brief A delegate to start a new wave
+	*/
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FStartWaveSigniture StartWaveEvent;
 
@@ -30,21 +34,40 @@ protected:
 	virtual void SetupInputComponent() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
+	/**
+	* @brief A pointer to the player character
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class APlayerCharacter* myPlayerCharacter;
 
+	/**
+	* @brief A Data Table pointer to the Data Table that holds a soft ptr to the turrets, assigned in the editor
+	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class UDataTable* turretDataTable;
 
+	/**
+	* @brief The size of the data table, set on Begin Play
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int dataTableSize;
 
+	/**
+	* @brief When scroll wheel is used, this function is called
+	*/
 	UFUNCTION(BlueprintCallable)
 	void UpdateHotbarSelection();
 
+	/**
+	* @brief Change between combat and turret mapping context
+	* @param confirm True changes to combat context, false changes to turret context
+	*/
 	UFUNCTION(BlueprintCallable)
 	void UseCombatMappingContext(bool confirm);
 
+	/**
+	* @brief A check to see if the mapping context has been assigned in the editor
+	*/
 	UFUNCTION(BlueprintCallable)
 	void HaveMappingContextsBeenAsigned();
 
@@ -52,11 +75,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputMappingContext* defaultMappingContext;
 
-	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
 	UPROPERTY(EditAnywhere, Category = "Input_Combat")
 	class UInputMappingContext* combatMappingContext;
 
-	//Player Input Mapping Variables which are editable in BP to select the button inputs for each action
 	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	class UInputMappingContext* turretMappingContext;
 

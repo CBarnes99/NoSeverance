@@ -10,8 +10,7 @@
 
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	static ConstructorHelpers::FClassFinder<AActor> weaponBP(TEXT("/Game/Weapons/BP_WeaponBase"));
 	if (weaponBP.Class)
@@ -25,19 +24,6 @@ APlayerCharacter::APlayerCharacter()
 		UE_LOG(LogTemp, Error, TEXT("Weapon BP not found in player character"));
 	}
 	weaponSocket = "weapon_righthand";
-
-	////Change this to a data table, possibly remove it entirely
-	//static ConstructorHelpers::FClassFinder<AActor> turretBP(TEXT("/Game/Turrets/MyTurretStatic"));
-	//if (turretBP.Class)
-	//{
-	//	turretClass = turretBP.Class;
-	//	UE_LOG(LogTemp, Display, TEXT("Turret BP found in player character"));
-
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Error, TEXT("Turret BP not found in player character"));
-	//}
 
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f ));
@@ -83,16 +69,12 @@ void APlayerCharacter::BeginPlay()
 		*name, healthComponent->GetHealth(), manaComponent->GetMana(), movementSpeed, runSpeed, jumpHeight);
 	
 	EquipWeapon();
-
-	//Temporary until I have a database of turrets to pull from
-	//previewTurretActor = nullptr;
 }
 
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input

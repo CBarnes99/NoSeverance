@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "TurretStatic.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -8,11 +5,9 @@
 #include "EnemyCharacterBase.h"
 #include "Kismet/GameplayStatics.h"
 
-// Sets default values
 ATurretStatic::ATurretStatic()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	turretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret Mesh"));
 	RootComponent = turretMesh;
@@ -27,17 +22,12 @@ ATurretStatic::ATurretStatic()
 
 	collisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Collision Mesh"));
 	collisionMesh->SetCollisionProfileName("NoCollision", false);
-	
-
-    arrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Forward Arrow"));
 
     collisionBox->SetupAttachment(turretMesh);
 	collisionMesh->SetupAttachment(collisionBox);
-    arrowComponent->SetupAttachment(turretMesh);
 	previewMeshComponent = CreateDefaultSubobject<UAC_PreviewMesh>(TEXT("Preview Mesh Component"));
 }
 
-// Called when the game starts or when spawned
 void ATurretStatic::BeginPlay()
 {
 	Super::BeginPlay();
@@ -55,8 +45,6 @@ void ATurretStatic::OnConstruction(const FTransform& Transform)
 {
 	collisionMesh->SetRelativeScale3D(collisionBoxSize / 125);	
 }
-
-
 
 void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -95,13 +83,6 @@ void ATurretStatic::enableTurret()
 	turretActive = true;
 }
 
-// Called every frame
-void ATurretStatic::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 void ATurretStatic::SetPreviewMaterial(bool isPreview)
 {
 	if (isPreview)
@@ -112,15 +93,5 @@ void ATurretStatic::SetPreviewMaterial(bool isPreview)
 	{
 		turretMesh->SetMaterial(0, previewMeshComponent->normalMaterial);
 	}
-}
-
-void ATurretStatic::pooledTurretDisable()
-{
-	
-}
-
-void ATurretStatic::pooledTurretEnable()
-{
-
 }
 

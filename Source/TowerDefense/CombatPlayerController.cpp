@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "CombatPlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
@@ -78,7 +75,6 @@ void ACombatPlayerController::OnPossess(APawn* InPawn)
 void ACombatPlayerController::MovementAction(const FInputActionValue& Value)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("WSAD"));
-
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 	const FVector Forward = myPlayerCharacter->GetActorForwardVector();
 	const FVector Right = myPlayerCharacter->GetActorRightVector();
@@ -91,7 +87,6 @@ void ACombatPlayerController::MovementAction(const FInputActionValue& Value)
 void ACombatPlayerController::MouseLookAction(const FInputActionValue& Value)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Mouse"));
-
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	myPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);

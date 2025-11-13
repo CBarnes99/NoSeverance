@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "EnemyAIController.h"
@@ -18,14 +16,10 @@ class TOWERDEFENSE_API AEnemyCharacterBase : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AEnemyCharacterBase();
 
 	UFUNCTION(BlueprintCallable)
 	UBehaviorTree* GetBehaviourTree() const;
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -34,31 +28,51 @@ public:
 	FOnEnemyDeathSignature OnEnemyDeathEvent;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	/**
+	* @brief A pointer to the the Behaviour Tree assigned in the editor
+	*/
 	UPROPERTY(EditAnywhere, Category = "AI")
 	UBehaviorTree* enemyBehaviorTree;
 
+	/**
+	* @brief The health component so the enemies can reduce in health when damaged
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	class UAC_Health* healthComponent;
 
-	//Assign a Data Asset in Blueprints for each of the enemys information
+	/**
+	* @brief Assign a Data Asset in Blueprints for each of the enemys information
+	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	TObjectPtr<UDA_EnemyCharacterStats> enemyInfo;
 
+	/**
+	* @brief The name of the enemy assined from the data asset, as FString
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	FString name;
 
+	/**
+	* @brief The damage delt from the enemy assined from the data asset, as a float
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float damageDelt;
 
+	/**
+	* @brief The speed of the enemy assined from the data asset, as a float
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float movementSpeed;
 
+	//The built in take damage function
 	UFUNCTION(BlueprintCallable)
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	/**
+	* @brief When the enemy loses all their health, on death is called
+	*/
 	UFUNCTION(BlueprintCallable)
 	void OnDeath();
 };

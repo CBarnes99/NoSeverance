@@ -1,31 +1,18 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SpawnerManager.h"
 #include <Kismet/GameplayStatics.h>
 #include "EnemySpawner.h"
 
-
-// Sets default values
 ASpawnerManager::ASpawnerManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
 void ASpawnerManager::BeginPlay()
 {
 	Super::BeginPlay();
 
 	waveActive = false;
 	amountOfEnemysInRound = 0;
-}
-
-// Called every frame
-void ASpawnerManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 bool ASpawnerManager::IsWaveActive()
@@ -116,7 +103,7 @@ int ASpawnerManager::CalculateLastWave()
 	return maxWave;
 }
 
-//Bind the enemy spawned so that when it is destoryed, it redudces the count for amount of enemies in the round
+//Bind the enemy spawned so that when it is destoryed, it reduces the count for amount of enemies in the round
 void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 {
 	if (enemy)

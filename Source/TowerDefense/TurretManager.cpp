@@ -5,10 +5,9 @@
 
 ATurretManager::ATurretManager()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
 void ATurretManager::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,12 +36,6 @@ void ATurretManager::BeginPlay()
 
 	/*AActor* playerClass = UGameplayStatics::GetActorOfClass(GetWorld(), APlayerCharacter::StaticClass());
 	myPlayerCharacter = Cast<APlayerCharacter>(playerClass);*/
-}
-
-// Called every frame
-void ATurretManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void ATurretManager::PoolAllPreivewTurrets()
@@ -153,7 +146,7 @@ void ATurretManager::RotatePreviewTurret(float dir)
 {
 	if (!isPreviewTurretActive) return;
 	FRotator rotation = pooledPreviewTurrets[currentPreviewTurretIndex]->GetActorRotation();
-	UE_LOG(LogTemp, Warning, TEXT("Current Rotation is = %s"), *rotation.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Current Rotation is = %s"), *rotation.ToString());
 
 	rotation.Yaw += (45.f * dir);
 	UE_LOG(LogTemp, Warning, TEXT("New Rotation is is = %s"), *rotation.ToString());

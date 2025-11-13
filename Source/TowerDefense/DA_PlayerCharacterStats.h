@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,37 +11,37 @@ class TOWERDEFENSE_API UDA_PlayerCharacterStats : public UDataAsset
 	
 public:
 	/**
-	* The name of your player character
+	* @brief The name of your player character
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	FString name;
 
 	/**
-	* The health of your player character
+	* @brief The health of your player character
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float health;
 
 	/**
-	* The amount of mana your player character has
+	* @brief The amount of mana your player character has
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float mana;
 
 	/**
-	* How fast you want the base movement speed of your player character to be
+	* @brief How fast you want the base movement speed of your player character to be
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float movementSpeed;
 
 	/**
-	* How fast you want the player character to move when running
+	* @brief How fast you want the player character to move when running
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float runSpeed;
 
 	/**
-	* How high you want the player character to jump
+	* @brief How high you want the player character to jump
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float jumpHeight;

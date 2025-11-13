@@ -3,7 +3,7 @@
 
 UAC_SpawnProjectile::UAC_SpawnProjectile()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	poolSize = 50;
 }
@@ -23,8 +23,6 @@ void UAC_SpawnProjectile::InitializePool()
 	}
 
 	int amount = 0;
-
-
 	for (int i = 0; i < poolSize; i++)
 	{
 		FActorSpawnParameters spawnParams;
@@ -70,7 +68,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 	AProjectileBase* currentProjectile = GetInactiveProjectile();
 
 	if (!currentProjectile) return;
-	UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
 
 	currentProjectile->SetActorLocation(spawnLocation);
 	currentProjectile->SetActorRotation(spawnRotation);
@@ -85,7 +83,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 	currentProjectile->ActivateProjectile();
 
 	DrawDebugSphere(GetWorld(), targetLocation, 15.f, 12, FColor::Green, false, 2.f);
-	UE_LOG(LogTemp, Display, TEXT("Velocity = %s"), *currentProjectile->projectileMovementComponent->Velocity.ToString());
+	//UE_LOG(LogTemp, Display, TEXT("Velocity = %s"), *currentProjectile->projectileMovementComponent->Velocity.ToString());
 
 }
 

@@ -1,10 +1,9 @@
 #include "ProjectileBase.h"
 #include <Kismet/GameplayStatics.h>
 
-// Sets default values
 AProjectileBase::AProjectileBase()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	collisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collision"));
 	collisionComponent->InitSphereRadius(20.f);
@@ -43,11 +42,10 @@ void AProjectileBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-//These two fucntions are called when the weapon class spawns the projectile and sets the damage and speed values from the weapon data asset
+
 void AProjectileBase::SetDamage(float damageAmount)
 {
 	damageDelt = damageAmount;
-	//UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f"), damageDelt);
 }
 
 void AProjectileBase::SetProjectileSpeed(float speed)

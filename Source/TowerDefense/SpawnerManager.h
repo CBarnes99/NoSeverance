@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -16,24 +14,37 @@ class TOWERDEFENSE_API ASpawnerManager : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASpawnerManager();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	/**
+	* @brief An array of spawners for the manager to call from
+	*/
 	UPROPERTY(VisibleAnywhere)
 	TArray<AEnemySpawner*> enemySpawners;
 
+	/**
+	* @brief Calls the spawners to start spawning from a specific wave
+	* @param currentWave The current wave you want to spawn, as an int
+	*/
 	UFUNCTION(BlueprintCallable)
 	void StartSpawningEnemies(int currentWave);
 
+	/**
+	* @brief Calculates the last wave for the game mode
+	*/
 	UFUNCTION(BlueprintCallable)
 	int CalculateLastWave();
 
+	/**
+	* @brief Sets all the spawners in the world to the array
+	*/
 	UFUNCTION(BlueprintCallable)
 	void SetAllSpawners();
 
+	/**
+	* @brief A check to see if there is a wave currently active
+	* @return True, the wave is active, False, there isnt a wave active and you can start a new wave
+	*/
 	UFUNCTION(BlueprintCallable)
 	bool IsWaveActive();
 

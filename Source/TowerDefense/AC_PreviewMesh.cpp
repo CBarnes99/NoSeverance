@@ -1,19 +1,13 @@
 #include "AC_PreviewMesh.h"
 
-
 UAC_PreviewMesh::UAC_PreviewMesh()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UAC_PreviewMesh::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-void UAC_PreviewMesh::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UAC_PreviewMesh::SetOutlineMaterial(UStaticMeshComponent* staticMesh)
@@ -28,7 +22,7 @@ void UAC_PreviewMesh::SetOutlineMaterial(UStaticMeshComponent* staticMesh)
 	}
 }
 
-void UAC_PreviewMesh::SetNormalMaterial(UStaticMeshComponent* staticMesh)
+void UAC_PreviewMesh::SetDefaultMaterial(UStaticMeshComponent* staticMesh)
 {
 	if (outlineMaterial)
 	{

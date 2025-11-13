@@ -10,12 +10,6 @@
 #include "AC_Mana.h"
 #include "AC_LineTrace.h"
 #include "TurretManager.h"
-
-//Temporary until I have a database of turrets to pull from
-#include "TurretStatic.h"
-//Temporary until I have a database of turrets to pull from
-
-
 #include "PlayerCharacter.generated.h"
 
 UCLASS()

@@ -1,13 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "CombatGameMode.h"
 #include "UObject/ConstructorHelpers.h"
 #include "GameFramework/Actor.h"
 #include "PlayerCharacter.h"
 #include "CombatPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-
 
 ACombatGameMode::ACombatGameMode()
 {
@@ -35,7 +31,6 @@ ACombatGameMode::ACombatGameMode()
 	}
 
 }
-
 
 void ACombatGameMode::BeginPlay()
 {

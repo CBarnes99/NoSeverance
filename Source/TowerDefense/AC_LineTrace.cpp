@@ -3,7 +3,7 @@
 
 UAC_LineTrace::UAC_LineTrace()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UAC_LineTrace::BeginPlay()
@@ -14,13 +14,10 @@ void UAC_LineTrace::BeginPlay()
 FVector UAC_LineTrace::GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector, float traceDistance)
 {
 	FVector targetPos = FVector::ZeroVector;
-	//FHitResult hit;
 	TArray<FHitResult> hits;
 	FVector traceEnd = traceStartLocation + actorForwardVector * traceDistance;
 
 	params.AddIgnoredActor(GetOwner());
-
-	//GetWorld()->LineTraceSingleByChannel(hit, traceStartLocation, traceEnd, ECC_Pawn, params);
 
 	GetWorld()->LineTraceMultiByChannel(hits, traceStartLocation, traceEnd, ECC_Visibility, params);
 
@@ -33,15 +30,12 @@ FVector UAC_LineTrace::GetTraceTargetLocation(FVector traceStartLocation, FVecto
 			return Hit.ImpactPoint;
 		}
 	}
-	//targetPos = hit.bBlockingHit ? hit.ImpactPoint : traceEnd;
-
 	return traceEnd;
-	//return targetPos;
 };
 
-void UAC_LineTrace::SetIgnoredActors(TArray<AActor*> ignoredActor)
+void UAC_LineTrace::SetIgnoredActors(TArray<AActor*> ignoredActors)
 {
-	params.AddIgnoredActors(ignoredActor);
+	params.AddIgnoredActors(ignoredActors);
 }
 void UAC_LineTrace::SetIgnoredActor(AActor* ignoredActor)
 {

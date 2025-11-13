@@ -1,16 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "EnemySpawner.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Components/SphereComponent.h"
 
-// Sets default values
 AEnemySpawner::AEnemySpawner()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	spawnCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Spawn Collision"));
 	spawnCollision->SetSphereRadius(150.f);
@@ -18,7 +13,6 @@ AEnemySpawner::AEnemySpawner()
 	spawnInterval = 0.5f; //Spawns every 0.5 seconds
 }
 
-// Called when the game starts or when spawned
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
@@ -26,14 +20,6 @@ void AEnemySpawner::BeginPlay()
 	isSpawning = false;
 }
 
-// Called every frame
-void AEnemySpawner::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-//When Enter is pressed in combat player controller, this function starts
 void AEnemySpawner::StartSpawning()
 {
 	if (!isSpawning)
@@ -43,7 +29,6 @@ void AEnemySpawner::StartSpawning()
 	}
 }
 
-//When all enemies have spawned, stop spawning
 void AEnemySpawner::StopSpawning()
 {
 	if (isSpawning)
@@ -100,7 +85,6 @@ int AEnemySpawner::CalculateAmountOfEnemiesInWave()
 	}
 }
 
-//Spawns the Enemy Actors from the Array of characters that are assigned in the BP Editor
 AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 {
 	if (FAmountOfEnemysSpawning* enemyStruct = waveAndEnemyQueue.Find(currentWaveBeingSpawned))
