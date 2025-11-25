@@ -32,7 +32,7 @@ void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();	
 
-	isActive = false;
+	//isActive = false;
 	hasDefaultsBeenSet = false;
 
 	DeactivateProjectile();

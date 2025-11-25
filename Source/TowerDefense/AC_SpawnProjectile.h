@@ -58,16 +58,29 @@ protected:
 	void InitializePool();
 
 	/**
+	* @brief Spawns a projectile and adds it to the pool, gets called by initialize pool and if there isnt enough objects pooled, it'll add another to the pool
+	*/
+	UFUNCTION(BlueprintCallable)
+	void spawnProjectile();
+
+	/**
 	*@brief An array of all the pooled projectiles
 	*/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Spawning")
 	TArray<AProjectileBase*> projectilePool;
 
 	/**
-	* @breif The the of the projectile pool
+	* @breif The initial size of the projectile pool
 	*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawning")
 	int poolSize;
+
+	/**
+	* @breif Amount of projectiles in the pool
+	*/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawning")
+	int amountInPool;
+
 };
 
 

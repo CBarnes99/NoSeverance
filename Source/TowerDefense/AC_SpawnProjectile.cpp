@@ -5,13 +5,14 @@ UAC_SpawnProjectile::UAC_SpawnProjectile()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	poolSize = 50;
+	poolSize = 10;
 }
 
 void UAC_SpawnProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	amountInPool = 0;
+
 	InitializePool();
 }
 
@@ -22,10 +23,9 @@ void UAC_SpawnProjectile::InitializePool()
 		UE_LOG(LogTemp, Error, TEXT("No Projectile Class Within - %s"), *this->GetOwner()->GetName());
 	}
 
-	int amount = 0;
 	for (int i = 0; i < poolSize; i++)
 	{
-		FActorSpawnParameters spawnParams;
+	/*	FActorSpawnParameters spawnParams;
 		spawnParams.Owner = GetOwner();
 		spawnParams.Instigator = GetOwner()->GetInstigator();
 		AProjectileBase* pooledProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
@@ -34,12 +34,28 @@ void UAC_SpawnProjectile::InitializePool()
 		pooledProjectile->SetActorLabel(lable);
 		projectilePool.Add(pooledProjectile);
 
-		amount++;
+		amountInPool++;*/
+
+		spawnProjectile();
 
 		//UE_LOG(LogTemp, Error, TEXT("%s owner = %s"), *this->GetName(), *this->GetOwner()->GetName());
 	}
-	UE_LOG(LogTemp, Warning, TEXT("There are %d projectiles pooled"), amount);
+	UE_LOG(LogTemp, Warning, TEXT("There are %d projectiles pooled"), amountInPool);
 
+}
+
+void UAC_SpawnProjectile::spawnProjectile()
+{
+	FActorSpawnParameters spawnParams;
+	spawnParams.Owner = GetOwner();
+	spawnParams.Instigator = GetOwner()->GetInstigator();
+	AProjectileBase* pooledProjectile = GetWorld()->SpawnActor<AProjectileBase>(projectile, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+
+	FString lable = FString::Printf(TEXT("%s - %d"), *projectile->GetName(), amountInPool + 1);
+	pooledProjectile->SetActorLabel(lable);
+	projectilePool.Add(pooledProjectile);
+
+	amountInPool++;
 }
 
 void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed)
@@ -67,7 +83,13 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	AProjectileBase* currentProjectile = GetInactiveProjectile();
 
-	if (!currentProjectile) return;
+	if (!currentProjectile)
+	{
+		//return;
+		spawnProjectile();
+		currentProjectile = GetInactiveProjectile();
+		UE_LOG(LogTemp, Warning, TEXT("Added another projectile to the pool for - &s"), *GetOwner()->GetName());
+	}
 	//UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
 
 	currentProjectile->SetActorLocation(spawnLocation);
@@ -93,7 +115,7 @@ AProjectileBase* UAC_SpawnProjectile::GetInactiveProjectile()
 	{
 		if (!p->IsProjectileActive()) return p;
 	}
-	UE_LOG(LogTemp, Error, TEXT("No Inactive Projectiles Within %s. Create A Larger Pool Size"), *this->GetOwner()->GetName());
+	//UE_LOG(LogTemp, Error, TEXT("No Inactive Projectiles Within %s. Create A Larger Pool Size"), *this->GetOwner()->GetName());
 	return nullptr;
 }
 

@@ -46,6 +46,8 @@ void AEnemyCharacterBase::OnDeath()
 {
 	OnEnemyDeathEvent.Broadcast(this);
 
+	//Drop loot here
+
 	Destroy();
 	/*
 	UE_LOG(LogTemp, Warning, TEXT("Damage Amount = %f"), DamageAmount);
