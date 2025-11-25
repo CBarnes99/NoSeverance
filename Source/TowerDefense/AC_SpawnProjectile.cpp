@@ -5,7 +5,7 @@ UAC_SpawnProjectile::UAC_SpawnProjectile()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	poolSize = 10;
+	poolSize = 3;
 }
 
 void UAC_SpawnProjectile::BeginPlay()
@@ -88,7 +88,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 		//return;
 		spawnProjectile();
 		currentProjectile = GetInactiveProjectile();
-		UE_LOG(LogTemp, Warning, TEXT("Added another projectile to the pool for - &s"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Added another projectile to the pool for - %s"), *GetOwner()->GetName());
 	}
 	//UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
 
