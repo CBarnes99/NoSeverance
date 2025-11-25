@@ -85,7 +85,7 @@ void AEnemyCharacterBase::SpawnDrop()
 			FActorSpawnParameters spawnParams;
 			FVector spawnLoc = GetActorLocation();
 			float capsuleHalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-			spawnLoc.Z -= capsuleHalfHeight;
+			spawnLoc.Z -= capsuleHalfHeight - 50;
 
 			AEnemyDrop* drop = GetWorld()->SpawnActor<AEnemyDrop>(AEnemyDrop::StaticClass(), spawnLoc, FRotator::ZeroRotator, spawnParams);
 			drop->SetDrop(element.Key);

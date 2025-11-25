@@ -62,12 +62,13 @@ void AEnemyDrop::SetDrop(EEnemyDrop type)
 
 	case EEnemyDrop::SMALL_CURRENCY:
 		UE_LOG(LogTemp, Display, TEXT("Set Drop To Small Currency"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Fab/Stylized_guns___Lowpoly_Free/gun_lowpoly_02.gun_lowpoly_02"))));
+		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/Enemy_Drops/coin/StaticMeshes/coin.coin"))));
+		dropMesh->SetRelativeScale3D(FVector(0.5));
 		break;
 
 	case EEnemyDrop::LARGE_CURRENCY:
 		UE_LOG(LogTemp, Display, TEXT("Set Drop To Large Currency"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Fab/Stylized_guns___Lowpoly_Free/gun_lowpoly_02.gun_lowpoly_02"))));
+		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/Enemy_Drops/coin/StaticMeshes/coin.coin"))));
 		break;
 
 	default:
