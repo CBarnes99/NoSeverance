@@ -28,6 +28,28 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnEnemyDeathSignature OnEnemyDeathEvent;
 
+	/**
+	* @brief Sets the Path Node Locations
+	* @param nodeLocations The Locations of the path nodes you want the enemy to follow, as a TArray<FVector>
+	*/
+	UFUNCTION(BlueprintCallable)
+	void SetPathNodeLocations(TArray<FVector> nodeLocations);
+
+	/**
+	* @brief Gets the Path Node Locations
+	* @return Gets a Path Node Location, as a FVector
+	* @param index The index
+	*/
+	UFUNCTION(BlueprintCallable)
+	FVector GetNextPathNodeLocation();
+
+	///**
+	//* @brief Gets the Path Node Index
+	//* @return The Path Node Index, as an int
+	//*/
+	//UFUNCTION(BlueprintCallable)
+	//int GetPathNodeIndex();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -36,6 +58,24 @@ protected:
 	*/
 	UPROPERTY(EditAnywhere, Category = "AI")
 	UBehaviorTree* enemyBehaviorTree;
+
+	/**
+	* @brief An array of vectors that is the location for the paths nodes for the AI to follow
+	*/
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	TArray<FVector> pathNodeLocations;
+
+	/**
+	* @brief An index of what node the ai is moving towards
+	*/
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	int pathNodeIndex;
+
+	/**
+	* @brief Increaces the Path Node Index
+	*/
+	UFUNCTION(BlueprintCallable)
+	void IncreasePathNodeIndex();
 
 	/**
 	* @brief The health component so the enemies can reduce in health when damaged

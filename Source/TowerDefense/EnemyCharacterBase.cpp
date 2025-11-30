@@ -9,6 +9,7 @@ AEnemyCharacterBase::AEnemyCharacterBase()
 	PrimaryActorTick.bCanEverTick = false;
 
 	healthComponent = CreateDefaultSubobject<UAC_Health>(TEXT("Health Componenet"));
+	pathNodeIndex = -1;
 }
 
 // Called when the game starts or when spawned
@@ -30,6 +31,8 @@ void AEnemyCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInput
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+
 
 float AEnemyCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -92,4 +95,33 @@ void AEnemyCharacterBase::SpawnDrop()
 			break;
 		}
 	}
+}
+
+void AEnemyCharacterBase::SetPathNodeLocations(TArray<FVector> nodeLocations)
+{
+	pathNodeLocations = nodeLocations;
+}
+
+FVector AEnemyCharacterBase::GetNextPathNodeLocation()
+{
+	IncreasePathNodeIndex();
+	if (pathNodeLocations.IsValidIndex(pathNodeIndex))
+	{
+		return pathNodeLocations[pathNodeIndex];
+	}
+	else
+	{
+		return FVector::ZeroVector;
+	}
+
+}
+
+//int AEnemyCharacterBase::GetPathNodeIndex()
+//{
+//	return pathNodeIndex;
+//}
+
+void AEnemyCharacterBase::IncreasePathNodeIndex()
+{
+	pathNodeIndex++;
 }

@@ -11,6 +11,10 @@ UBTTask_FindBaseLocation::UBTTask_FindBaseLocation(FObjectInitializer const& Obj
 
 EBTNodeResult::Type UBTTask_FindBaseLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
+	FName pathNodesEnded = "PathNodesEnded?";
+	OwnerComp.GetBlackboardComponent()->GetValueAsBool(pathNodesEnded)
+
+
 	AActor* FoundBase = UGameplayStatics::GetActorOfClass(GetWorld(), ADefendingBase::StaticClass());
 
 	ADefendingBase* Base = Cast<ADefendingBase>(FoundBase);

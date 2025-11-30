@@ -10,6 +10,8 @@ AEnemySpawner::AEnemySpawner()
 	spawnCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Spawn Collision"));
 	spawnCollision->SetSphereRadius(150.f);
 
+	nodePathLocations = CreateDefaultSubobject<UAC_NodePathLocations>(TEXT("AC Node Path Locations"));
+
 	spawnInterval = 0.5f; //Spawns every 0.5 seconds
 }
 
@@ -96,6 +98,7 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 			spawnParams.Instigator = GetInstigator();
 
 			AEnemyCharacterBase* spawnedEnemy = GetWorld()->SpawnActor<AEnemyCharacterBase>(enemyStruct->enemyTypeArray[0].Get(), this->GetActorLocation(), this->GetActorRotation(), spawnParams);
+			spawnedEnemy->SetPathNodeLocations(nodePathLocations->GetPathNodesLocations());
 			enemyStruct->enemyTypeArray.RemoveAt(0);
 			OnEnemySpawnedEvent.Broadcast(spawnedEnemy);
 			return spawnedEnemy;

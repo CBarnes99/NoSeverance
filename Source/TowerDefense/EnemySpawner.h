@@ -8,6 +8,7 @@
 #include "EnemyCharacterBase.h"
 #include "F_AmountOfEnemysSpawning.h"
 #include "Engine/DataTable.h"
+#include "AC_NodePathLocations.h"
 #include "EnemySpawner.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemySpawnedSigniture, AEnemyCharacterBase*, enemy);
@@ -68,8 +69,14 @@ protected:
 	/**
 	* @brief A collision compoenent to be able to check if theres space to spawn the enemy
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleDefaultsOnly)
 	class USphereComponent* spawnCollision;
+
+	/**
+	* @brief The actor component that holds pathing information for the enemies spawned
+	*/
+	UPROPERTY(VisibleDefaultsOnly)
+	UAC_NodePathLocations* nodePathLocations;
 	
 	/**
 	* @brief How frequent the spawner spawns an enemy
@@ -102,11 +109,14 @@ protected:
 	bool IsEnemyCollisionOverlap();
 
 	/**
-	* @brief The amount of enemies in wave to check if all enemies have been spawned, mainly for debugging
+	* @brief The amount of enemies in wave to check if all enemies have been spawned, for debugging
 	*/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	int amountOfEnemiesInWave;
 
+	/**
+	* @brief The amount of enemies that have spawned, for debugging
+	*/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	int amountOfEnemiesSpawned;
 

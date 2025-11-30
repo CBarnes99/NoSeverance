@@ -9,7 +9,6 @@ class TOWERDEFENSE_API UBTTask_FindBaseLocation : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
-
 public:
 	
 	explicit UBTTask_FindBaseLocation(FObjectInitializer const& ObjectInitializer);

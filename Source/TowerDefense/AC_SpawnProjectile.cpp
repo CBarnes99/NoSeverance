@@ -86,6 +86,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 	if (!currentProjectile)
 	{
 		//return;
+		TRACE_BOOKMARK(TEXT("SpawnedProjectile"));
 		spawnProjectile();
 		currentProjectile = GetInactiveProjectile();
 		poolSize++;
