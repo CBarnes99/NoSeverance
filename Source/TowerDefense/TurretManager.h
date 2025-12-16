@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TurretStatic.h"
+#include "AC_PlaceActor.h"
 #include "TurretManager.generated.h"
 
 UCLASS()
@@ -71,6 +72,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	UAC_PlaceActor* placeActorComponent;
+
 
 	/**
 	* @brief An array of the data table row names, allowing the use of an index to get the get the rows in the data table

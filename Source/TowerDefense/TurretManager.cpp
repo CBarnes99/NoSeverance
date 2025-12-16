@@ -6,6 +6,8 @@
 ATurretManager::ATurretManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	placeActorComponent = CreateDefaultSubobject<UAC_PlaceActor>(TEXT("Place Actor Component"));
 }
 
 void ATurretManager::BeginPlay()

@@ -28,7 +28,7 @@ void ASpawnerManager::StartSpawningEnemies(int currentWave)
 		SetAllSpawners();
 	}
 
-	//If there isnt a wave currently active, start the wave
+	//If there is a wave currently active, prevent spawning from another wave
 	if (waveActive)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Wave is currently active!"));
@@ -50,7 +50,7 @@ void ASpawnerManager::StartSpawningEnemies(int currentWave)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No Spawner Found when spawning calulcating amount of enemies"));
+			UE_LOG(LogTemp, Warning, TEXT("No Spawner Found when spawning calulcating amount of enemies within - %s"), *this->GetName());
 		}
 	}
 	UE_LOG(LogTemp, Warning, TEXT("There are %d enemies this round"), amountOfEnemysInRound);
