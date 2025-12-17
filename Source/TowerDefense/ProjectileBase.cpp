@@ -93,8 +93,6 @@ void AProjectileBase::DeactivateProjectile()
 	//UE_LOG(LogTemp, Warning, TEXT("Deactivated! - %s"), *this->GetName());
 }
 
-
-
 void AProjectileBase::FireInDirection(const FVector& shootDir)
 {
 	projectileMovementComponent->Velocity = shootDir * projectileMovementComponent->InitialSpeed;

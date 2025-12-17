@@ -67,18 +67,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTurretManager();
 
-
-	////Temporary until I have a database of turrets to pull from
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
-	//TSubclassOf<ATurretStatic> turretClass;
-
-	//UPROPERTY()
-	//ATurretStatic* previewTurretActor;
-
-	//UPROPERTY()
-	//TArray<AActor*> turretsToIgnore;
-	//Temporary until I have a database of turrets to pull from
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret")
 	class UDataTable* turretDataTableClass;
 

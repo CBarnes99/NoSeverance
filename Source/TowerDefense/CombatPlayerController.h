@@ -79,7 +79,7 @@ protected:
 	class UInputMappingContext* combatMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Turret")
-	class UInputMappingContext* turretMappingContext;
+	class UInputMappingContext* turretPlacingMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* moveActionInput;
@@ -95,6 +95,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	class UInputAction* startEnemyWaveActionInput;
+
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
+	class UInputAction* openTurretSelectionMenu;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Combat")
 	class UInputAction* attackActionInput;
@@ -145,4 +148,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void RotateTurret(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void OpenTurretSelectionMenu();
 };

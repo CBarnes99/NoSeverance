@@ -2,6 +2,7 @@
 
 #include "EnemyAIController.h"
 #include "CoreMinimal.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/Character.h"
 #include "DA_EnemyCharacterStats.h"

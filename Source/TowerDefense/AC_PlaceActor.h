@@ -46,6 +46,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void RotatePlacement(float directon);
 
+	UPROPERTY(EditDefaultsOnly)
+	float rotationDegrees;
+
 	UFUNCTION(BlueprintCallable)
 	bool IsPlacing();
 

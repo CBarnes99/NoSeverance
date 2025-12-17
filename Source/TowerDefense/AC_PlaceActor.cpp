@@ -4,7 +4,8 @@ UAC_PlaceActor::UAC_PlaceActor()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	traceDistance = 500.f;
+	traceDistance = 1000.f;
+	rotationDegrees = 45.f;
 }
 
 void UAC_PlaceActor::BeginPlay()
@@ -17,6 +18,7 @@ void UAC_PlaceActor::BeginPlay()
 
 void UAC_PlaceActor::StartPlacement(TSubclassOf<AActor> actorClass)
 {
+
 	if (previewActor != nullptr) 
 	{
 		previewActor = nullptr;
@@ -82,7 +84,7 @@ void UAC_PlaceActor::RotatePlacement(float directon)
 
 	float actorCurrentYawRotation = previewActor->GetActorRotation().Yaw;
 	
-	float newYawRotation = ((directon * 1) + actorCurrentYawRotation);
+	float newYawRotation = ((directon * rotationDegrees) + actorCurrentYawRotation);
 
 	FRotator newRotation = FRotator(previewActor->GetActorRotation().Roll, previewActor->GetActorRotation().Pitch, newYawRotation);
 

@@ -30,6 +30,18 @@ ACombatGameMode::ACombatGameMode()
 		UE_LOG(LogTemp, Error, TEXT("Player Controller class NOT found in Game Mode!"))
 	}
 
+	static ConstructorHelpers::FClassFinder<AHUD> GameplayHUDClass(TEXT("/Game/HUD/BP_GameplayHUD"));
+	if (GameplayHUDClass.Class)
+	{
+		HUDClass = GameplayHUDClass.Class;
+
+		UE_LOG(LogTemp, Warning, TEXT("Combat HUD class found in Game Mode!"))
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Combat HUD class NOT found in Game Mode!"))
+	}
+
 }
 
 void ACombatGameMode::BeginPlay()

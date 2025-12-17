@@ -63,6 +63,8 @@ void ACombatPlayerController::SetupInputComponent()
 
 		Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RotateTurret);
 		Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACombatPlayerController::RotateTurret);
+
+		Input->BindAction(openTurretSelectionMenu, ETriggerEvent::Triggered, this, &ACombatPlayerController::OpenTurretSelectionMenu);
 	}
 }
 
@@ -130,6 +132,7 @@ void ACombatPlayerController::AttackAction()
 		myPlayerCharacter->equippedWeapon->GetDamageDelt(),
 		myPlayerCharacter->equippedWeapon->GetProjectileSpeed()	
 	);	
+
 }
 
 void ACombatPlayerController::CallGameModeToStartSpawningEnemies()
@@ -138,6 +141,11 @@ void ACombatPlayerController::CallGameModeToStartSpawningEnemies()
 
 	StartWaveEvent.Broadcast();
 };
+
+void ACombatPlayerController::OpenTurretSelectionMenu()
+{
+	UE_LOG(LogTemp, Warning, TEXT("OpenTurretButtonPressed"));
+}
 
 void ACombatPlayerController::ScrollWheelSelectionAction(const FInputActionValue& Value)
 {
@@ -173,6 +181,7 @@ void ACombatPlayerController::RotateTurret(const FInputActionValue& Value)
 	myPlayerCharacter->RotateTurret(Value.Get<float>());
 }
 
+
 void ACombatPlayerController::UpdateHotbarSelection()
 {
 	if (myPlayerCharacter->hotbarSelectionIndex > 1)
@@ -200,17 +209,17 @@ void ACombatPlayerController::UseCombatMappingContext(bool confirm)
 	UEnhancedInputLocalPlayerSubsystem* inputSubsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	if (confirm)
 	{
-		if (!inputSubsystem->HasMappingContext(combatMappingContext) && inputSubsystem->HasMappingContext(turretMappingContext))
+		if (!inputSubsystem->HasMappingContext(combatMappingContext) && inputSubsystem->HasMappingContext(turretPlacingMappingContext))
 		{
-			inputSubsystem->RemoveMappingContext(turretMappingContext);
+			inputSubsystem->RemoveMappingContext(turretPlacingMappingContext);
 			inputSubsystem->AddMappingContext(combatMappingContext, 1);
 			return;
 		}
 	}
-	else if (!inputSubsystem->HasMappingContext(turretMappingContext) && inputSubsystem->HasMappingContext(combatMappingContext))
+	else if (!inputSubsystem->HasMappingContext(turretPlacingMappingContext) && inputSubsystem->HasMappingContext(combatMappingContext))
 	{
 		inputSubsystem->RemoveMappingContext(combatMappingContext);
-		inputSubsystem->AddMappingContext(turretMappingContext, 1);
+		inputSubsystem->AddMappingContext(turretPlacingMappingContext, 1);
 		return;
 	}
 }
@@ -223,7 +232,7 @@ void ACombatPlayerController::HaveMappingContextsBeenAsigned()
 	if (!combatMappingContext)
 	{
 		UE_LOG(LogTemp, Error, TEXT("NO COMBAT MAPPING CONTEXT WITHIN %s"), *this->GetName());
-	}if (!turretMappingContext)
+	}if (!turretPlacingMappingContext)
 	{
 		UE_LOG(LogTemp, Error, TEXT("NO TURRET MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
