@@ -5,6 +5,8 @@
 #include "Components/UniformGridPanel.h"
 #include "HUDTurretSelectionMenu.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMenuSelection, bool, bIsChecked, UDA_TurretInfo*, turretInformation);
+
 class UCanvasPanel;
 class UUniformGridPanel;
 class UHUDTurretInfo;
@@ -17,29 +19,26 @@ class TOWERDEFENSE_API UHUDTurretSelectionMenu : public UUserWidget
 
 public:
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UCanvasPanel* MenuCanvasPanel;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UUniformGridPanel* TurretSelectionGrid;
 
-	//UPROPERTY(EditAnywhere, meta = (BindWidget))
-	//UHUDTurretInfo* Turret1;
+	UFUNCTION(BlueprintCallable)
+	void SetUpWidget(TArray<UDA_TurretInfo*> turretInfoArray);
 
-	//UPROPERTY(EditAnywhere, meta = (BindWidget))
-	//UHUDTurretInfo* Turret2;
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnMenuSelection OnMenuSelectionSigniture;
 
 protected:
 
-	virtual void NativeConstruct() override;
+	//virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
 	void TurretHasBeenSelected(bool bIsChecked, UDA_TurretInfo* turretInformation);
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<UDA_TurretInfo*> turretInfoForWidgetsArray;
-
-	UPROPERTY(EditAnywhere)
 	TSubclassOf<UHUDTurretInfo> turretInfoClass;
 
 };

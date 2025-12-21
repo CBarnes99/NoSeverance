@@ -7,6 +7,7 @@
 class UHUDTurretSelectionMenu;
 class UHUDPlayerHud;
 class ACore_PlayerController;
+class UDA_TurretInfo;
 
 UCLASS()
 class TOWERDEFENSE_API ACore_HUD : public AHUD
@@ -25,11 +26,17 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 	ACore_PlayerController* localCorePlayerController;
 
+	UPROPERTY(EditDefaultsOnly, Category = "DataAssets")
+	TArray<UDA_TurretInfo*> turretInfo;
+
 	UFUNCTION(BlueprintCallable)
 	void SetFocusToGame();
 
 	UFUNCTION(BlueprintCallable)
 	void SetFocusToWidget();
+
+	UFUNCTION(BlueprintCallable)
+	void BindDelegates();
 
 
 	//In Game Widgets------------------------------------------------------------
@@ -56,7 +63,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - In Game")
 	UHUDPlayerHud* playerHud;
-
 
 
 	//Game Menu Widgets-------------------------------------------------------

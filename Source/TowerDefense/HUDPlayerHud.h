@@ -15,12 +15,12 @@ class TOWERDEFENSE_API UHUDPlayerHud : public UUserWidget
 
 public:
 	
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDHealthAndMana* HealthAndMana;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDWeaponTurretSelector* WeaponAndTurretSelector;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDCrosshair* Crosshair;
 };

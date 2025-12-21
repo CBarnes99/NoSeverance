@@ -30,7 +30,7 @@ ACore_GameMode::ACore_GameMode()
 		UE_LOG(LogTemp, Error, TEXT("Player Controller class NOT found in Game Mode!"))
 	}
 
-	static ConstructorHelpers::FClassFinder<AHUD> CoreHUDClass(TEXT("/Game/HUD/BP_Core_HUD"));
+	static ConstructorHelpers::FClassFinder<AHUD> CoreHUDClass(TEXT("/Game/Core/BP_Core_HUD"));
 	if (CoreHUDClass.Class)
 	{
 		HUDClass = CoreHUDClass.Class;

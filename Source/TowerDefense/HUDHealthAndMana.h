@@ -23,9 +23,9 @@ protected:
 
 	//virtual void NativeConstruct() override;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UProgressBar* HealthBar;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UProgressBar* ManaBar;
 };

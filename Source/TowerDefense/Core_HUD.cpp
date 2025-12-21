@@ -2,7 +2,9 @@
 #include "HUDTurretSelectionMenu.h"
 #include "HUDPlayerHud.h"
 #include "HUDHealthAndMana.h"
+#include "DA_TurretInfo.h"
 #include "Core_PlayerController.h"
+#include "HUDWeaponTurretSelector.h"
 
 void ACore_HUD::BeginPlay()
 {
@@ -16,11 +18,12 @@ void ACore_HUD::BeginPlay()
 	}
 
 	SetUpInGameWidgetList();
-	//ToggleInGameWidgets();
-
+	
 	SetUpGameMenusWidgetList();
 	SetUpMenusWidgetList();
 	SetUpModalWidgetList();
+
+	BindDelegates();
 
 	SetFocusToGame();
 }
@@ -104,6 +107,8 @@ void ACore_HUD::SetUpGameMenusWidgetList()
 {
 
 	turretSelectionMenu = CreateWidget<UHUDTurretSelectionMenu>(localCorePlayerController, turretSelectionMenuClass);
+	turretSelectionMenu->SetUpWidget(turretInfo);
+
 	gameMenusWidgetList.Add(turretSelectionMenu);
 	
 	//UUserWidget* test = CreateWidget<UHUDTurretSelectionMenu>()
@@ -175,4 +180,9 @@ void ACore_HUD::ToggleTurretSelectionWidget()
 	UE_LOG(LogTemp, Warning, TEXT("Toggle Turret Selection Widget Function"));
 	ToggleGameMenuWidgets(turretSelectionMenu);
 	ToggleInGameWidgets();
+}
+
+void ACore_HUD::BindDelegates()
+{
+	turretSelectionMenu->OnMenuSelectionSigniture.AddDynamic(playerHud->WeaponAndTurretSelector, &UHUDWeaponTurretSelector::TestDelegateFunction);
 }

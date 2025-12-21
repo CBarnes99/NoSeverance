@@ -12,10 +12,10 @@ class TOWERDEFENSE_API UHUDWeaponTurretSelectorIcon : public UUserWidget
 	GENERATED_BODY()
 public:
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UImage* iconImage;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleDefaultsOnly)
 	TSubclassOf<UClass> weaponOrTurretClass;
 
 	UFUNCTION(BlueprintCallable)

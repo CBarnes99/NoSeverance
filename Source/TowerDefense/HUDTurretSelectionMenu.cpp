@@ -2,7 +2,7 @@
 #include "HUDTurretInfo.h"
 #include "DA_TurretInfo.h"
 
-void UHUDTurretSelectionMenu::NativeConstruct()
+void UHUDTurretSelectionMenu::SetUpWidget(TArray<UDA_TurretInfo*> turretInfoArray)
 {
 	//TArray<UWidget*> gridChildren = TurretSelectionGrid->GetAllChildren();
 	int arrayIndex = 0;
@@ -16,9 +16,9 @@ void UHUDTurretSelectionMenu::NativeConstruct()
 	}
 
 	//for (UWidget* widget : gridChildren)
-	for(int i = 0; i < turretInfoForWidgetsArray.Num(); i++)
+	for (int i = 0; i < turretInfoArray.Num(); i++)
 	{
-		if (!turretInfoForWidgetsArray.IsValidIndex(arrayIndex))
+		if (!turretInfoArray.IsValidIndex(arrayIndex))
 		{
 			UE_LOG(LogTemp, Error, TEXT("No Valid Index (%d) for Turret Widgets Using DA_TurretInfo inside - %s"), arrayIndex, *this->GetName());
 			return;
@@ -35,13 +35,13 @@ void UHUDTurretSelectionMenu::NativeConstruct()
 
 		//if (UHUDTurretInfo* turretWidget = Cast<UHUDTurretInfo>(widget))
 		//{
-			turretWidget->OnCheckboxStateChangedSignature.AddDynamic(this, &UHUDTurretSelectionMenu::TurretHasBeenSelected);
+		turretWidget->OnCheckboxStateChangedSignature.AddDynamic(this, &UHUDTurretSelectionMenu::TurretHasBeenSelected);
 
-			FText turretName = turretInfoForWidgetsArray[arrayIndex]->turretName;
-			UTexture2D* turretIcon = turretInfoForWidgetsArray[arrayIndex]->turretIcon;
-			TSubclassOf<ATurretStatic> turretClass = turretInfoForWidgetsArray[arrayIndex]->turretClass;
-			int cost = turretInfoForWidgetsArray[arrayIndex]->cost;
-			turretWidget->SetWidgetDefaults(turretName, turretIcon, cost, turretClass);
+		FText turretName = turretInfoArray[arrayIndex]->turretName;
+		UTexture2D* turretIcon = turretInfoArray[arrayIndex]->turretIcon;
+		TSubclassOf<ATurretStatic> turretClass = turretInfoArray[arrayIndex]->turretClass;
+		int cost = turretInfoArray[arrayIndex]->cost;
+		turretWidget->SetWidgetDefaults(turretName, turretIcon, cost, turretClass);
 		//}
 		//else
 		//{
@@ -52,12 +52,11 @@ void UHUDTurretSelectionMenu::NativeConstruct()
 	}
 }
 
+
 void UHUDTurretSelectionMenu::TurretHasBeenSelected(bool bIsChecked, UDA_TurretInfo* turretInformation)
 {
-	if (!bIsChecked)
-	{
-		return;
-	}
-
 	UE_LOG(LogTemp, Warning, TEXT("Checkbox is doing things"));
+
+	OnMenuSelectionSigniture.Broadcast(bIsChecked, turretInformation);
+
 }
