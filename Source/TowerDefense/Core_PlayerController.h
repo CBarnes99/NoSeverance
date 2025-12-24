@@ -97,45 +97,60 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	UInputMappingContext* defaultMappingContext;
 
-	UPROPERTY(EditAnywhere, Category = "Input_Combat")
-	UInputMappingContext* combatMappingContext;
-
-	UPROPERTY(EditAnywhere, Category = "Input_Turret")
-	UInputMappingContext* turretPlacingMappingContext;
-
-	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* moveActionInput;
-
-	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* lookActionInput;
-
-	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* jumpActionInput;
-
-	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* runActionInput;
-
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	UInputAction* startEnemyWaveActionInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* openTurretSelectionMenu;
+	UInputAction* scrollWheelSelectionInput;
+
+	//-------------------------------------------------//
+
+	UPROPERTY(EditAnywhere, Category = "Input_Combat")
+	UInputMappingContext* combatMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Combat")
 	UInputAction* attackActionInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* scrollWheelSelectionInput;
+	//-------------------------------------------------//
+
+	UPROPERTY(EditAnywhere, Category = "Input_Turret")
+	UInputMappingContext* turretPlacingMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	UInputAction* confirmTurretPlacementInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Turret")
-	UInputAction* rotateTurretRightInput; 
-	
+	UInputAction* rotateTurretRightInput;
+
 	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	UInputAction* rotateTurretLeftInput;
 
+	//-------------------------------------------------//
+
+	UPROPERTY(EditAnywhere, Category = "Input_Movement")
+	UInputMappingContext* movementMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input_Movement")
+	UInputAction* moveActionInput;
+
+	UPROPERTY(EditAnywhere, Category = "Input_Movement")
+	UInputAction* lookActionInput;
+
+	UPROPERTY(EditAnywhere, Category = "Input_Movement")
+	UInputAction* jumpActionInput;
+
+	UPROPERTY(EditAnywhere, Category = "Input_Movement")
+	UInputAction* runActionInput;
+
+	//-------------------------------------------------//
+
+	UPROPERTY(EditAnywhere, Category = "Input_GameMenus")
+	UInputMappingContext* gameMenuWidgetsActionsMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input_GameMenus")
+	UInputAction* openTurretSelectionMenu;
+
+	//-------------------------------------------------//
 
 	//Input Actions Functions
 	UFUNCTION(BlueprintCallable)

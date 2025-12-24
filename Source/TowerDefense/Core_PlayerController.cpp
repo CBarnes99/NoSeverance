@@ -18,14 +18,10 @@ void ACore_PlayerController::BeginPlay()
 	enhancedInputSubSystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	if (enhancedInputSubSystem)
 	{
-		if (defaultMappingContext)
-		{
-			enhancedInputSubSystem->AddMappingContext(defaultMappingContext, 0);
-		}
-		if (combatMappingContext)
-		{
-			enhancedInputSubSystem->AddMappingContext(combatMappingContext, 1);
-		}
+		enhancedInputSubSystem->AddMappingContext(defaultMappingContext, 0);
+		enhancedInputSubSystem->AddMappingContext(movementMappingContext, 0);
+		enhancedInputSubSystem->AddMappingContext(gameMenuWidgetsActionsMappingContext, 0);
+		enhancedInputSubSystem->AddMappingContext(combatMappingContext, 0);
 	}
 	else
 	{
@@ -120,8 +116,9 @@ void ACore_PlayerController::MouseLookAction(const FInputActionValue& Value)
 	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Mouse"));
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	myPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
+	myPlayerCharacter->AddControllerPitchInput(-LookAxisVector.Y);
 	myPlayerCharacter->AddControllerYawInput(LookAxisVector.X);
+
 
 	if (enhancedInputSubSystem->HasMappingContext(turretPlacingMappingContext))
 	{
@@ -180,10 +177,12 @@ void ACore_PlayerController::OpenTurretSelectionMenu()
 	if (coreHUD->GetIsTurretSelectionMenuVisable())
 	{
 		UpdateMappingContext(combatMappingContext, false, 0);
+		UpdateMappingContext(movementMappingContext, false, 0);
 	}
 	else
 	{
 		UpdateMappingContext(combatMappingContext, true, 0);
+		UpdateMappingContext(movementMappingContext, true, 0);
 	}
 }
 
@@ -330,14 +329,23 @@ void ACore_PlayerController::HaveMappingContextsBeenAsigned()
 {
 	if (!defaultMappingContext)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO DEFUALT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("NO DEFUALT MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 	if (!combatMappingContext)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO COMBAT MAPPING CONTEXT WITHIN %s"), *this->GetName());
-	}if (!turretPlacingMappingContext)
+		UE_LOG(LogTemp, Fatal, TEXT("NO COMBAT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+	}
+	if (!turretPlacingMappingContext)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO TURRET MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("NO TURRET MAPPING CONTEXT WITHIN %s"), *this->GetName());
+	}
+	if (!movementMappingContext)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("NO MOVEMENT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+	}
+	if (!gameMenuWidgetsActionsMappingContext)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("NO GAME MENUS MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 }
 ;

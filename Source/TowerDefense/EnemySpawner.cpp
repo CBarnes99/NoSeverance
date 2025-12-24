@@ -65,10 +65,8 @@ void AEnemySpawner::SpawningFunctionForTimer()
 {
 	if (IsEnemyCollisionOverlap())
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Enemy In %s Collision Area"), *this->GetName());
 		return;
 	}
-
 	SpawnEnemyActor();
 }
 
