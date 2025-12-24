@@ -34,16 +34,28 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateIgnoreActors(AActor* actor, bool addToArray);
 
+	UFUNCTION(BlueprintCallable)
+	AActor* GetPreviewActorFromPool(TSubclassOf<AActor> actorClass);
+
+	UFUNCTION(BlueprintCallable)
+	void DisablePreviewActor(AActor* actor);
+
+	UFUNCTION(BlueprintCallable)
+	void EnablePreviewActor(AActor* actor);
+
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly)
 	TSubclassOf<AActor> actorClassToSpawn;
 
-	UPROPERTY(EditDefaultsOnly)
-	AActor* previewActor;
+	UPROPERTY(VisibleDefaultsOnly)
+	AActor* currentPreviewActor;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly)
+	TArray<AActor*> previewActorPool;
+
+	UPROPERTY(VisibleDefaultsOnly)
 	bool bIsPlacing;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -52,7 +64,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float rotationDegrees;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly)
 	TArray<AActor*> actorsToIgnore;
 
 	/**

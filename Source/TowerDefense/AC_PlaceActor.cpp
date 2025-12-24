@@ -19,18 +19,16 @@ void UAC_PlaceActor::BeginPlay()
 void UAC_PlaceActor::StartPlacement(TSubclassOf<AActor> actorClass)
 {
 
-	if (previewActor != nullptr) 
+	if (currentPreviewActor != nullptr) 
 	{
-		previewActor->Destroy();
-		previewActor = nullptr;
+		DisablePreviewActor(currentPreviewActor);
+		currentPreviewActor = nullptr;
 	}
 
 	actorClassToSpawn = actorClass;
-	FActorSpawnParameters spawnParams;
 
-	previewActor = GetWorld()->SpawnActor<AActor>(actorClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
-	previewActor->SetActorEnableCollision(false);
-	UpdateIgnoreActors(previewActor, true);
+	currentPreviewActor = GetPreviewActorFromPool(actorClass);
+	EnablePreviewActor(currentPreviewActor);
 	bIsPlacing = true;
 
 }
@@ -44,33 +42,32 @@ void UAC_PlaceActor::UpdatePlacementLocation(FVector traceStartLocation, FVector
 
 	FVector traceHitLocation = GetTraceTargetLocation(traceStartLocation, forwardVector);
 
-	previewActor->SetActorLocation(traceHitLocation);
+	currentPreviewActor->SetActorLocation(traceHitLocation);
 
 }
 
 void UAC_PlaceActor::ConfirmPlacement()
 {
-	if (actorClassToSpawn == NULL || previewActor == nullptr)
+	if (actorClassToSpawn == NULL || currentPreviewActor == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Within Confirm Placement in AC_PlaceActor, either ActorClassToSpawn is NULL or PreviewActor is nullptr!!!"));
 		return;
 	}
 	FActorSpawnParameters spawnParams;
-	GetWorld()->SpawnActor<AActor>(actorClassToSpawn, previewActor->GetActorTransform(), spawnParams);
+	GetWorld()->SpawnActor<AActor>(actorClassToSpawn, currentPreviewActor->GetActorTransform(), spawnParams);
 
 }
 
 void UAC_PlaceActor::CancelPlacement()
 {
-	if (previewActor == nullptr)
+	if (currentPreviewActor == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Within CancelPlacement in AC_PlaceActor, either PreviewActor is nullptr!"));
 		return;
 	}
 
-	UpdateIgnoreActors(previewActor, false);
-
-	previewActor->Destroy();
+	DisablePreviewActor(currentPreviewActor);
+	currentPreviewActor = nullptr;
 	bIsPlacing = false;
 	actorClassToSpawn = NULL;
 
@@ -79,19 +76,19 @@ void UAC_PlaceActor::CancelPlacement()
 
 void UAC_PlaceActor::RotatePlacement(float directon)
 {
-	if (previewActor == nullptr)
+	if (currentPreviewActor == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Within RotatePlacement in AC_PlaceActor, either PreviewActor is nullptr!"));
 		return;
 	}
 
-	float actorCurrentYawRotation = previewActor->GetActorRotation().Yaw;
+	float actorCurrentYawRotation = currentPreviewActor->GetActorRotation().Yaw;
 	
 	float newYawRotation = ((directon * rotationDegrees) + actorCurrentYawRotation);
 
-	FRotator newRotation = FRotator(previewActor->GetActorRotation().Pitch, newYawRotation, previewActor->GetActorRotation().Roll);
+	FRotator newRotation = FRotator(currentPreviewActor->GetActorRotation().Pitch, newYawRotation, currentPreviewActor->GetActorRotation().Roll);
 
-	previewActor->SetActorRotation(newRotation);
+	currentPreviewActor->SetActorRotation(newRotation);
 
 }
 
@@ -112,6 +109,38 @@ void UAC_PlaceActor::UpdateIgnoreActors(AActor* actor, bool addToArray)
 	}
 }
 
+AActor* UAC_PlaceActor::GetPreviewActorFromPool(TSubclassOf<AActor> actorClass)
+{
+	for (AActor* actor : previewActorPool)
+	{
+		if (actor->IsA(actorClass))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Set Current Actor To actor within GetPreviewActorFromPool"));
+			return actor;
+		}
+	}
+	FActorSpawnParameters spawnParams;
+	AActor* newActor = GetWorld()->SpawnActor<AActor>(actorClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+	previewActorPool.AddUnique(newActor);
+	DisablePreviewActor(newActor);
+	UpdateIgnoreActors(newActor, true);
+	UE_LOG(LogTemp, Warning, TEXT("Created new preview actor, number of actors within pool = %d"), previewActorPool.Num());
+
+	return newActor;
+}
+
+void UAC_PlaceActor::DisablePreviewActor(AActor* actor)
+{
+	actor->SetActorHiddenInGame(true);
+	actor->SetActorEnableCollision(false);
+	actor->SetActorTickEnabled(false);
+	actor->SetActorRotation(FRotator::ZeroRotator);
+}
+
+void UAC_PlaceActor::EnablePreviewActor(AActor* actor)
+{
+	actor->SetActorHiddenInGame(false);
+}
 
 FVector UAC_PlaceActor::GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector)
 {
@@ -120,6 +149,7 @@ FVector UAC_PlaceActor::GetTraceTargetLocation(FVector traceStartLocation, FVect
 	FVector traceEnd = traceStartLocation + actorForwardVector * traceDistance;
 
 	params.AddIgnoredActor(GetOwner());
+	params.AddIgnoredActors(actorsToIgnore);
 
 	GetWorld()->LineTraceMultiByChannel(hits, traceStartLocation, traceEnd, ECC_Visibility, params);
 
