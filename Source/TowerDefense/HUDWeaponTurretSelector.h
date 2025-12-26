@@ -20,8 +20,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GetInfoFromTurretMenu(bool bIsChecked, UDA_TurretInfo* turretInformation);
 
+	//TSubclassOf<ATurretStatic> GetTurretClassFromArray(int index);
 	UFUNCTION(BlueprintCallable)
-	TSubclassOf<ATurretStatic> GetTurretClassFromArray(int index);
+	UDA_TurretInfo* GetTurretClassFromArray(int index);
 
 protected:
 

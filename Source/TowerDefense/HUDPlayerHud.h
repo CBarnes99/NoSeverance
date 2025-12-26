@@ -7,6 +7,7 @@
 class UHUDHealthAndMana;
 class UHUDWeaponTurretSelector;
 class UHUDCrosshair;
+class UHUDPlayerCurrency;
 
 UCLASS(Abstract)
 class TOWERDEFENSE_API UHUDPlayerHud : public UUserWidget
@@ -23,4 +24,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDCrosshair* Crosshair;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UHUDPlayerCurrency* PlayerCurrency;
 };

@@ -6,12 +6,17 @@
 
 class ATurretStatic;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerCurrencyUpdatedSigniture, float, playerCurrencyAmount);
+
 UCLASS()
 class TOWERDEFENSE_API ACore_GameState : public AGameStateBase
 {
 	GENERATED_BODY()
 	
 public:
+
+	UPROPERTY(BlueprintAssignable)
+	FPlayerCurrencyUpdatedSigniture PlayerCurrencyUpdatedEvent;
 
 	UFUNCTION(BlueprintCallable)
 	float GetPlayerCurrencyAmount();

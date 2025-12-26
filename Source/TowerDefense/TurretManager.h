@@ -6,6 +6,8 @@
 
 class UAC_PlaceActor;
 class ATurretStatic;
+class UDA_TurretInfo;
+class ACore_GameState;
 
 UCLASS()
 class TOWERDEFENSE_API ATurretManager : public AActor
@@ -83,12 +85,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateTurretPlacementLocation(FVector traceStartLocation, FVector forwardVector);
 
-
+	//void StartTurretPlacement(TSubclassOf<AActor> actorClass);
 	UFUNCTION(BlueprintCallable)
-	void StartTurretPlacement(TSubclassOf<AActor> actorClass);
+	void StartTurretPlacement(UDA_TurretInfo* turretInfo);
+	
+	UPROPERTY(VisibleAnywhere)
+	UDA_TurretInfo* currentTurretInfo;
+
 
 	UFUNCTION(BlueprintCallable)
 	void ConfirmTurretPlacement();
+
+	UFUNCTION(BlueprintCallable)
+	bool IsAbleToPlaceTurret();
 
 	UFUNCTION(BlueprintCallable)
 	void CancelTurretPlacement();
@@ -103,7 +112,8 @@ public:
 	void UpdateIgnoreActors(AActor* actor, bool addToArray);
 
 
-
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	ACore_GameState* coreGameState;
 
 
 

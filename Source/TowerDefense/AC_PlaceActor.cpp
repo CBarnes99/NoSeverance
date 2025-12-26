@@ -13,7 +13,6 @@ void UAC_PlaceActor::BeginPlay()
 	Super::BeginPlay();
 
 	bIsPlacing = false;
-	
 }
 
 void UAC_PlaceActor::StartPlacement(TSubclassOf<AActor> actorClass)
@@ -53,9 +52,10 @@ void UAC_PlaceActor::ConfirmPlacement()
 		UE_LOG(LogTemp, Error, TEXT("Within Confirm Placement in AC_PlaceActor, either ActorClassToSpawn is NULL or PreviewActor is nullptr!!!"));
 		return;
 	}
+
 	FActorSpawnParameters spawnParams;
 	GetWorld()->SpawnActor<AActor>(actorClassToSpawn, currentPreviewActor->GetActorTransform(), spawnParams);
-
+	
 }
 
 void UAC_PlaceActor::CancelPlacement()
@@ -70,8 +70,6 @@ void UAC_PlaceActor::CancelPlacement()
 	currentPreviewActor = nullptr;
 	bIsPlacing = false;
 	actorClassToSpawn = NULL;
-
-
 }
 
 void UAC_PlaceActor::RotatePlacement(float directon)
@@ -89,7 +87,6 @@ void UAC_PlaceActor::RotatePlacement(float directon)
 	FRotator newRotation = FRotator(currentPreviewActor->GetActorRotation().Pitch, newYawRotation, currentPreviewActor->GetActorRotation().Roll);
 
 	currentPreviewActor->SetActorRotation(newRotation);
-
 }
 
 bool UAC_PlaceActor::IsPlacing()

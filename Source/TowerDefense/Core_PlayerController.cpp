@@ -222,7 +222,6 @@ void ACore_PlayerController::ConfirmTurretPlacementAction()
 }
 void ACore_PlayerController::RotateTurret(const FInputActionValue& Value)
 {
-
 	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
 	//myPlayerCharacter->RotateTurret(Value.Get<float>());
 	turretManager->RotateTurretPlacement(Value.Get<float>());
@@ -249,17 +248,16 @@ void ACore_PlayerController::UpdateHotbarSelection()
 
 	UE_LOG(LogTemp, Warning, TEXT("Hotbar Index is %d"), hotbarSelectionIndex);
 
-
-	if (hotbarSelectionIndex > 0 && hotbarSelectionIndex != previousHotbarSelectionIndex && GetTurretClassEvent.IsBound())
+	if (hotbarSelectionIndex > 0 && hotbarSelectionIndex != previousHotbarSelectionIndex && GetTurretDAEvent.IsBound())
 	{
 		UpdateMappingContext(combatMappingContext, false, 0);
 		UpdateMappingContext(turretPlacingMappingContext, true, 1);
 
 		previousHotbarSelectionIndex = hotbarSelectionIndex;
 
-		TSubclassOf<ATurretStatic> turretClass = GetTurretClassEvent.Execute(hotbarSelectionIndex - 1);
+		UDA_TurretInfo* turretDA = GetTurretDAEvent.Execute(hotbarSelectionIndex - 1);
 
-		turretManager->StartTurretPlacement(turretClass);
+		turretManager->StartTurretPlacement(turretDA);
 		turretManager->UpdateTurretPlacementLocation(myPlayerCharacter->GetCameraLocation(), myPlayerCharacter->GetCameraForwardVector());
 
 	}

@@ -37,6 +37,8 @@ void ACore_GameState::SetPlayerCurrencyAmount(bool addCurrency, float amount)
 	{
 		playerCurrencyAmount = playerCurrencyAmount - amount;
 	}
+
+	PlayerCurrencyUpdatedEvent.Broadcast(playerCurrencyAmount);
 }
 
 int ACore_GameState::GetMaxListSizeInWeaponTurretHud()

@@ -4,7 +4,6 @@
 #include "Components/ActorComponent.h"
 #include "AC_PlaceActor.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TOWERDEFENSE_API UAC_PlaceActor : public UActorComponent
 {

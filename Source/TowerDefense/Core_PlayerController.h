@@ -14,9 +14,10 @@ class ACore_HUD;
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputMappingContext;
 class UInputAction;
+class UDA_TurretInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStartWaveSigniture);
-DECLARE_DELEGATE_RetVal_OneParam(TSubclassOf<ATurretStatic>, FGetTurretClassSigniture, int)
+DECLARE_DELEGATE_RetVal_OneParam(UDA_TurretInfo*, FGetTurretDASigniture, int)
 
 UCLASS()
 class TOWERDEFENSE_API ACore_PlayerController : public APlayerController
@@ -28,8 +29,8 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FStartWaveSigniture StartWaveEvent;
 
-	/** A delegate to get the current class the player has selected from the HUDWeaponTurretSelector */
-	FGetTurretClassSigniture GetTurretClassEvent;
+	/** A delegate to get the current turrets Data Asset the player has selected from the HUDWeaponTurretSelector */
+	FGetTurretDASigniture GetTurretDAEvent;
 
 protected:
 

@@ -11,7 +11,8 @@ void UHUDWeaponTurretSelector::NativeConstruct()
 {
 	APlayerController* playerController = GetOwningLocalPlayer()->GetPlayerController(GetWorld());
 	ACore_PlayerController* coreController = Cast<ACore_PlayerController>(playerController);
-	coreController->GetTurretClassEvent.BindUObject(this, &UHUDWeaponTurretSelector::GetTurretClassFromArray);
+	//coreController->GetTurretClassEvent.BindUObject(this, &UHUDWeaponTurretSelector::GetTurretClassFromArray);
+	coreController->GetTurretDAEvent.BindUObject(this, &UHUDWeaponTurretSelector::GetTurretClassFromArray);
 }
 
 void UHUDWeaponTurretSelector::GetInfoFromTurretMenu(bool bIsChecked, UDA_TurretInfo* turretInformation)
@@ -73,7 +74,9 @@ void UHUDWeaponTurretSelector::SetCurrentTurretClass()
 	//coreGameState->SetCurrentTurretClass()
 }
 
-TSubclassOf<ATurretStatic> UHUDWeaponTurretSelector::GetTurretClassFromArray(int index)
+//TSubclassOf<ATurretStatic> UHUDWeaponTurretSelector::GetTurretClassFromArray(int index)
+UDA_TurretInfo* UHUDWeaponTurretSelector::GetTurretClassFromArray(int index)
 {
-	return arrayOfTurretInfo[index]->turretClass;
+	//return arrayOfTurretInfo[index]->turretClass;
+	return arrayOfTurretInfo[index];
 }
