@@ -8,6 +8,7 @@ class UHUDHealthAndMana;
 class UHUDWeaponTurretSelector;
 class UHUDCrosshair;
 class UHUDPlayerCurrency;
+class UHUDBaseHealth;
 
 UCLASS(Abstract)
 class TOWERDEFENSE_API UHUDPlayerHud : public UUserWidget
@@ -27,4 +28,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDPlayerCurrency* PlayerCurrency;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UHUDBaseHealth* BaseHealth;
 };

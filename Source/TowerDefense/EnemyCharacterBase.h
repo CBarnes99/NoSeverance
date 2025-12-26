@@ -44,6 +44,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetNextPathNodeLocation();
 
+	/** When the enemy loses all their health or has reached the defending base, on death is called */
+	UFUNCTION(BlueprintCallable)
+	void OnDeath();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -86,12 +90,6 @@ protected:
 	//The built in take damage function
 	UFUNCTION(BlueprintCallable)
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-
-	/**
-	* @brief When the enemy loses all their health, on death is called
-	*/
-	UFUNCTION(BlueprintCallable)
-	void OnDeath();
 
 	/**
 	* @brief On death, check to see if they will drop the item

@@ -5,23 +5,40 @@
 #include "DefendingBase.generated.h"
 
 class UStaticMeshComponent;
+class USphereComponent;
+
+DECLARE_DELEGATE_OneParam(FBaseHealthDecreasedSigniture, int);
+DECLARE_DELEGATE(FBaseHealthReachedZeroSigniture);
 
 UCLASS()
 class TOWERDEFENSE_API ADefendingBase : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:
+
 	ADefendingBase();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	FBaseHealthDecreasedSigniture BaseHealthDecreasedEvent;
+
+	FBaseHealthReachedZeroSigniture BaseHealthReachedZeroEvent;
+
+	UFUNCTION(BlueprintCallable)
+	int GetBaseHealth();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* base;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UStaticMeshComponent* baseMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	USphereComponent* enemyCollisionDetection;
+
+	UFUNCTION(BlueprintCallable)
+	void OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY(VisibleAnywhere)
+	int baseHealth;
+	
 };
