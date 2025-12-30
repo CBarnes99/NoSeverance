@@ -92,6 +92,8 @@ void ACore_PlayerController::SetupInputComponent()
 
 		Input->BindAction(confirmTurretPlacementInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::ConfirmTurretPlacementAction);
 
+		Input->BindAction(cancelTurretPlacement, ETriggerEvent::Triggered, this, &ACore_PlayerController::CancelTurretPlacementAction);
+
 		Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
 		Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
 
@@ -220,13 +222,18 @@ void ACore_PlayerController::ConfirmTurretPlacementAction()
 	}
 
 }
+void ACore_PlayerController::CancelTurretPlacementAction()
+{
+	hotbarSelectionIndex = 0;
+	UpdateHotbarSelection();
+}
+
 void ACore_PlayerController::RotateTurret(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
 	//myPlayerCharacter->RotateTurret(Value.Get<float>());
 	turretManager->RotateTurretPlacement(Value.Get<float>());
 }
-
 
 void ACore_PlayerController::UpdateHotbarSelection()
 {
