@@ -2,9 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/SplineComponent.h"
-#include "Components/ArrowComponent.h"
 #include "EnemyPathSpline.generated.h"
+
+class USplineComponent;
+class UArrowComponent;
 
 UCLASS()
 class TOWERDEFENSE_API AEnemyPathSpline : public AActor
@@ -20,6 +21,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	void OnConstruction(const FTransform& Transform) override;
 
 	/** The Spline Path*/
 	UPROPERTY(EditDefaultsOnly)

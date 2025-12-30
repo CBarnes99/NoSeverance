@@ -1,10 +1,14 @@
 #include "EnemyPathSpline.h"
+#include "Components/SplineComponent.h"
+#include "Components/ArrowComponent.h"
 
 AEnemyPathSpline::AEnemyPathSpline()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	splinePath = CreateDefaultSubobject<USplineComponent>(TEXT("Spline Path"));
+	splinePath->SetSplinePointType(0, ESplinePointType::Linear);
+
 	arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 
 	RootComponent = splinePath;
@@ -15,6 +19,16 @@ void AEnemyPathSpline::BeginPlay()
 {
 	Super::BeginPlay();	
 	GetSplinePointLocations();
+}
+
+void AEnemyPathSpline::OnConstruction(const FTransform& Transform)
+{
+	int splinePoints = splinePath->GetNumberOfSplinePoints();
+
+	for (int i = 0; i < splinePoints; i++)
+	{
+		splinePath->SetSplinePointType(i, ESplinePointType::Linear, true);
+	}
 }
 
 TArray<FVector> AEnemyPathSpline::GetSplinePointLocations()
