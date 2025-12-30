@@ -11,7 +11,6 @@
 #include "AC_Mana.h"
 #include "WeaponBase.h"
 
-
 APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;

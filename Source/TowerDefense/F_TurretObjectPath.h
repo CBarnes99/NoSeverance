@@ -11,12 +11,7 @@ struct TOWERDEFENSE_API F_TurretObjectPath : public FTableRowBase
 public:
 	GENERATED_BODY()
 
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	//FString nameOfTurret;
-
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	//FString turretObjectFilePath;
-
+	/** Turret Class */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSoftClassPtr<ATurretStatic> turretClass;
 

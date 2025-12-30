@@ -1,5 +1,6 @@
 #include "AC_SpawnProjectile.h"
 #include "DrawDebugHelpers.h"
+#include "ProjectileBase.h"
 
 UAC_SpawnProjectile::UAC_SpawnProjectile()
 {
@@ -33,6 +34,13 @@ void UAC_SpawnProjectile::InitializePool(float fireRate, float lifetime)
 	}
 	UE_LOG(LogTemp, Warning, TEXT("There are %d projectiles pooled"), amountInPool);
 
+
+	TArray<AActor*> projectilesToIgnore;
+	for (AProjectileBase* projectileFromPool : projectilePool)
+	{
+		projectilesToIgnore.Add(Cast<AActor>(projectileFromPool));
+	}
+	targetLocaionQueryParams.AddIgnoredActors(projectilesToIgnore);
 }
 
 void UAC_SpawnProjectile::spawnProjectile()
@@ -75,15 +83,14 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	if (!currentProjectile)
 	{
-		//return;
 		TRACE_BOOKMARK(TEXT("SpawnedProjectile"));
 		spawnProjectile();
 		currentProjectile = GetInactiveProjectile();
 		poolSize++;
-		UE_LOG(LogTemp, Warning, TEXT("Added another projectile to the pool for - %s. There are %f projectiles within the pool"), *GetOwner()->GetName(), poolSize);
+		UE_LOG(LogTemp, Error, TEXT("Added another projectile to the pool for - %s. There are %f projectiles within the pool"), *GetOwner()->GetName(), poolSize);
 	}
+	
 	//UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
-
 	currentProjectile->SetActorLocation(spawnLocation);
 	currentProjectile->SetActorRotation(spawnRotation);
 
@@ -115,7 +122,7 @@ FVector UAC_SpawnProjectile::GetTraceTargetLocation(FVector traceStartLocation, 
 	FHitResult hit;
 	FVector traceEnd = traceStartLocation + actorForwardVector * 5000.f;
 
-	GetWorld()->LineTraceSingleByChannel(hit, traceStartLocation, traceEnd, ECC_Pawn);
+	GetWorld()->LineTraceSingleByChannel(hit, traceStartLocation, traceEnd, ECC_Pawn, targetLocaionQueryParams);
 
 	DrawDebugLine(GetWorld(), traceStartLocation, traceEnd, FColor::Red, false, 2.f, 1.f);
 

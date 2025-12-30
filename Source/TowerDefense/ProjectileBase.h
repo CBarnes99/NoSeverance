@@ -31,21 +31,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool GetDefualtsBeenSet();
 
-	///** The amount of damage you want this projectile to deal
-	//* @param damageAmount The amount of Damage, as a float */
-	//UFUNCTION(BlueprintCallable, Category = "Spawning")
-	//void SetDamage(float damageAmount);
-
-	///** How fast you want the projectile to fly
-	//* @param speed The speed of the projectile, as a Float */
-	//UFUNCTION(BlueprintCallable, Category = "Spawning")
-	//void SetProjectileSpeed(float speed);
-
-	///** Set the lifetime of the projectile
-	//* @param lifetime the lifetime of the projectile, as a Float */
-	//UFUNCTION(BlueprintCallable, Category = "Spawning")
-	//void SetProjectileLifetime(float projectileLifetime);
-
 	/** A check to see if the projectile is active or in the pool
 	* @return True, the projectile is active, False, the projectile is avaliable to use from the pool */
 	UFUNCTION(BlueprintCallable, Category = "Spawning")

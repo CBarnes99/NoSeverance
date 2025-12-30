@@ -18,16 +18,8 @@ void AWeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	/*damageDelt = weaponStats->damageDelt;
-	currentAmmo = weaponStats->ammoMax;
-	maxAmmo = weaponStats->ammoMax;
-	projectileSpeed = weaponStats->projectileSpeed;
-	weaponMuzzleName = weaponStats->muzzleName;*/
-
-	//UE_LOG(LogTemp, Warning, TEXT("In Weapon Base!! Owner = %s, Instigator - %s"), *GetOwner()->GetName(), *GetInstigator()->GetName());
 	spawnProjectileComponent->InitializePool(weaponStats->fireRate, weaponStats->lifetime);
 	bCanFire = true;
-
 }
 
 FVector AWeaponBase::GetWeaponMuzzleLocation()

@@ -1,9 +1,10 @@
 #include "TurretManager.h"
-#include "F_TurretObjectPath.h"
+//#include "F_TurretObjectPath.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerCharacter.h"
 #include "AC_PlaceActor.h"
 #include "Core_GameState.h"
+#include "DA_TurretInfo.h"
 
 ATurretManager::ATurretManager()
 {

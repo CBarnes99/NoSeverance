@@ -54,22 +54,6 @@ bool AProjectileBase::GetDefualtsBeenSet()
 	return hasDefaultsBeenSet;
 }
 
-//void AProjectileBase::SetDamage(float damageAmount)
-//{
-//	damageDelt = damageAmount;
-//}
-//
-//void AProjectileBase::SetProjectileSpeed(float speed)
-//{
-//	projectileMovementComponent->InitialSpeed = speed;
-//	projectileMovementComponent->MaxSpeed = speed;
-//}
-//
-//void AProjectileBase::SetProjectileLifetime(float projectileLifetime)
-//{
-//	lifeTime = projectileLifetime;
-//}
-
 bool AProjectileBase::IsProjectileActive()
 {
 	return isActive; 

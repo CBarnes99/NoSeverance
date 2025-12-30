@@ -2,9 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "ProjectileBase.h"
 #include "AC_SpawnProjectile.generated.h"
 
+class AProjectileBase;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TOWERDEFENSE_API UAC_SpawnProjectile : public UActorComponent
@@ -34,7 +34,7 @@ protected:
 
 	/** The projectile class you want to fire from the weapon */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	class TSubclassOf<AProjectileBase> projectile;
+	TSubclassOf<AProjectileBase> projectile;
 
 	/** Returns the projectile that isn't currently in use within the pool
 	* @return The projectile that is currently inactive within the pool, as a AProjectileBase* */
@@ -62,6 +62,9 @@ protected:
 	/** Amount of projectiles in the pool, used for logging and if another pojectile is needed to spawn in the pool */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawning")
 	int amountInPool;
+
+	//UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	FCollisionQueryParams targetLocaionQueryParams;
 
 };
 

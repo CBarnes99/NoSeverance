@@ -80,14 +80,18 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bCanFire;
 
+	/** A function that starts the fireRateHandle timer and at the timers end, it calls EnableCanFire */
 	UFUNCTION(BlueprintCallable)
 	void StartWeaponFireRateCooldown();
 
+	/** The timer handle for the fire rate of the weapon */
 	FTimerHandle fireRateHandle;
 
+	/** A Function called by the fireRateHandle Timer to enable the weapon to fire */
 	UFUNCTION(BlueprintCallable)
 	void EnableCanFire();
 
+	/** Called after a projectile has been fired to disable the ability to fire again until the fireRateHandle Timer has been called */
 	UFUNCTION(BlueprintCallable)
 	void DisableCanFire();
 };
