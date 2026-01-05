@@ -19,6 +19,7 @@ class AAIController;
 class UAIPerceptionStimuliSourceComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathSignature, AEnemyCharacterBase*, Enemy);
+DECLARE_DELEGATE(FOnDisableSignature);
 
 UCLASS()
 class TOWERDEFENSE_API AEnemyCharacterBase : public ACharacter
@@ -36,6 +37,8 @@ public:
 	/** Bound in the Spawner manager to keep track of how many enemies are left in the round */
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnEnemyDeathSignature OnEnemyDeathEvent;
+
+	FOnDisableSignature OnDisableEvent;
 
 	/** Sets the Path Node Locations
 	* @param nodeLocations The Locations of the path nodes you want the enemy to follow, as a TArray<FVector> */

@@ -6,6 +6,7 @@
 
 class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
+class UBehaviorTree;
 
 UCLASS()
 class TOWERDEFENSE_API AEnemyAIController : public AAIController
@@ -21,6 +22,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBehaviorTree* behaviorTree;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UBlackboardComponent* AIBlackboard;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -31,4 +35,7 @@ protected:
 
 	UFUNCTION()
 	void OnTargetPerceptionUpdated(AActor* actor, FAIStimulus stimulus);
+
+	UFUNCTION(BlueprintCallable)
+	void DisableAIController();
 };

@@ -41,7 +41,13 @@ EBTNodeResult::Type UBTTask_SetPathNodeLocation::ExecuteTask(UBehaviorTreeCompon
 		return EBTNodeResult::Failed;
 	}
 
-	OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), nextPathNodeLocation);
+	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool("bHasReachedNode"))
+	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), nextPathNodeLocation);
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool("bHasReachedNode", false);
+
+		return EBTNodeResult::Succeeded;
+	}
 
 	return EBTNodeResult::Succeeded;
 }

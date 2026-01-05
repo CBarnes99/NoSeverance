@@ -13,9 +13,7 @@ public:
 
 	explicit UBTTask_SetPathNodeLocation(FObjectInitializer const& ObjectInitializer);
 
-	/**
-	*@brief A created task to set the location for the next path node for the enemy to follow
-	*/
+	/** A created task to set the location for the next path node for the enemy to follow */
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 };

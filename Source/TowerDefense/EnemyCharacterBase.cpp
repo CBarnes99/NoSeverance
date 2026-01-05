@@ -107,6 +107,7 @@ void AEnemyCharacterBase::DisableEnemy()
 
 	if (GetController() && enemyAIController)
 	{
+		OnDisableEvent.ExecuteIfBound();
 		enemyAIController->UnPossess();
 	}
 

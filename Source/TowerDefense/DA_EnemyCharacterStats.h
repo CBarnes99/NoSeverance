@@ -4,6 +4,8 @@
 #include "Engine/DataAsset.h"
 #include "DA_EnemyCharacterStats.generated.h"
 
+class AAIController;
+
 UCLASS(Blueprintable)
 class TOWERDEFENSE_API UDA_EnemyCharacterStats : public UDataAsset
 {

@@ -15,8 +15,6 @@ APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	Tags.Add(FName("Player"));
-
 	static ConstructorHelpers::FClassFinder<AActor> weaponBP(TEXT("/Game/Weapons/BP_WeaponBase"));
 	if (weaponBP.Class)
 	{
@@ -58,6 +56,8 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Tags.Add(FName("Player"));
 
 	//name = DA_playerInfo->name;
 	healthComponent->SetHealth(DA_playerInfo->health);
