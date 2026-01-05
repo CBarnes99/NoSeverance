@@ -15,6 +15,8 @@ APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	Tags.Add(FName("Player"));
+
 	static ConstructorHelpers::FClassFinder<AActor> weaponBP(TEXT("/Game/Weapons/BP_WeaponBase"));
 	if (weaponBP.Class)
 	{

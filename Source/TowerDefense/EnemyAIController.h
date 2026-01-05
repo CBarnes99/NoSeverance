@@ -2,8 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "BehaviorTree/BehaviorTree.h"
 #include "EnemyAIController.generated.h"
+
+class UAIPerceptionComponent;
+class UAISenseConfig_Sight;
 
 UCLASS()
 class TOWERDEFENSE_API AEnemyAIController : public AAIController
@@ -12,5 +14,21 @@ class TOWERDEFENSE_API AEnemyAIController : public AAIController
 
 protected:
 
+	AEnemyAIController();
+
 	virtual void OnPossess(APawn* InPawn) override;
+
+	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBlackboardComponent* AIBlackboard;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAIPerceptionComponent* AIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAISenseConfig_Sight* senseSightConfig;
+
+	UFUNCTION()
+	void OnTargetPerceptionUpdated(AActor* actor, FAIStimulus stimulus);
 };

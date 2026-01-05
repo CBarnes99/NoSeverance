@@ -9,6 +9,8 @@
 #include "AC_Health.h"
 #include "E_EnemyDrop.h"
 #include "EnemyAIController.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 AEnemyCharacterBase::AEnemyCharacterBase()
 {
@@ -17,6 +19,9 @@ AEnemyCharacterBase::AEnemyCharacterBase()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 
+	StimuliSourceComponent = CreateEditorOnlyDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimuli Source Component"));
+	StimuliSourceComponent->RegisterForSense(UAISense_Sight::StaticClass());
+	StimuliSourceComponent->RegisterWithPerceptionSystem();
 
 	healthComponent = CreateDefaultSubobject<UAC_Health>(TEXT("Health Componenet"));
 	pathNodeIndex = -1;

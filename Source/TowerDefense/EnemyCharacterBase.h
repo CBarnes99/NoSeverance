@@ -16,6 +16,7 @@ class UDA_EnemyCharacterStats;
 class UAC_Health;
 //class EE_EnemyDrop;
 class AAIController;
+class UAIPerceptionStimuliSourceComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathSignature, AEnemyCharacterBase*, Enemy);
 
@@ -74,6 +75,10 @@ protected:
 	/** The enemy AI Controller */
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	AAIController* enemyAIController;
+
+	/** AI Component so the enemy can use AIPerception from the AI Controller */
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	UAIPerceptionStimuliSourceComponent* StimuliSourceComponent;
 
 	/** An array of vectors that is the location for the paths nodes for the AI to follow */
 	UPROPERTY(VisibleAnywhere, Category = "AI")

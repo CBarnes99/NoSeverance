@@ -114,7 +114,7 @@ void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 	if (enemy && !enemy->OnEnemyDeathEvent.IsBound())
 	{
 		enemy->OnEnemyDeathEvent.AddDynamic(this, &ASpawnerManager::EnemyHasDied);
-		UE_LOG(LogTemp, Display, TEXT("%s Delegate has been bound in Spawner Manager"), *enemy->GetName());
+		//UE_LOG(LogTemp, Display, TEXT("%s Delegate has been bound in Spawner Manager"), *enemy->GetName());
 	}
 	else if(enemy->OnEnemyDeathEvent.IsBound())
 	{

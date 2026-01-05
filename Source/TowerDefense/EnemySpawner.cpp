@@ -41,7 +41,7 @@ AEnemyPathSpline* AEnemySpawner::GetRandomEnemyPath()
 {
 	int arraySize = enemyPathSplines.Num();
 	int randomInt = FMath::RandRange(0, arraySize - 1);
-	UE_LOG(LogTemp, Warning, TEXT("Returning - %s - from GetRandomEnemyPath within - %s"), *enemyPathSplines[randomInt]->GetName(), *this->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("Returning - %s - from GetRandomEnemyPath within - %s"), *enemyPathSplines[randomInt]->GetName(), *this->GetName());
 	return enemyPathSplines[randomInt];
 }
 
