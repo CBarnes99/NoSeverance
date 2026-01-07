@@ -1,6 +1,8 @@
 #include "BTTask_MoveToActor.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "GameFramework/Character.h"
+#include "Components/CapsuleComponent.h"
 
 UBTTask_MoveToActor::UBTTask_MoveToActor()
 {
@@ -75,8 +77,11 @@ void UBTTask_MoveToActor::UpdateMove()
 
 	float distanceFromActor = FVector::Dist(cachedControlledPawn->GetActorLocation(), currentTargetLocation);
 
-	UE_LOG(LogTemp, Error, TEXT("distanceFromActor: %f, acceptanceRadius: %f"), distanceFromActor, acceptanceRadius);
-	if (distanceFromActor <= acceptanceRadius + 36) //THE 36 IS THE CAPSULE RADIUS OF THE CHARACTER, NEED TO NOT MAKE THIS A FLOATING NUMBER
+	ACharacter* enemy = Cast<ACharacter>(cachedControlledPawn);
+	float adjustedAcceptanceRadius = enemy->GetCapsuleComponent()->GetScaledCapsuleRadius() + acceptanceRadius + 3;
+	//UE_LOG(LogTemp, Error, TEXT("distanceFromActor: %f, acceptanceRadius: %f, adjustedAcceptanceRadius: %f"), distanceFromActor, acceptanceRadius, adjustedAcceptanceRadius);
+
+	if (distanceFromActor <= adjustedAcceptanceRadius)
 	{
 		cachedAIController->StopMovement();
 		// Reached target, stop timer and finish task successfully
