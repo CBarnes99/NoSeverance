@@ -26,6 +26,9 @@ AEnemyCharacterBase::AEnemyCharacterBase()
 
 	AutoPossessAI = EAutoPossessAI::Disabled;
 	AIControllerClass = nullptr;
+
+	GetCharacterMovement()->bUseRVOAvoidance = true;
+	GetCharacterMovement()->AvoidanceConsiderationRadius = 300.f;
 }
 
 void AEnemyCharacterBase::BeginPlay()
