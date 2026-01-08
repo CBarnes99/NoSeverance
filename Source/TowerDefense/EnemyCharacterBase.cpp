@@ -209,6 +209,25 @@ FVector AEnemyCharacterBase::GetNextPathNodeLocation()
 
 }
 
+FVector AEnemyCharacterBase::GetClosestPathNodeLocation()
+{
+	float distanceFromPlayer = - 1.f;
+	FVector closestPathNode = FVector::ZeroVector;
+	int nodeIndex = - 1;
+	for (int i = 0; i < pathNodeLocations.Num() - 1; i++)
+	{
+		if (FVector::Dist(GetActorLocation(), pathNodeLocations[i]) < distanceFromPlayer || distanceFromPlayer < 0)
+		{
+			distanceFromPlayer = FVector::Dist(GetActorLocation(), pathNodeLocations[i]);
+			closestPathNode = pathNodeLocations[i];
+			nodeIndex = i;
+		}
+	}
+	pathNodeIndex = nodeIndex;
+	UE_LOG(LogTemp, Display, TEXT("New closest node is - %d, within - %s"), pathNodeIndex, *this->GetName());
+	return closestPathNode;
+}
+
 //int AEnemyCharacterBase::GetPathNodeIndex()
 //{
 //	return pathNodeIndex;

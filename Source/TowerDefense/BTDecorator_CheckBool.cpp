@@ -12,11 +12,8 @@ bool UBTDecorator_CheckBool::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	if (!blackboardComp)
 	{
 		UE_LOG(LogTemp, Error, TEXT("NO BLACKBOARD COMP WITHIN - %s"), *this->GetName());
-		false;
 	}
 
-	//bool bValue = blackboardComp->GetValueAsBool(GetSelectedBlackboardKey());
 	return blackboardComp->GetValueAsBool(BlackboardKey.SelectedKeyName);
 
-	//return bValue;
 }

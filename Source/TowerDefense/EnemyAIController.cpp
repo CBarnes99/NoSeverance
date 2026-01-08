@@ -81,19 +81,17 @@ void AEnemyAIController::OnTargetPerceptionUpdated(AActor* actor, FAIStimulus st
 
 	if (!cachedAIBlackboard || !Blackboard)
 	{
-		/*UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: cachedAIBlackboard = %s"), cachedAIBlackboard ? TEXT("Valid") : TEXT("nullptr"));
+		UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: cachedAIBlackboard = %s"), cachedAIBlackboard ? TEXT("Valid") : TEXT("nullptr"));
 		UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: Blackboard = %s"), Blackboard ? TEXT("Valid") : TEXT("nullptr"));
-		UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: blackboardCompTest = %s"), blackboardCompTest ? TEXT("Valid") : TEXT("nullptr"));
-		UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: actor = %s"), *actor->GetName());*/
+		UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: actor = %s"), *actor->GetName());
 
 		return;
 	}
 	else
 	{
-		/*UE_LOG(LogTemp, Display, TEXT("OnTargetPerceptionUpdated: cachedAIBlackboard = %s"), cachedAIBlackboard ? TEXT("Valid") : TEXT("nullptr"));
+		UE_LOG(LogTemp, Display, TEXT("OnTargetPerceptionUpdated: cachedAIBlackboard = %s"), cachedAIBlackboard ? TEXT("Valid") : TEXT("nullptr"));
 		UE_LOG(LogTemp, Display, TEXT("OnTargetPerceptionUpdated: Blackboard = %s"), Blackboard ? TEXT("Valid") : TEXT("nullptr"));
-		UE_LOG(LogTemp, Display, TEXT("OnTargetPerceptionUpdated: blackboardCompTest = %s"), blackboardCompTest ? TEXT("Valid") : TEXT("nullptr"));
-		UE_LOG(LogTemp, Display, TEXT("OnTargetPerceptionUpdated: actor = %s"), *actor->GetName());*/
+		UE_LOG(LogTemp, Display, TEXT("OnTargetPerceptionUpdated: actor = %s"), *actor->GetName());
 	}
 
 	if (stimulus.WasSuccessfullySensed())

@@ -34,6 +34,7 @@ bool AEnemySpawner::IsThereEnemyPathSplines()
 	{
 		return true;
 	}
+	UE_LOG(LogTemp, Error, TEXT("THERE IS NO ENEMY SPLINE PATHS ATTACHED TO - %s"), *this->GetName());
 	return false;
 }
 

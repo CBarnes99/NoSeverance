@@ -34,6 +34,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnEnemyDeathSignature OnEnemyDeathEvent;
 
+	/** When the enemy has been defeated, DisableEnemy() is called and this Event is called */
 	FOnDisableSignature OnDisableEvent;
 
 	/** Sets the Path Node Locations
@@ -41,11 +42,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPathNodeLocations(TArray<FVector> nodeLocations);
 
-	/** Gets the Path Node Locations
-	* @param index The index
+	/** Gets the Path Node Location, called UBTTask_SetPathNodeLocation in the the Behaviour Tree
 	* @return Gets a Path Node Location, as a FVector */
 	UFUNCTION(BlueprintCallable)
 	FVector GetNextPathNodeLocation();
+
+	/** Gets the closest Path Node Location, called UBTTask_SetPathNodeLocation in the the Behaviour Tree
+	* @return Gets a Path Node Location, as a FVector */
+	UFUNCTION(BlueprintCallable)
+	FVector GetClosestPathNodeLocation();
 
 	/** Gets the behaviour tree that is assined to this actor 
 	* @return Returns the Behaviour Tree, as a UBehaviorTree* */

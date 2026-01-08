@@ -85,7 +85,7 @@ protected:
 	* A function to add or remove a mapping context
 	* @param mappingContext The Mapping Context you want to add or remove to the subsystem
 	* @param addContext True adds the mapping context, false removes the mapping context
-	* @param priority The priority you want the context to have. If addContext is false, does not matter what param is.
+	* @param priority The priority you want the context to have. If addContext is false, does not matter this param equals.
 	*/
 	UFUNCTION(BlueprintCallable)
 	void UpdateMappingContext(UInputMappingContext* mappingContext, bool addContext, int priority);
