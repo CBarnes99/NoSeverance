@@ -7,6 +7,7 @@
 UBTTask_MoveToActor::UBTTask_MoveToActor()
 {
 	NodeName = TEXT("Move To Actor");
+	bCreateNodeInstance = true;
 }
 
 EBTNodeResult::Type UBTTask_MoveToActor::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -83,10 +84,12 @@ void UBTTask_MoveToActor::UpdateMove()
 
 	if (distanceFromActor <= adjustedAcceptanceRadius)
 	{
-		cachedAIController->StopMovement();
-		// Reached target, stop timer and finish task successfully
-		cachedControlledPawn->GetWorldTimerManager().ClearTimer(MoveUpdateTimerHandle);
 		FinishLatentTask(*cachedOwnerComp, EBTNodeResult::Succeeded);
+
+		//cachedAIController->StopMovement();
+		//// Reached target, stop timer and finish task successfully
+		//cachedControlledPawn->GetWorldTimerManager().ClearTimer(MoveUpdateTimerHandle);
+		//FinishLatentTask(*cachedOwnerComp, EBTNodeResult::Succeeded);
 		cachedOwnerComp = nullptr;
 	}
 }
