@@ -36,6 +36,18 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float healthPotionHealAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float manaPotionGainAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int smallCurrencyGainAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int largeCurrencyGainAmount;
+
 	FTimerHandle MovementTimerHandle;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Motion")

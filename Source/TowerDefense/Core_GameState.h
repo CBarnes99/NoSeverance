@@ -28,7 +28,7 @@ public:
 	* @param addCurrency A Check for if you want to add or subract currency, true = add, false = subtract 
 	* @param amount The amount of currency that is changeing */
 	UFUNCTION(BlueprintCallable)
-	void UpdatePlayerCurrencyAmount(bool addCurrency, float amount);
+	void UpdatePlayerCurrencyAmount(bool addCurrency, int amount);
 
 	/** The amount of turrets the player can have access to at once on the selection hotbar
 	* @return The amount of turrets, as an int */
@@ -61,7 +61,7 @@ protected:
 
 	/** The amount of currecy the player currently has, as a float */
 	UPROPERTY(EditDefaultsOnly)
-	float playerCurrencyAmount;
+	int playerCurrencyAmount;
 
 	/** The max amount of turrets the player can have on their hotbar, as an int */
 	UPROPERTY(EditDefaultsOnly)

@@ -31,7 +31,7 @@ public:
 
 	/** The amount of currency the player will get when the enemy is defeated */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
-	float currencyOnDeath;
+	int currencyOnDeath;
 
 	/** The AI Controller for the enemy */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")

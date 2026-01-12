@@ -12,7 +12,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class AWeaponBase;
 
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnDamageTakenSigniture, float, /*Curent health*/ float /*Max Health*/)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHealthUpdatedSigniture, float, /*Curent health*/ float /*Max Health*/)
 
 UCLASS()
 class TOWERDEFENSE_API APlayerCharacter : public ACharacter
@@ -23,6 +23,8 @@ public:
 	APlayerCharacter();
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	FOnHealthUpdatedSigniture OnHealthUpdatedEvent;
 
 	/** Player information from a data asset */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
@@ -58,7 +60,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AttackAction();
 
-	FOnDamageTakenSigniture OnDamageTakenEvent;
+	/** When the player recieves healing, call this function */
+	UFUNCTION(BlueprintCallable)
+	void ReceiveHealing(float healAmount);
+
+	/** When the player recieves healing, call this function */
+	UFUNCTION(BlueprintCallable)
+	void ReceiveMana(float manaAmount);
 
 protected:
 	virtual void BeginPlay() override;

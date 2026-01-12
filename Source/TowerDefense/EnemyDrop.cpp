@@ -3,6 +3,7 @@
 #include "Components/SphereComponent.h"
 #include "PlayerCharacter.h"
 #include "Math/UnrealMathUtility.h"
+#include "Core_GameState.h"
 
 AEnemyDrop::AEnemyDrop()
 {
@@ -24,7 +25,13 @@ AEnemyDrop::AEnemyDrop()
 	RootComponent = collisionComponent;
 	dropMesh->SetupAttachment(RootComponent);
 
+
 	collisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyDrop::OnPickUp);
+
+	healthPotionHealAmount = 20;
+	manaPotionGainAmount = 20;
+	smallCurrencyGainAmount = 30;
+	largeCurrencyGainAmount = 100;
 
 }
 
@@ -39,9 +46,7 @@ void AEnemyDrop::BeginPlay()
 	runningTime = 0.f;
 	initialLocation = GetActorLocation();
 
-
 	GetWorldTimerManager().SetTimer(MovementTimerHandle, this, &AEnemyDrop::UpdateMotion, timerInterval, true);
-
 }
 
 void AEnemyDrop::SetDrop(EEnemyDrop type)
@@ -52,23 +57,24 @@ void AEnemyDrop::SetDrop(EEnemyDrop type)
 	{
 	case EEnemyDrop::HEALTH:
 		UE_LOG(LogTemp, Display, TEXT("Set Drop To Health"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/Enemy_Drops/Potions/StaticMeshes/SM_Health_Potion.SM_Health_Potion"))));
+
+		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/Potions/StaticMeshes/SM_Health_Potion.SM_Health_Potion"))));
 		break;
 
 	case EEnemyDrop::MANA:
 		UE_LOG(LogTemp, Display, TEXT("Set Drop To Mana"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/Enemy_Drops/Potions/StaticMeshes/SM_Mana_Potion.SM_Mana_Potion"))));
+		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/Potions/StaticMeshes/SM_Mana_Potion.SM_Mana_Potion"))));
 		break;
 
 	case EEnemyDrop::SMALL_CURRENCY:
 		UE_LOG(LogTemp, Display, TEXT("Set Drop To Small Currency"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/Enemy_Drops/coin/StaticMeshes/coin.coin"))));
+		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/coin/StaticMeshes/coin.coin"))));
 		dropMesh->SetRelativeScale3D(FVector(0.5));
 		break;
 
 	case EEnemyDrop::LARGE_CURRENCY:
 		UE_LOG(LogTemp, Display, TEXT("Set Drop To Large Currency"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/Enemy_Drops/coin/StaticMeshes/coin.coin"))));
+		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/coin/StaticMeshes/coin.coin"))));
 		break;
 
 	default:
@@ -85,27 +91,28 @@ void AEnemyDrop::OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 	if (!OtherActor->IsA(APlayerCharacter::StaticClass())) return;
 
 	APlayerCharacter* player = Cast<APlayerCharacter>(OtherActor);
+	ACore_GameState* gameState = Cast<ACore_GameState>(GetWorld()->GetGameState());
 
 	switch (dropType)
 	{
 	case EEnemyDrop::HEALTH:
-		//UE_LOG(LogTemp, Display, TEXT("Gain Health!"));
-		player->healthComponent->RecieveHealing(50.f);
+		UE_LOG(LogTemp, Display, TEXT("Gain Health!"));
+		player->ReceiveHealing(healthPotionHealAmount);
 		break;
 
 	case EEnemyDrop::MANA:
-		//UE_LOG(LogTemp, Display, TEXT("Gain Mana!"));
-		player->manaComponent->GainMana(50.f);
+		UE_LOG(LogTemp, Display, TEXT("Gain Mana!"));
+		player->ReceiveMana(manaPotionGainAmount);
 		break;
 
 	case EEnemyDrop::SMALL_CURRENCY:
 		UE_LOG(LogTemp, Display, TEXT("Gain Small Currency!"));
-		UE_LOG(LogTemp, Error, TEXT("NOT IMPLEMENTED YET!"));
+		gameState->UpdatePlayerCurrencyAmount(true, smallCurrencyGainAmount);
 		break;
 
 	case EEnemyDrop::LARGE_CURRENCY:
 		UE_LOG(LogTemp, Display, TEXT("Gain Large Currency!"));
-		UE_LOG(LogTemp, Error, TEXT("NOT IMPLEMENTED YET!"));
+		gameState->UpdatePlayerCurrencyAmount(true, largeCurrencyGainAmount);
 		break;
 
 	default:

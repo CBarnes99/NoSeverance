@@ -191,7 +191,7 @@ void ACore_HUD::BindDelegates()
 		UE_LOG(LogTemp, Warning, TEXT("BindDelegates: PLAYER NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
 		return;
 	}
-	player->OnDamageTakenEvent.AddUObject(playerHud->HealthAndMana, &UHUDHealthAndMana::UpdateHealthBar);
+	player->OnHealthUpdatedEvent.AddUObject(playerHud->HealthAndMana, &UHUDHealthAndMana::UpdateHealthBar);
 }
 
 bool ACore_HUD::GetIsTurretSelectionMenuVisable()

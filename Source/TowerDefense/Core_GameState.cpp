@@ -27,7 +27,7 @@ float ACore_GameState::GetPlayerCurrencyAmount()
 	return playerCurrencyAmount;
 }
 
-void ACore_GameState::UpdatePlayerCurrencyAmount(bool addCurrency, float amount)
+void ACore_GameState::UpdatePlayerCurrencyAmount(bool addCurrency, int amount)
 {
 	if (addCurrency)
 	{

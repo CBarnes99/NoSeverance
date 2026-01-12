@@ -84,7 +84,7 @@ void AEnemyCharacterBase::OnDeath()
 		ACore_GameState* coreGameState = Cast<ACore_GameState>(gameState);
 		if (coreGameState)
 		{
-			UE_LOG(LogTemp, Display, TEXT("The amount of currency addded should be - %f"), enemyInfo->currencyOnDeath);
+			UE_LOG(LogTemp, Display, TEXT("The amount of currency addded should be - %d"), enemyInfo->currencyOnDeath);
 			coreGameState->UpdatePlayerCurrencyAmount(true, enemyInfo->currencyOnDeath);
 
 		}
@@ -113,7 +113,7 @@ void AEnemyCharacterBase::DisableEnemy()
 		enemyAIController->UnPossess();
 	}
 
-	//SetActorHiddenInGame(true);
+	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	SetActorTickEnabled(false);
 
@@ -175,7 +175,7 @@ void AEnemyCharacterBase::SpawnDrop()
 			FActorSpawnParameters spawnParams;
 			FVector spawnLoc = GetActorLocation();
 			float capsuleHalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-			spawnLoc.Z -= capsuleHalfHeight - 50;
+			spawnLoc.Z -= capsuleHalfHeight -50;
 
 			AEnemyDrop* drop = GetWorld()->SpawnActor<AEnemyDrop>(AEnemyDrop::StaticClass(), spawnLoc, FRotator::ZeroRotator, spawnParams);
 			drop->SetDrop(element.Key);

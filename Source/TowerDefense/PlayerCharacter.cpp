@@ -104,6 +104,11 @@ void APlayerCharacter::EquipWeapon()
 	}
 }
 
+void APlayerCharacter::AttackAction()
+{
+	equippedWeapon->FireProjectile(GetCameraLocation(), GetCameraForwardVector());
+}
+
 FRotator APlayerCharacter::GetCameraRotation() const 
 {
 	return camera->GetComponentRotation();
@@ -134,7 +139,7 @@ float& APlayerCharacter::GetRunSpeed()
 float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	healthComponent->RecieveDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	OnDamageTakenEvent.Broadcast(healthComponent->GetCurrentHealth(), healthComponent->GetMaxHealth());
+	OnHealthUpdatedEvent.Broadcast(healthComponent->GetCurrentHealth(), healthComponent->GetMaxHealth());
 
 	if (healthComponent->GetCurrentHealth() <= 0)
 	{
@@ -144,7 +149,14 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	return DamageAmount;
 }
 
-void APlayerCharacter::AttackAction()
+void APlayerCharacter::ReceiveHealing(float healAmount)
 {
-	equippedWeapon->FireProjectile(GetCameraLocation(), GetCameraForwardVector());
+	healthComponent->RecieveHealing(healAmount);
+	OnHealthUpdatedEvent.Broadcast(healthComponent->GetCurrentHealth(), healthComponent->GetMaxHealth());
+}
+
+void APlayerCharacter::ReceiveMana(float manaAmount)
+{
+	manaComponent->GainMana(manaAmount);
+	//DELEGATE HERE FOR UPDATED MANA
 }
