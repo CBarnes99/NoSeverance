@@ -21,10 +21,8 @@ AEnemyDrop::AEnemyDrop()
 	collisionComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	collisionComponent->SetEnableGravity(false);
 
-
 	RootComponent = collisionComponent;
 	dropMesh->SetupAttachment(RootComponent);
-
 
 	collisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyDrop::OnPickUp);
 
@@ -52,33 +50,33 @@ void AEnemyDrop::SetDrop(EEnemyDrop type)
 {
 	dropType = type;
 
-	switch (dropType) 
+	if (!meshMap.Contains(type))
 	{
-	case EEnemyDrop::HEALTH:
-		UE_LOG(LogTemp, Display, TEXT("Set Drop To Health"));
+		UE_LOG(LogTemp, Error, TEXT("SetDrop: EENEMYDROP TYPE MESH NOT SET IN THE MESH MAP WITHIN - %s"), *this->GetName());
+		return;
+	}
 
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/Potions/StaticMeshes/SM_Health_Potion.SM_Health_Potion"))));
-		break;
+	TSoftObjectPtr<UStaticMesh> meshPtr = meshMap[type];
+	if (meshPtr.IsPending())
+	{
+		meshPtr.LoadSynchronous();
+	}
+	
+	UStaticMesh* loadedMesh = meshPtr.Get();
+	
+	if (loadedMesh && dropMesh)
+	{
+		dropMesh->SetStaticMesh(loadedMesh);
+	}
 
-	case EEnemyDrop::MANA:
-		UE_LOG(LogTemp, Display, TEXT("Set Drop To Mana"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/Potions/StaticMeshes/SM_Mana_Potion.SM_Mana_Potion"))));
-		break;
-
-	case EEnemyDrop::SMALL_CURRENCY:
-		UE_LOG(LogTemp, Display, TEXT("Set Drop To Small Currency"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/coin/StaticMeshes/coin.coin"))));
+	//Temp until I find a mesh that is the correct size
+	if (type == EEnemyDrop::SMALL_CURRENCY)
+	{
 		dropMesh->SetRelativeScale3D(FVector(0.5));
-		break;
-
-	case EEnemyDrop::LARGE_CURRENCY:
-		UE_LOG(LogTemp, Display, TEXT("Set Drop To Large Currency"));
-		dropMesh->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Assets/EnemyDrops/coin/StaticMeshes/coin.coin"))));
-		break;
-
-	default:
-		UE_LOG(LogTemp, Error, TEXT("Defualt Switch Statement, create new case in set drop function within EnemyDrop.cpp!!"));
-		break;
+	}
+	else
+	{
+		dropMesh->SetRelativeScale3D(FVector(1));
 	}
 }
 

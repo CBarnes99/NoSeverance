@@ -63,6 +63,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void EnemyHasDied(AEnemyCharacterBase* enemy);
 
+	UPROPERTY(EditDefaultsOnly, Category = "DropPooling")
+	TSubclassOf<AEnemyDrop> enemyDropBlueprintClass;
+
 	/** The pool of Enemy Drops */
 	UPROPERTY(VisibleAnywhere, Category = "DropPooling")
 	TArray<AEnemyDrop*> enemyDropPool;

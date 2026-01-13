@@ -47,6 +47,21 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditDefaultsOnly, Category = "DropValue")
+	TMap<EEnemyDrop, TSoftObjectPtr<UStaticMesh>> meshMap;
+
+	///** Health potion mesh reference */
+	//UPROPERTY(EditAnywhere, Category = "DropMesh")
+	//TSoftObjectPtr<UStaticMesh> healthPotionMesh;
+
+	///** Mana potion mesh reference */
+	//UPROPERTY(EditAnywhere, Category = "DropMesh")
+	//TSoftObjectPtr<UStaticMesh> manaPotionMesh;
+
+	///** Currency mesh reference */
+	//UPROPERTY(EditAnywhere, Category = "DropMesh")
+	//TSoftObjectPtr<UStaticMesh> currencyMesh;
+
 	/** The amount of health the player is healed for when picked up */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
 	float healthPotionHealAmount;

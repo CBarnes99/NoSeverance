@@ -123,7 +123,7 @@ void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 	if (enemy && !enemy->OnSpawnEnemyDropEvent.IsBound())
 	{
 		enemy->OnSpawnEnemyDropEvent.BindUObject(this, &ASpawnerManager::SetEnemyDrop);
-		UE_LOG(LogTemp, Display, TEXT("BindDelegateOnEnemy: %s Spawn Drop Delegate has been bound in Spawner Manager"), *enemy->GetName());
+		//UE_LOG(LogTemp, Display, TEXT("BindDelegateOnEnemy: %s Spawn Drop Delegate has been bound in Spawner Manager"), *enemy->GetName());
 	}
 }
 
@@ -142,17 +142,26 @@ void ASpawnerManager::EnemyHasDied(AEnemyCharacterBase* enemy)
 
 void ASpawnerManager::PoolEnemyDrop()
 {
-	FActorSpawnParameters spawnParams;
+	if (!enemyDropBlueprintClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("PoolEnemyDrop: enemyDropBlueprintClass NOT SET WITHIN SPAWNER MANAGER!"));
+		return;
+	}
 
+	FActorSpawnParameters spawnParams;
+	int amountPooled = 0;
 	for (int i = 0; i < amountOfDropToPool; i++)
 	{
-		AEnemyDrop* drop = GetWorld()->SpawnActor<AEnemyDrop>(AEnemyDrop::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+		AEnemyDrop* drop = GetWorld()->SpawnActor<AEnemyDrop>(enemyDropBlueprintClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
 		enemyDropPool.Add(drop);
+		amountPooled++;
 	}
+	UE_LOG(LogTemp, Display, TEXT("PoolEnemyDrop: Amount of drops pooled - %d, out of - %d"), amountPooled, amountOfDropToPool);
 }
 
 void ASpawnerManager::SetEnemyDrop(EEnemyDrop dropType, FVector spawnLocation)
 {
+	UE_LOG(LogTemp, Display, TEXT("Drop Spawn Location - %s"), *spawnLocation.ToString());
 	for (AEnemyDrop* drop : enemyDropPool)
 	{
 		if (drop->IsDropDisabled())
