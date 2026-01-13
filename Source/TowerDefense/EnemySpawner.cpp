@@ -12,6 +12,7 @@ AEnemySpawner::AEnemySpawner()
 	spawnCollision->SetSphereRadius(150.f);
 
 	spawnerIdentifier = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Spawner Identifier"));
+	spawnerIdentifier->SetCanEverAffectNavigation(false);
 
 	RootComponent = spawnCollision;
 	spawnerIdentifier->SetupAttachment(RootComponent);

@@ -74,6 +74,7 @@ float AEnemyCharacterBase::GetEnemyDamageAmount()
 void AEnemyCharacterBase::OnDeath()
 {
 	OnEnemyDeathEvent.Broadcast(this);
+	OnEnemyDeathBlueprintEvent.Broadcast(this);
 
 	//If enemy was defeated and not just reached the end of the level
 	if (healthComponent->GetCurrentHealth() <= 0)
@@ -89,18 +90,31 @@ void AEnemyCharacterBase::OnDeath()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("CORE GMAE STATE NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
+			UE_LOG(LogTemp, Error, TEXT("OnDeath: CORE GMAE STATE NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
 		}
 	}
-
-	DisableEnemy();
+	else 
+	{
+		DisableEnemy();
+	}
 }
 
+//This is called when the death animation has started playing so that you cant interupt the animation
+void AEnemyCharacterBase::OnDeathAnimationStarted()
+{
+	if (GetController() && enemyAIController)
+	{
+		OnDisableAIControllerEvent.ExecuteIfBound();
+		enemyAIController->UnPossess();
+	}
+	SetActorEnableCollision(false);
+}
 void AEnemyCharacterBase::DisableEnemy()
 {
 	GetCharacterMovement()->Deactivate();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	OnEnemyDisabledBlueprintEvent.Broadcast();
 	GetMesh()->Deactivate();
 
 	StimuliSourceComponent->Deactivate();
@@ -108,7 +122,7 @@ void AEnemyCharacterBase::DisableEnemy()
 
 	if (GetController() && enemyAIController)
 	{
-		OnDisableEvent.ExecuteIfBound();
+		OnDisableAIControllerEvent.ExecuteIfBound();
 		enemyAIController->UnPossess();
 	}
 
@@ -121,6 +135,7 @@ void AEnemyCharacterBase::DisableEnemy()
 
 void AEnemyCharacterBase::EnableEnemy()
 {
+	
 	GetCharacterMovement()->Activate();
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

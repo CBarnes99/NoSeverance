@@ -13,8 +13,11 @@ class AAIController;
 class UAIPerceptionStimuliSourceComponent;
 class UAnimMontage;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathSignature, AEnemyCharacterBase*, Enemy);
-DECLARE_DELEGATE(FOnDisableSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathBlueprintSignature, AEnemyCharacterBase*, Enemy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnemyDisabledBlueprintSignature);
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathSignature, AEnemyCharacterBase* /* Enemy */);
+DECLARE_DELEGATE(FOnDisableAIControllerSignature);
 DECLARE_DELEGATE_TwoParams(FOnSpawnEnemyDropSignature, EEnemyDrop, /*The drop type to spawn*/ FVector /* The location the drop is moved to */);
 
 UCLASS()
@@ -27,11 +30,17 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	/** Bound in the Spawner manager to keep track of how many enemies are left in the round */
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	//UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnEnemyDeathSignature OnEnemyDeathEvent;
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnEnemyDeathBlueprintSignature OnEnemyDeathBlueprintEvent;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnEnemyDisabledBlueprintSignature OnEnemyDisabledBlueprintEvent;
+
 	/** When the enemy has been defeated, DisableEnemy() is called and this Event is called */
-	FOnDisableSignature OnDisableEvent;
+	FOnDisableAIControllerSignature OnDisableAIControllerEvent;
 
 	/** When the enemy has been defeated, drop is moved to the location of the enemy, bound within the spawner manager */
 	FOnSpawnEnemyDropSignature OnSpawnEnemyDropEvent;
@@ -61,22 +70,26 @@ public:
 	void OnDeath();
 
 	/** Disables the enemy ready to be pooled */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Pooling")
 	void DisableEnemy();
 
 	/** Enables the enemy and removes from the pool ready to be used */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Pooling")
 	void EnableEnemy();
 
 	/** Gets if the enemy has been disabled or not 
 	* @return bIsDisabled, as a bool */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Pooling")
 	bool GetIsEnemyDisabled();
 
 	/** Gets the amount of damage the enemy will deal to the player
 	* @return A damage value, as a float */
 	UFUNCTION(BlueprintCallable)
 	float GetEnemyDamageAmount();
+
+	/** When the enemy dies, ths is called from within enemy animation blueprint */
+	UFUNCTION(BlueprintCallable)
+	void OnDeathAnimationStarted();
 
 protected:
 	virtual void BeginPlay() override;
@@ -110,7 +123,7 @@ protected:
 	UAC_Health* healthComponent;
 
 	/** A check to see if the enemy is disabled and in the pool within the enemy spawner */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Pooling")
 	bool bIsDisabled;
 
 	/** Assign a Data Asset in Blueprints for each of the enemys information */

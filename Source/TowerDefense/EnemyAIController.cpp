@@ -60,7 +60,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 			UE_LOG(LogTemp, Error, TEXT("BLACKBOARD NULL IN ENEMY AI CONTROLLER - %s"), *this->GetName());
 		}
 
-		Enemy->OnDisableEvent.BindUObject(this, &AEnemyAIController::DisableAIController);
+		Enemy->OnDisableAIControllerEvent.BindUObject(this, &AEnemyAIController::DisableAIController);
 	}
 	AIPerceptionComponent->Activate();
 	AIPerceptionComponent->SetSenseEnabled(UAISense_Sight::StaticClass(), true);
