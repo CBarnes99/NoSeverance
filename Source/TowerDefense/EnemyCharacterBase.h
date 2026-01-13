@@ -15,6 +15,7 @@ class UAnimMontage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathSignature, AEnemyCharacterBase*, Enemy);
 DECLARE_DELEGATE(FOnDisableSignature);
+DECLARE_DELEGATE_TwoParams(FOnSpawnEnemyDropSignature, EEnemyDrop, /*The drop type to spawn*/ FVector /* The location the drop is moved to */);
 
 UCLASS()
 class TOWERDEFENSE_API AEnemyCharacterBase : public ACharacter
@@ -31,6 +32,9 @@ public:
 
 	/** When the enemy has been defeated, DisableEnemy() is called and this Event is called */
 	FOnDisableSignature OnDisableEvent;
+
+	/** When the enemy has been defeated, drop is moved to the location of the enemy, bound within the spawner manager */
+	FOnSpawnEnemyDropSignature OnSpawnEnemyDropEvent;
 
 	/** Sets the Path Node Locations
 	* @param nodeLocations The Locations of the path nodes you want the enemy to follow, as a TArray<FVector> */

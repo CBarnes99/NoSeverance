@@ -44,9 +44,8 @@ void AEnemyDrop::BeginPlay()
 	bobbingFrequency = 0.3f;
 	timerInterval = 0.02f;
 	runningTime = 0.f;
-	initialLocation = GetActorLocation();
 
-	GetWorldTimerManager().SetTimer(MovementTimerHandle, this, &AEnemyDrop::UpdateMotion, timerInterval, true);
+	DisableDrop();
 }
 
 void AEnemyDrop::SetDrop(EEnemyDrop type)
@@ -85,7 +84,6 @@ void AEnemyDrop::SetDrop(EEnemyDrop type)
 
 void AEnemyDrop::OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
 	//UE_LOG(LogTemp, Warning, TEXT("%s - Collision Dectected with %s"), *this->GetName(), *OtherActor->GetName());
 
 	if (!OtherActor->IsA(APlayerCharacter::StaticClass())) return;
@@ -120,8 +118,7 @@ void AEnemyDrop::OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 		break;
 	}
 
-	GetWorldTimerManager().ClearTimer(MovementTimerHandle);
-	Destroy();
+	DisableDrop();
 }
 
 void AEnemyDrop::UpdateMotion()
@@ -137,5 +134,35 @@ void AEnemyDrop::UpdateMotion()
 	newLocation.Z += bobbingOffset;
 
 	SetActorLocationAndRotation(newLocation, newRotation);
+}
+void AEnemyDrop::EnableDrop(EEnemyDrop enemyDropType, FVector enemyDropLocation)
+{
+	SetActorLocation(enemyDropLocation);
+	SetDrop(enemyDropType);
+
+	initialLocation = enemyDropLocation;
+	GetWorldTimerManager().SetTimer(MovementTimerHandle, this, &AEnemyDrop::UpdateMotion, timerInterval, true);
+
+	SetActorEnableCollision(true);
+	SetActorHiddenInGame(false);
+
+	bIsDisabled = false;
+}
+
+void AEnemyDrop::DisableDrop()
+{
+	SetActorEnableCollision(false);
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+	if (GetWorldTimerManager().IsTimerActive(MovementTimerHandle))
+	{
+		GetWorldTimerManager().ClearTimer(MovementTimerHandle);
+	}
+
+	bIsDisabled = true;
+}
+bool AEnemyDrop::IsDropDisabled()
+{
+	return bIsDisabled;
 }
 ;

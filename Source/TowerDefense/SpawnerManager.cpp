@@ -1,6 +1,7 @@
 #include "SpawnerManager.h"
 #include <Kismet/GameplayStatics.h>
 #include "EnemySpawner.h"
+#include "EnemyDrop.h"
 
 ASpawnerManager::ASpawnerManager()
 {
@@ -13,8 +14,10 @@ void ASpawnerManager::BeginPlay()
 
 	waveActive = false;
 	amountOfEnemysInRound = 0;
+	amountOfDropToPool = 15;
 
 	SetAllSpawners();
+	PoolEnemyDrop();
 }
 
 void ASpawnerManager::SetAllSpawners()
@@ -106,15 +109,21 @@ void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 	if (enemy && !enemy->OnEnemyDeathEvent.IsBound())
 	{
 		enemy->OnEnemyDeathEvent.AddDynamic(this, &ASpawnerManager::EnemyHasDied);
-		//UE_LOG(LogTemp, Display, TEXT("%s Delegate has been bound in Spawner Manager"), *enemy->GetName());
+		//UE_LOG(LogTemp, Display, TEXT("%s On Death Delegate has been bound in Spawner Manager"), *enemy->GetName());
 	}
-	else if(enemy->OnEnemyDeathEvent.IsBound())
+	//else if(enemy->OnEnemyDeathEvent.IsBound())
+	//{
+	//	UE_LOG(LogTemp, Display, TEXT("Enemy OnEnemyDeathEvent delegate is already bound to - %s"), *this->GetName());
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("Binding Delegate to spawner manager not bound correctly"));
+	//}
+
+	if (enemy && !enemy->OnSpawnEnemyDropEvent.IsBound())
 	{
-		UE_LOG(LogTemp, Display, TEXT("Enemy OnEnemyDeathEvent delegate is already bound to - %s"), *this->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Binding Delegate to spawner manager not bound correctly"));
+		enemy->OnSpawnEnemyDropEvent.BindUObject(this, &ASpawnerManager::SetEnemyDrop);
+		UE_LOG(LogTemp, Display, TEXT("BindDelegateOnEnemy: %s Spawn Drop Delegate has been bound in Spawner Manager"), *enemy->GetName());
 	}
 }
 
@@ -129,4 +138,27 @@ void ASpawnerManager::EnemyHasDied(AEnemyCharacterBase* enemy)
 		waveActive = false;
 	}
 
+}
+
+void ASpawnerManager::PoolEnemyDrop()
+{
+	FActorSpawnParameters spawnParams;
+
+	for (int i = 0; i < amountOfDropToPool; i++)
+	{
+		AEnemyDrop* drop = GetWorld()->SpawnActor<AEnemyDrop>(AEnemyDrop::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+		enemyDropPool.Add(drop);
+	}
+}
+
+void ASpawnerManager::SetEnemyDrop(EEnemyDrop dropType, FVector spawnLocation)
+{
+	for (AEnemyDrop* drop : enemyDropPool)
+	{
+		if (drop->IsDropDisabled())
+		{
+			drop->EnableDrop(dropType, spawnLocation);
+			break;
+		}
+	}
 }

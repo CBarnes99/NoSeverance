@@ -2,9 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "E_EnemyDrop.h"
 #include "SpawnerManager.generated.h"
 
 class AEnemySpawner;
+class AEnemyDrop;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWaveEndedSignature);
 
@@ -60,5 +62,21 @@ protected:
 	/** When an enemy has been defeated, this is called */
 	UFUNCTION(BlueprintCallable)
 	void EnemyHasDied(AEnemyCharacterBase* enemy);
+
+	/** The pool of Enemy Drops */
+	UPROPERTY(VisibleAnywhere, Category = "DropPooling")
+	TArray<AEnemyDrop*> enemyDropPool;
+
+	/** The amount of Enemy Drop within the pool */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropPooling")
+	int amountOfDropToPool;
+
+	/** Called on begin play to pool the Enemy Drops */
+	UFUNCTION(BlueprintCallable, Category = "DropPooling")
+	void PoolEnemyDrop();
+
+	/** When Enemy deklegate OnSpawnEnemyDropEvent is called, this function is called to set up the drop to the correct type and location */
+	UFUNCTION(BlueprintCallable, Category = "DropPooling")
+	void SetEnemyDrop(EEnemyDrop dropType, FVector spawnLocation);
 
 };

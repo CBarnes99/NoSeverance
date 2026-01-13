@@ -171,13 +171,11 @@ void AEnemyCharacterBase::SpawnDrop()
 		{
 			if (element.Key == EEnemyDrop::NONE) break;
 
-			FActorSpawnParameters spawnParams;
 			FVector spawnLoc = GetActorLocation();
 			float capsuleHalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 			spawnLoc.Z -= capsuleHalfHeight -50;
 
-			AEnemyDrop* drop = GetWorld()->SpawnActor<AEnemyDrop>(AEnemyDrop::StaticClass(), spawnLoc, FRotator::ZeroRotator, spawnParams);
-			drop->SetDrop(element.Key);
+			OnSpawnEnemyDropEvent.ExecuteIfBound(element.Key, spawnLoc);
 			break;
 		}
 	}
