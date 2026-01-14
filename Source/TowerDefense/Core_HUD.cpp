@@ -1,11 +1,16 @@
 #include "Core_HUD.h"
+#include "Kismet/GameplayStatics.h"
+
 #include "HUDTurretSelectionMenu.h"
 #include "HUDPlayerHud.h"
 #include "HUDHealthAndMana.h"
+#include "HUDWeaponTurretSelector.h"
+#include "HUDVictoryScreen.h"
+
 #include "DA_TurretInfo.h"
 #include "Core_PlayerController.h"
-#include "HUDWeaponTurretSelector.h"
 #include "PlayerCharacter.h"
+#include "Core_GameMode.h"
 
 void ACore_HUD::BeginPlay()
 {
@@ -20,6 +25,9 @@ void ACore_HUD::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("PLAYER CONTROLLER WITHIN %s IS NOT SET CORRECTLY!!"), *this->GetName());
 	}
 
+	ACore_GameMode* gameMode = Cast<ACore_GameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	gameMode->LevelCompleteEvent.AddUObject(this, &ACore_HUD::ToggleVictoryScreenWidget);
+
 	SetUpInGameWidgetList();
 	
 	SetUpGameMenusWidgetList();
@@ -29,6 +37,20 @@ void ACore_HUD::BeginPlay()
 	BindDelegates();
 
 	SetFocusToGame();
+}
+
+bool ACore_HUD::CheckVaildWidgetPointer(TSubclassOf<UUserWidget> widgetClass)
+{
+	if (widgetClass)
+	{
+		UE_LOG(LogTemp, Display, TEXT("CheckVaildWidgetPointer: Widget Class is valid - %s"), *widgetClass->GetName());
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CheckVaildWidgetPointer: A WIDGET CLASS IS NOT SET WITHIN CORE_HUD!!"));
+		return false;
+	}
 }
 
 void ACore_HUD::SetFocusToGame()
@@ -65,8 +87,11 @@ void ACore_HUD::SetUpInGameWidgetList()
 {
 	bInGameWidgetsEnabled = false;
 
-	playerHud = CreateWidget<UHUDPlayerHud>(localCorePlayerController, playerHudClass);
-	inGameWidgetList.Add(playerHud);
+	if(CheckVaildWidgetPointer(playerHudClass))
+	{
+		playerHud = CreateWidget<UHUDPlayerHud>(localCorePlayerController, playerHudClass);
+		inGameWidgetList.Add(playerHud);
+	}
 
 	for (UUserWidget* widget : inGameWidgetList)
 	{
@@ -106,17 +131,18 @@ void ACore_HUD::ToggleInGameWidgets()
 
 void ACore_HUD::SetUpGameMenusWidgetList()
 {
-
-	turretSelectionMenu = CreateWidget<UHUDTurretSelectionMenu>(localCorePlayerController, turretSelectionMenuClass);
-	turretSelectionMenu->SetUpWidget(turretInfo);
-
-	gameMenusWidgetList.Add(turretSelectionMenu);
+	if (CheckVaildWidgetPointer(turretSelectionMenuClass))
+	{
+		turretSelectionMenu = CreateWidget<UHUDTurretSelectionMenu>(localCorePlayerController, turretSelectionMenuClass);
+		turretSelectionMenu->SetUpWidget(turretInfo);
+		gameMenusWidgetList.Add(turretSelectionMenu);
+	}
 	
-	//UUserWidget* test = CreateWidget<UHUDTurretSelectionMenu>()
-	/*UUserWidget* createdWidget = CreateWidget<UUserWidget>(this, turretSelectionMenuClass);
-	turretSelectionMenu = Cast<UHUDTurretSelectionMenu>(createdWidget);
-	gameMenusWidgetList.Add(createdWidget);*/
-
+	if (CheckVaildWidgetPointer(victoryScreenClass))
+	{
+		victoryScreenMenu = CreateWidget<UHUDVictoryScreen>(localCorePlayerController, victoryScreenClass);
+		gameMenusWidgetList.Add(victoryScreenMenu);
+	}
 
 	for (UUserWidget* widget : gameMenusWidgetList)
 	{
@@ -153,7 +179,7 @@ void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 		return;
 	}
 	gameMenuWidgetToFocus = widget;
-
+		
 	for (UUserWidget* widgetInList : gameMenusWidgetList)
 	{
 		if (widgetInList == nullptr)
@@ -178,8 +204,16 @@ void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 
 void ACore_HUD::ToggleTurretSelectionWidget()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Toggle Turret Selection Widget Function"));
+	UE_LOG(LogTemp, Warning, TEXT("ToggleTurretSelectionWidget: Toggle Turret Selection"));
 	ToggleGameMenuWidgets(turretSelectionMenu);
+}
+
+void ACore_HUD::ToggleVictoryScreenWidget()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ToggleVictoryScreenWidget: Toggle Victory Screen Widget"));
+	ToggleGameMenuWidgets(victoryScreenMenu);
+	victoryScreenMenu->PlayVictoryAnimation();
+	localCorePlayerController->DisableInput(localCorePlayerController);
 }
 
 void ACore_HUD::BindDelegates()

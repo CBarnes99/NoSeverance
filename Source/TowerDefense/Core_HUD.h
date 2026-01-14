@@ -8,6 +8,7 @@ class UHUDTurretSelectionMenu;
 class UHUDPlayerHud;
 class ACore_PlayerController;
 class UDA_TurretInfo;
+class UHUDVictoryScreen;
 
 UCLASS()
 class TOWERDEFENSE_API ACore_HUD : public AHUD
@@ -18,6 +19,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleTurretSelectionWidget();
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleVictoryScreenWidget();
 
 	UFUNCTION(BlueprintCallable)
 	bool GetIsTurretSelectionMenuVisable();
@@ -31,6 +35,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "DataAssets")
 	TArray<UDA_TurretInfo*> turretInfo;
+
+	UFUNCTION(BlueprintCallable)
+	bool CheckVaildWidgetPointer(TSubclassOf<UUserWidget> widgetClass);
 
 	UFUNCTION(BlueprintCallable)
 	void SetFocusToGame();
@@ -79,6 +86,13 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - Game Menu")
 	UHUDTurretSelectionMenu* turretSelectionMenu;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets - Game Menu")
+	TSubclassOf<UHUDVictoryScreen> victoryScreenClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Widgets - Game Menu")
+	UHUDVictoryScreen* victoryScreenMenu;
+	
 
 	//Menu Widgets-----------------------------------------------------------
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - Menus")

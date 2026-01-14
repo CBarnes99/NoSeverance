@@ -111,7 +111,8 @@ void ACore_GameMode::PrepareNewWave()
 	if (currentWave == lastWave)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Last Wave has been Defeated"));
-		//Finish Level function here
+		
+		LevelCompleteEvent.Broadcast();
 	}
 	else
 	{

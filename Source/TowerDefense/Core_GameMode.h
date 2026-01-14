@@ -7,6 +7,8 @@
 class ASpawnerManager;
 class ACore_PlayerController;
 
+DECLARE_MULTICAST_DELEGATE(FLevelCompleteSigniture)
+
 UCLASS()
 class TOWERDEFENSE_API ACore_GameMode : public AGameModeBase
 {
@@ -15,6 +17,8 @@ class TOWERDEFENSE_API ACore_GameMode : public AGameModeBase
 public:
 	
 	ACore_GameMode();
+
+	FLevelCompleteSigniture LevelCompleteEvent;
 
 protected:
 
