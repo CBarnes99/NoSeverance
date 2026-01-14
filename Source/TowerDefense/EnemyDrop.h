@@ -5,6 +5,8 @@
 #include "E_EnemyDrop.h"
 #include "EnemyDrop.generated.h"
 
+class UDA_EnemyDropInfo;
+
 UCLASS()
 class TOWERDEFENSE_API AEnemyDrop : public AActor
 {
@@ -62,21 +64,24 @@ protected:
 	//UPROPERTY(EditAnywhere, Category = "DropMesh")
 	//TSoftObjectPtr<UStaticMesh> currencyMesh;
 
-	/** The amount of health the player is healed for when picked up */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
-	float healthPotionHealAmount;
+	///** The amount of health the player is healed for when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//float healthPotionHealAmount;
 
-	/** The amount of mana the player gains when picked up */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
-	float manaPotionGainAmount;
+	///** The amount of mana the player gains when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//float manaPotionGainAmount;
 
-	/** The amount of currency the player gets when picked up */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
-	int smallCurrencyGainAmount;
+	///** The amount of currency the player gets when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//int smallCurrencyGainAmount;
 
-	/** The amount of currency the player gets when picked up */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
-	int largeCurrencyGainAmount;
+	///** The amount of currency the player gets when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//int largeCurrencyGainAmount;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UDA_EnemyDropInfo* enemyDropInfo;
 
 	FTimerHandle MovementTimerHandle;
 

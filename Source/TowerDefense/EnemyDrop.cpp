@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 #include "Math/UnrealMathUtility.h"
 #include "Core_GameState.h"
+#include "DA_EnemyDropInfo.h"
 
 AEnemyDrop::AEnemyDrop()
 {
@@ -26,10 +27,10 @@ AEnemyDrop::AEnemyDrop()
 
 	collisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyDrop::OnPickUp);
 
-	healthPotionHealAmount = 20;
+	/*healthPotionHealAmount = 20;
 	manaPotionGainAmount = 20;
 	smallCurrencyGainAmount = 30;
-	largeCurrencyGainAmount = 100;
+	largeCurrencyGainAmount = 100;*/
 
 }
 
@@ -86,29 +87,42 @@ void AEnemyDrop::OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 
 	if (!OtherActor->IsA(APlayerCharacter::StaticClass())) return;
 
+	if (!enemyDropInfo)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnPickUp: ENEMY DROP VALUE IS NOT SET WITHIN - %s"), *this->GetName());
+		return;
+	}
+
+	float dropValue = enemyDropInfo->dropValues[dropType];
+
+	if (dropValue == NULL || dropValue <= 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OnPickUp: Drop Value - %f"), dropValue);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("OnPickUp: Drop Value - %f"), dropValue);
+	}
+
 	APlayerCharacter* player = Cast<APlayerCharacter>(OtherActor);
 	ACore_GameState* gameState = Cast<ACore_GameState>(GetWorld()->GetGameState());
 
 	switch (dropType)
 	{
 	case EEnemyDrop::HEALTH:
-		//UE_LOG(LogTemp, Display, TEXT("Gain Health!"));
-		player->ReceiveHealing(healthPotionHealAmount);
+		player->ReceiveHealing(dropValue);
 		break;
 
 	case EEnemyDrop::MANA:
-		//UE_LOG(LogTemp, Display, TEXT("Gain Mana!"));
-		player->ReceiveMana(manaPotionGainAmount);
+		player->ReceiveMana(dropValue);
 		break;
 
 	case EEnemyDrop::SMALL_CURRENCY:
-		//UE_LOG(LogTemp, Display, TEXT("Gain Small Currency!"));
-		gameState->UpdatePlayerCurrencyAmount(true, smallCurrencyGainAmount);
+		gameState->UpdatePlayerCurrencyAmount(true, dropValue);
 		break;
 
 	case EEnemyDrop::LARGE_CURRENCY:
-		//UE_LOG(LogTemp, Display, TEXT("Gain Large Currency!"));
-		gameState->UpdatePlayerCurrencyAmount(true, largeCurrencyGainAmount);
+		gameState->UpdatePlayerCurrencyAmount(true, dropValue);
 		break;
 
 	default:
