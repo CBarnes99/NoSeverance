@@ -73,7 +73,7 @@ void AProjectileBase::ActivateProjectile()
 
 	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::DeactivateProjectile, lifeTime, false);
 
-	//UE_LOG(LogTemp, Display, TEXT("Using - %s"), *this->GetName());
+	//UE_LOG(LogTemp, Display, TEXT("ActivateProjectile: Using - %s"), *this->GetName());
 }
 
 void AProjectileBase::DeactivateProjectile()
@@ -89,13 +89,13 @@ void AProjectileBase::DeactivateProjectile()
 	}
 
 	isActive = false;
-	//UE_LOG(LogTemp, Warning, TEXT("Deactivated! - %s"), *this->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("DeactivateProjectile: Deactivated! - %s"), *this->GetName());
 }
 
 void AProjectileBase::FireInDirection(const FVector& shootDir)
 {
 	projectileMovementComponent->Velocity = shootDir * projectileMovementComponent->InitialSpeed;
-	//UE_LOG(LogTemp, Warning, TEXT("Firing Projectile with velocity: %s"), *projectileMovementComponent->Velocity.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("FireInDirection: Firing Projectile with velocity: %s"), *projectileMovementComponent->Velocity.ToString());
 }
 
 void AProjectileBase::OnHit(UPrimitiveComponent* hitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -106,7 +106,7 @@ void AProjectileBase::OnHit(UPrimitiveComponent* hitComponent, AActor* OtherActo
 		return;
 	}
 
-	//UE_LOG(LogTemp, Display, TEXT("OtherActor that projectile is colliding with is %s"), *OtherActor->GetName())
+	//UE_LOG(LogTemp, Display, TEXT("OnHit: OtherActor that projectile is colliding with is %s"), *OtherActor->GetName())
 	UGameplayStatics::ApplyDamage(OtherActor, damageDelt, GetInstigator()->GetController(), this, NULL /*CHANGE THIS TO A DAMAGE TYPE LATER ON*/);
 
 	DeactivateProjectile();

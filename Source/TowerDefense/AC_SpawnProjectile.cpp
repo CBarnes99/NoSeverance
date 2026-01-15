@@ -21,18 +21,18 @@ void UAC_SpawnProjectile::InitializePool(float fireRate, float lifetime)
 {
 	if (!projectile)
 	{
-		UE_LOG(LogTemp, Error, TEXT("No Projectile Class Within - %s"), *this->GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("InitializePool: No Projectile Class Within - %s"), *this->GetOwner()->GetName());
 		return;
 	}
 
 	poolSize = fireRate * lifetime;
-	//UE_LOG(LogTemp, Display, TEXT("poolsize = %f"), poolsize);
+	//UE_LOG(LogTemp, Display, TEXT("InitializePool: poolsize = %f"), poolsize);
 
 	for (int i = 0; i < poolSize; i++)
 	{
-		spawnProjectile();
+		SpawnProjectile();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("There are %d projectiles pooled"), amountInPool);
+	UE_LOG(LogTemp, Warning, TEXT("InitializePool: There are %d projectiles pooled"), amountInPool);
 
 
 	TArray<AActor*> projectilesToIgnore;
@@ -43,9 +43,9 @@ void UAC_SpawnProjectile::InitializePool(float fireRate, float lifetime)
 	targetLocaionQueryParams.AddIgnoredActors(projectilesToIgnore);
 }
 
-void UAC_SpawnProjectile::spawnProjectile()
+void UAC_SpawnProjectile::SpawnProjectile()
 {
-	TRACE_BOOKMARK(TEXT("SpawnedProjectile"));
+	TRACE_BOOKMARK(TEXT("SpawnProjectile: SpawnedProjectile"));
 	amountInPool++;
 	FActorSpawnParameters spawnParams;
 	spawnParams.Owner = GetOwner();
@@ -62,7 +62,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 	TRACE_BOOKMARK(TEXT("FiredProjectile"));
 	if (!projectile)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Projectile class is not set in AC_SpawnProjectile within %s!"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("FireProjectile: Projectile class is not set in AC_SpawnProjectile within %s!"), *GetOwner()->GetName());
 		return;
 	}
 
@@ -85,13 +85,13 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	if (!currentProjectile)
 	{
-		spawnProjectile();
+		SpawnProjectile();
 		currentProjectile = GetInactiveProjectile();
 		poolSize++;
-		UE_LOG(LogTemp, Error, TEXT("Added another projectile to the pool for - %s. There are %f projectiles within the pool"), *GetOwner()->GetName(), poolSize);
+		UE_LOG(LogTemp, Error, TEXT("FireProjectile: Added another projectile to the pool for - %s. There are %f projectiles within the pool"), *GetOwner()->GetName(), poolSize);
 	}
 
-	//UE_LOG(LogTemp, Warning, TEXT("Using - %s"), *currentProjectile->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("FireProjectile: Using - %s"), *currentProjectile->GetName());
 	currentProjectile->SetActorLocation(spawnLocation);
 	currentProjectile->SetActorRotation(spawnRotation);
 
@@ -103,7 +103,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 	currentProjectile->ActivateProjectile();
 
 	DrawDebugSphere(GetWorld(), targetLocation, 15.f, 12, FColor::Green, false, 2.f);
-	//UE_LOG(LogTemp, Display, TEXT("Velocity = %s"), *currentProjectile->projectileMovementComponent->Velocity.ToString());
+	//UE_LOG(LogTemp, Display, TEXT("FireProjectile: Velocity = %s"), *currentProjectile->projectileMovementComponent->Velocity.ToString());
 
 }
 
@@ -113,7 +113,7 @@ AProjectileBase* UAC_SpawnProjectile::GetInactiveProjectile()
 	{
 		if (!p->IsProjectileActive()) return p;
 	}
-	//UE_LOG(LogTemp, Error, TEXT("No Inactive Projectiles Within %s. Create A Larger Pool Size"), *this->GetOwner()->GetName());
+	//UE_LOG(LogTemp, Error, TEXT("GetInactiveProjectile: No Inactive Projectiles Within %s. Create A Larger Pool Size"), *this->GetOwner()->GetName());
 	return nullptr;
 }
 

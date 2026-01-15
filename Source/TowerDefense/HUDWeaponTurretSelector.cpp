@@ -16,7 +16,7 @@ void UHUDWeaponTurretSelector::NativeConstruct()
 
 void UHUDWeaponTurretSelector::GetInfoFromTurretMenu(bool bIsChecked, UDA_TurretInfo* turretInformation)
 {
-	UE_LOG(LogTemp, Warning, TEXT("WITHIN WEAPON TURRET SELECTOR!!"));
+	//UE_LOG(LogTemp, Warning, TEXT("GetInfoFromTurretMenu: WITHIN WEAPON TURRET SELECTOR!!"));
 
 	if (bIsChecked)
 	{
@@ -37,7 +37,7 @@ void UHUDWeaponTurretSelector::UpdateWeaponTurretSelector(UDA_TurretInfo* turret
 	{
 		if (!iconClass)
 		{
-			UE_LOG(LogTemp, Error, TEXT("SET ICON CLASS WITHIN HUD WEAPON TURRET SELECTOR BP!!!"));
+			UE_LOG(LogTemp, Error, TEXT("UpdateWeaponTurretSelector: SET ICON CLASS WITHIN HUD WEAPON TURRET SELECTOR BP!!!"));
 			return;
 		}
 
@@ -45,7 +45,7 @@ void UHUDWeaponTurretSelector::UpdateWeaponTurretSelector(UDA_TurretInfo* turret
 
 		if (!currentIcon)
 		{
-			UE_LOG(LogTemp, Error, TEXT("%s IS NOT A SELECTOR ICON!!"), *icon->GetName());
+			UE_LOG(LogTemp, Error, TEXT("UpdateWeaponTurretSelector: %s IS NOT A SELECTOR ICON!!"), *icon->GetName());
 			return;
 		}
 

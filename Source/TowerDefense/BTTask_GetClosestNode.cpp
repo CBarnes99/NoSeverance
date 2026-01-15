@@ -15,21 +15,21 @@ EBTNodeResult::Type UBTTask_GetClosestNode::ExecuteTask(UBehaviorTreeComponent& 
 	AAIController* AIController = OwnerComp.GetAIOwner();
 	if (!AIController)
 	{
-		UE_LOG(LogTemp, Error, TEXT("No AI Controller Found within - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: No AI Controller Found within - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
 	APawn* enemyAsPawn = AIController->GetPawn();
 	if (!enemyAsPawn)
 	{
-		UE_LOG(LogTemp, Error, TEXT("No Controlled Pawn Failed within - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: No Controlled Pawn Failed within - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
 	AEnemyCharacterBase* enemyCharacter = Cast<AEnemyCharacterBase>(enemyAsPawn);
 	if (!enemyCharacter)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Pawn isn't of type AEnemyCharacterBase within - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: Pawn isn't of type AEnemyCharacterBase within - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 

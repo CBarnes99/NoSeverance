@@ -9,7 +9,7 @@ void UHUDTurretSelectionMenu::SetUpWidget(TArray<UDA_TurretInfo*> turretInfoArra
 
 	if (turretInfoClass == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("TURRET INFO CLASS IS NOT SET WITHIN HUDTurretSelectionMenu!!!"));
+		UE_LOG(LogTemp, Error, TEXT("SetUpWidget: TURRET INFO CLASS IS NOT SET WITHIN HUDTurretSelectionMenu!!!"));
 		return;
 	}
 	for (UDA_TurretInfo* dataAsset : turretInfoArray)
@@ -27,10 +27,9 @@ void UHUDTurretSelectionMenu::SetUpWidget(TArray<UDA_TurretInfo*> turretInfoArra
 	}
 }
 
-
 void UHUDTurretSelectionMenu::TurretHasBeenSelected(bool bIsChecked, UDA_TurretInfo* turretInformation)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Checkbox is doing things"));
+	UE_LOG(LogTemp, Warning, TEXT("TurretHasBeenSelected: Checkbox is doing things"));
 
 	OnMenuSelectionEvent.Broadcast(bIsChecked, turretInformation);
 }

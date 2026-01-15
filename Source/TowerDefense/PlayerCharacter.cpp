@@ -19,12 +19,12 @@ APlayerCharacter::APlayerCharacter()
 	if (weaponBP.Class)
 	{
 		weaponClass = weaponBP.Class;
-		UE_LOG(LogTemp, Display, TEXT("Weapon BP found in player character"));
+		UE_LOG(LogTemp, Display, TEXT("APlayerCharacter: Weapon BP found in player character"));
 
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Weapon BP not found in player character"));
+		UE_LOG(LogTemp, Error, TEXT("APlayerCharacter: Weapon BP not found in player character"));
 	}
 	weaponSocket = "weapon_righthand";
 
@@ -70,7 +70,7 @@ void APlayerCharacter::BeginPlay()
 
 	GetCharacterMovement()->MaxWalkSpeed = DA_playerInfo->movementSpeed;
 	GetCharacterMovement()->JumpZVelocity = DA_playerInfo->jumpHeight;
-	UE_LOG(LogTemp, Warning, TEXT("Name: %s, Health: %f, Mana: %f, Movement Speed: %f, Run Speed: %f, Jump Height: %f"),
+	UE_LOG(LogTemp, Warning, TEXT("BeginPlay: Name: %s, Health: %f, Mana: %f, Movement Speed: %f, Run Speed: %f, Jump Height: %f"),
 		*DA_playerInfo->name, healthComponent->GetCurrentHealth(), manaComponent->GetMana(), DA_playerInfo->movementSpeed, DA_playerInfo->runSpeed, DA_playerInfo->jumpHeight);
 
 	EquipWeapon();
@@ -87,7 +87,7 @@ void APlayerCharacter::EquipWeapon()
 {
 	if (!weaponClass)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Weapon Class is not set"));
+		UE_LOG(LogTemp, Error, TEXT("EquipWeapon: WEAPON CLASS NOT SET"));
 		return;
 	}
 
@@ -101,11 +101,11 @@ void APlayerCharacter::EquipWeapon()
 	{
 		equippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, weaponSocket);
 		equippedWeapon->SetOwner(this);
-		UE_LOG(LogTemp, Display, TEXT("Weapon Equipped Successfully!!"));
+		UE_LOG(LogTemp, Display, TEXT("EquipWeapon: Weapon Equipped Successfully!!"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Weapon Equipped FAILED!!"));
+		UE_LOG(LogTemp, Error, TEXT("EquipWeapon: Weapon Equipped FAILED!!"));
 	}
 }
 
@@ -135,7 +135,7 @@ FRotator APlayerCharacter::GetCameraRotation() const
 
 FVector APlayerCharacter::GetCameraForwardVector() const
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Camera Location from PlayerCharacter = %s"), *camera->GetComponentLocation().ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("GetCameraForwardVector: Camera Location from PlayerCharacter = %s"), *camera->GetComponentLocation().ToString());
 
 	return camera->GetForwardVector();
 }
@@ -162,7 +162,7 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 
 	if (healthComponent->GetCurrentHealth() <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Health is less than 0! Player Dead!"))
+		UE_LOG(LogTemp, Warning, TEXT("TakeDamage: Player Health is less than 0! Player Dead!"))
 		//Do Death function here
 	}
 	return DamageAmount;

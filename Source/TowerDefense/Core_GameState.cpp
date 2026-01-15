@@ -4,19 +4,19 @@ void ACore_GameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Display, TEXT("%s has initilized!"), *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay: %s has initilized!"), *this->GetName());
 
 
 	if (playerCurrencyAmount == NULL)
 	{
 		playerCurrencyAmount = 100;
-		UE_LOG(LogTemp, Error, TEXT("Player Currency was not set! Set to 100 by Default!"))
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: Player Currency was not set! Set to 100 by Default!"))
 	}
 
 	if (maxListSizeInWeaponTurretHud == NULL)
 	{
 		maxListSizeInWeaponTurretHud = 5;
-		UE_LOG(LogTemp, Error, TEXT("amountInWeaponTurretHud was not set! Set to 5 by Default!"))
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: amountInWeaponTurretHud was not set! Set to 5 by Default!"))
 	}
 	
 	currentListSizeInWeaponTurretHud = 0;
@@ -64,7 +64,7 @@ void ACore_GameState::UpdateCurrentListSizeInWeaponTurretHud(bool addSize)
 
 		if (currentListSizeInWeaponTurretHud > maxListSizeInWeaponTurretHud)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Current List Size In Weapon Turret Hud Has Exceeded Max Size!!!"))
+			UE_LOG(LogTemp, Error, TEXT("UpdateCurrentListSizeInWeaponTurretHud: Current List Size In Weapon Turret Hud Has Exceeded Max Size!!!"))
 		}
 	}
 	else
@@ -73,11 +73,11 @@ void ACore_GameState::UpdateCurrentListSizeInWeaponTurretHud(bool addSize)
 
 		if (currentListSizeInWeaponTurretHud < 0)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Current List Size In Weapon Turret Hud Is Below 0!!!"))
+			UE_LOG(LogTemp, Error, TEXT("UpdateCurrentListSizeInWeaponTurretHud: Current List Size In Weapon Turret Hud Is Below 0!!!"))
 		}
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("Current List Size In Weapon Turret Hud = %d"), currentListSizeInWeaponTurretHud);
+	UE_LOG(LogTemp, Display, TEXT("UpdateCurrentListSizeInWeaponTurretHud: Current List Size In Weapon Turret Hud = %d"), currentListSizeInWeaponTurretHud);
 }
 
 bool ACore_GameState::IsCurrentListSizeLessThanMax()

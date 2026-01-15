@@ -31,7 +31,7 @@ void ADefendingBase::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	{
 		baseHealth--;
 		BaseHealthDecreasedEvent.ExecuteIfBound(baseHealth);
-		UE_LOG(LogTemp, Display, TEXT("Base Health Decreaced to - %d"), baseHealth);
+		UE_LOG(LogTemp, Display, TEXT("OnOverlap: Base Health Decreaced to - %d"), baseHealth);
 		
 		AEnemyCharacterBase* enemy = Cast<AEnemyCharacterBase>(OtherActor);
 		enemy->OnDeath();
@@ -40,7 +40,7 @@ void ADefendingBase::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	if (baseHealth <= 0)
 	{
 		BaseHealthReachedZeroEvent.ExecuteIfBound();
-		UE_LOG(LogTemp, Warning, TEXT("Base Health Has Reached 0!!"));
+		UE_LOG(LogTemp, Warning, TEXT("OnOverlap: Base Health Has Reached 0!!"));
 	}
 }
 

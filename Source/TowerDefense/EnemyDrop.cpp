@@ -83,7 +83,7 @@ void AEnemyDrop::SetDrop(EEnemyDrop type)
 
 void AEnemyDrop::OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s - Collision Dectected with %s"), *this->GetName(), *OtherActor->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("OnPickUp: %s - Collision Dectected with %s"), *this->GetName(), *OtherActor->GetName());
 
 	if (!OtherActor->IsA(APlayerCharacter::StaticClass())) return;
 
@@ -126,7 +126,7 @@ void AEnemyDrop::OnPickUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 		break;
 
 	default:
-		UE_LOG(LogTemp, Error, TEXT("Defualt Switch Statement, create new case in set drop function within EnemyDrop.cpp!!"));
+		UE_LOG(LogTemp, Error, TEXT("OnPickUp: Defualt Switch Statement, create new case in set drop function within EnemyDrop.cpp!!"));
 		break;
 	}
 

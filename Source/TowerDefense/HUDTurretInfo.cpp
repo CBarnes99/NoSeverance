@@ -51,7 +51,7 @@ void UHUDTurretInfo::HandleCheckboxStateChange(bool bIsChecked)
 
 		if (!gameState)
 		{
-			UE_LOG(LogTemp, Error, TEXT("GameState is not casted correctly within HUDTurretInfo!!"));
+			UE_LOG(LogTemp, Error, TEXT("HandleCheckboxStateChange: GameState is not casted correctly within HUDTurretInfo!!"));
 			return;
 		}
 	}
@@ -66,7 +66,7 @@ void UHUDTurretInfo::HandleCheckboxStateChange(bool bIsChecked)
 		else
 		{
 			IsTurretSelectedCheckBox->SetCheckedState(ECheckBoxState::Unchecked);
-			UE_LOG(LogTemp, Warning, TEXT("List Size Max Has Been Reached - %d"), gameState->GetCurrentListSizeInWeaponTurretHud());
+			UE_LOG(LogTemp, Warning, TEXT("HandleCheckboxStateChange: List Size Max Has Been Reached - %d"), gameState->GetCurrentListSizeInWeaponTurretHud());
 			//SET UP MODAL FOR MAX LIST SIZE REACHED TO LET THE PLAYER KNOW THEY CANT ADD ANYMORE!
 		}
 

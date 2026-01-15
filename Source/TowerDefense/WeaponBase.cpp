@@ -79,11 +79,11 @@ void AWeaponBase::StartWeaponFireRateCooldown()
 void AWeaponBase::EnableCanFire()
 {
 	bCanFire = true;
-	//UE_LOG(LogTemp, Display, TEXT("Enabled Firing"));
+	//UE_LOG(LogTemp, Display, TEXT("EnableCanFire: Enabled Firing"));
 }
 
 void AWeaponBase::DisableCanFire()
 {
 	bCanFire = false;
-	//UE_LOG(LogTemp, Display, TEXT("Disabled Firing"));
+	//UE_LOG(LogTemp, Display, TEXT("DisableCanFire: Disabled Firing"));
 }

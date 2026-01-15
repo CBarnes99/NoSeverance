@@ -58,11 +58,11 @@ protected:
 
 	/** Turn off the damage capabilities for the turret, is called by the activeAndRechargeTimerHandle */
 	UFUNCTION(BlueprintCallable)
-	void disableTurret();
+	void DisableTurret();
 
 	/** Turn on the damage capabilities for the turret, is called by the activeAndRechargeTimerHandle */
 	UFUNCTION(BlueprintCallable)
-	void enableTurret();
+	void EnableTurret();
 
 	/** When the turret damages an enemy, it puts a reference to it here so that it can only damage it once per active cycle */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

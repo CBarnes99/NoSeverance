@@ -56,7 +56,7 @@ void UAC_PlaceActor::ConfirmPlacement()
 {
 	if (actorClassToSpawn == NULL || currentPreviewActor == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Within Confirm Placement in AC_PlaceActor, either ActorClassToSpawn is NULL or PreviewActor is nullptr!!!"));
+		UE_LOG(LogTemp, Error, TEXT("ConfirmPlacement: Within Confirm Placement in AC_PlaceActor, either ActorClassToSpawn is NULL or PreviewActor is nullptr!!!"));
 		return;
 	}
 
@@ -69,7 +69,7 @@ void UAC_PlaceActor::CancelPlacement()
 {
 	if (currentPreviewActor == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Within CancelPlacement in AC_PlaceActor, either PreviewActor is nullptr!"));
+		UE_LOG(LogTemp, Warning, TEXT("CancelPlacement: AC_PlaceActor, either PreviewActor is nullptr!"));
 		return;
 	}
 
@@ -83,10 +83,9 @@ void UAC_PlaceActor::RotatePlacement(float direction)
 {
 	if (currentPreviewActor == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Within RotatePlacement in AC_PlaceActor, either PreviewActor is nullptr!"));
+		UE_LOG(LogTemp, Warning, TEXT("RotatePlacement: in AC_PlaceActor, either PreviewActor is nullptr!"));
 		return;
 	}
-	UE_LOG(LogTemp, Error, TEXT("test %f"), direction);
 
 	float actorCurrentYawRotation = currentPreviewActor->GetActorRotation().Yaw;
 	
@@ -120,7 +119,7 @@ AActor* UAC_PlaceActor::GetPreviewActorFromPool(TSubclassOf<AActor> actorClass)
 	{
 		if (actor->IsA(actorClass))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Set Current Actor To actor within GetPreviewActorFromPool"));
+			UE_LOG(LogTemp, Warning, TEXT("GetPreviewActorFromPool: Set Current Actor To actor"));
 			return actor;
 		}
 	}
@@ -129,7 +128,7 @@ AActor* UAC_PlaceActor::GetPreviewActorFromPool(TSubclassOf<AActor> actorClass)
 	previewActorPool.AddUnique(newActor);
 	DisablePreviewActor(newActor);
 	UpdateIgnoreActors(newActor, true);
-	UE_LOG(LogTemp, Warning, TEXT("Created new preview actor, number of actors within pool = %d"), previewActorPool.Num());
+	UE_LOG(LogTemp, Warning, TEXT("GetPreviewActorFromPool: Created new preview actor, number of actors within pool = %d"), previewActorPool.Num());
 
 	return newActor;
 }

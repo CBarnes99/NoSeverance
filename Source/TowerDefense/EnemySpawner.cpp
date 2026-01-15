@@ -32,7 +32,7 @@ void AEnemySpawner::BeginPlay()
 
 	if (!IsThereEnemyPathSplines()) 
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("THERE IS NOT ANY ENEMY PATH SPLINES ATTACHED TO THIS SPAWNER - %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("BeginPlay: THERE IS NOT ANY ENEMY PATH SPLINES ATTACHED TO THIS SPAWNER - %s"), *this->GetName());
 	}
 
 	PoolEnemies();
@@ -44,7 +44,7 @@ bool AEnemySpawner::IsThereEnemyPathSplines()
 	{
 		return true;
 	}
-	UE_LOG(LogTemp, Error, TEXT("THERE IS NO ENEMY SPLINE PATHS ATTACHED TO - %s"), *this->GetName());
+	UE_LOG(LogTemp, Error, TEXT("IsThereEnemyPathSplines: THERE IS NO ENEMY SPLINE PATHS ATTACHED TO - %s"), *this->GetName());
 	return false;
 }
 
@@ -52,7 +52,7 @@ AEnemyPathSpline* AEnemySpawner::GetRandomEnemyPath()
 {
 	int arraySize = enemyPathSplines.Num();
 	int randomInt = FMath::RandRange(0, arraySize - 1);
-	//UE_LOG(LogTemp, Warning, TEXT("Returning - %s - from GetRandomEnemyPath within - %s"), *enemyPathSplines[randomInt]->GetName(), *this->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("GetRandomEnemyPath: Returning - %s - from GetRandomEnemyPath within - %s"), *enemyPathSplines[randomInt]->GetName(), *this->GetName());
 	return enemyPathSplines[randomInt];
 }
 
@@ -181,7 +181,7 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 	{
 		if (enemyStruct->enemyTypeArray.IsValidIndex(0)) {
 			amountOfEnemiesSpawned++;
-			//UE_LOG(LogTemp, Display, TEXT("Valid Index 0 In %s"), *this->GetName());
+			//UE_LOG(LogTemp, Display, TEXT("SpawnEnemyActor: Valid Index 0 In %s"), *this->GetName());
 
 			for (AEnemyCharacterBase* pooledEnemy : enemyPool)
 			{
@@ -198,14 +198,14 @@ AEnemyCharacterBase* AEnemySpawner::SpawnEnemyActor()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Amount Of Enemies in %s is %d, Amount Spawned = %d"), *this->GetName(), amountOfEnemiesInWave, amountOfEnemiesSpawned);
+			UE_LOG(LogTemp, Warning, TEXT("SpawnEnemyActor: Amount Of Enemies in %s is %d, Amount Spawned = %d"), *this->GetName(), amountOfEnemiesInWave, amountOfEnemiesSpawned);
 			StopSpawning();
 			return NULL;
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("No enemies spawning in %s for wave %d"), *this->GetName(), currentWaveBeingSpawned);
+		UE_LOG(LogTemp, Error, TEXT("SpawnEnemyActor: No enemies spawning in %s for wave %d"), *this->GetName(), currentWaveBeingSpawned);
 		StopSpawning();
 		return NULL;
 	}

@@ -14,7 +14,7 @@ void UHUDBaseHealth::NativeConstruct()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Defending Base Wasn't Casted Correctly within - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("NativeConstruct: Defending Base Wasn't Casted Correctly within - %s"), *this->GetName());
 	}
 }
 

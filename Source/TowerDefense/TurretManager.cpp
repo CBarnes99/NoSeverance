@@ -21,7 +21,7 @@ void ATurretManager::StartTurretPlacement(UDA_TurretInfo* turretInfo)
 {
 	if (!turretInfo)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Turret Info Within Turret Manager - Start Turret Placement Is NULL!!!"));
+		UE_LOG(LogTemp, Error, TEXT("StartTurretPlacement: Turret Info Within Turret Manager - Start Turret Placement Is NULL!!!"));
 		return;
 	}
 	currentTurretInfo = turretInfo;
@@ -35,13 +35,13 @@ void ATurretManager::ConfirmTurretPlacement()
 	if (IsAbleToPlaceTurret())
 	{
 		coreGameState->UpdatePlayerCurrencyAmount(false, currentTurretInfo->cost);
-		UE_LOG(LogTemp, Warning, TEXT("Spawned Turret! - New Player Currency = %f, Turret Cost = %d"), coreGameState->GetPlayerCurrencyAmount(), currentTurretInfo->cost);
+		UE_LOG(LogTemp, Warning, TEXT("ConfirmTurretPlacement: Spawned Turret! - New Player Currency = %f, Turret Cost = %d"), coreGameState->GetPlayerCurrencyAmount(), currentTurretInfo->cost);
 		placeActorComponent->ConfirmPlacement();
 	}
 	else
 	{
 		//create notifcation to let the player know they cant place the turret
-		UE_LOG(LogTemp, Warning, TEXT("Cant Spawn Turret! - Player Currency = %f, Turret Cost = %d"), coreGameState->GetPlayerCurrencyAmount(), currentTurretInfo->cost);
+		UE_LOG(LogTemp, Warning, TEXT("ConfirmTurretPlacement: Cant Spawn Turret! - Player Currency = %f, Turret Cost = %d"), coreGameState->GetPlayerCurrencyAmount(), currentTurretInfo->cost);
 	}
 }
 
@@ -53,7 +53,7 @@ bool ATurretManager::IsAbleToPlaceTurret()
 		coreGameState = Cast<ACore_GameState>(gameState);
 		if (!coreGameState)
 		{
-			UE_LOG(LogTemp, Error, TEXT("CORE GAME STATE NOT SET CORRECTLY IN - %s"), *this->GetName());
+			UE_LOG(LogTemp, Error, TEXT("ConfirmTurretPlacement: CORE GAME STATE NOT SET CORRECTLY IN - %s"), *this->GetName());
 			return false;
 		}
 	}

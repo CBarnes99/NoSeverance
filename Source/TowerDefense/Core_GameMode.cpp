@@ -12,11 +12,11 @@ ACore_GameMode::ACore_GameMode()
 	if (PlayerPawnClassFinder.Class)
 	{
 		DefaultPawnClass = PlayerPawnClassFinder.Class;	
-		UE_LOG(LogTemp, Warning, TEXT("Player Pawn/Character found in Game Mode!"))
+		UE_LOG(LogTemp, Warning, TEXT("ACore_GameMode: Player Pawn/Character found in Game Mode!"))
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player Pawn/Character NOT found in Game Mode!"))
+		UE_LOG(LogTemp, Error, TEXT("ACore_GameMode: Player Pawn/Character NOT found in Game Mode!"))
 	}
 
 	static ConstructorHelpers::FClassFinder<APlayerController> CorePlayerControllerClass(TEXT("/Game/Core/BP_Core_PlayerController"));
@@ -24,11 +24,11 @@ ACore_GameMode::ACore_GameMode()
 	{
 		PlayerControllerClass = CorePlayerControllerClass.Class;
 		
-		UE_LOG(LogTemp, Warning, TEXT("Player Controller class found in Game Mode!"))
+		UE_LOG(LogTemp, Warning, TEXT("ACore_GameMode: Player Controller class found in Game Mode!"))
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player Controller class NOT found in Game Mode!"))
+		UE_LOG(LogTemp, Error, TEXT("ACore_GameMode: Player Controller class NOT found in Game Mode!"))
 	}
 
 	static ConstructorHelpers::FClassFinder<AHUD> CoreHUDClass(TEXT("/Game/Core/BP_Core_HUD"));
@@ -36,11 +36,11 @@ ACore_GameMode::ACore_GameMode()
 	{
 		HUDClass = CoreHUDClass.Class;
 
-		UE_LOG(LogTemp, Warning, TEXT("HUD class found in Game Mode!"))
+		UE_LOG(LogTemp, Warning, TEXT("ACore_GameMode: HUD class found in Game Mode!"))
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("HUD class NOT found in Game Mode!"))
+		UE_LOG(LogTemp, Error, TEXT("ACore_GameMode: HUD class NOT found in Game Mode!"))
 	}
 
 	static ConstructorHelpers::FClassFinder<AGameStateBase> CoreGameStateClass(TEXT("/Game/Core/BP_Core_GameState"));
@@ -48,18 +48,18 @@ ACore_GameMode::ACore_GameMode()
 	{
 		GameStateClass = CoreGameStateClass.Class;
 
-		UE_LOG(LogTemp, Warning, TEXT("GameState class found in Game Mode!"))
+		UE_LOG(LogTemp, Warning, TEXT("ACore_GameMode: GameState class found in Game Mode!"))
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("GameState class NOT found in Game Mode!"))
+		UE_LOG(LogTemp, Error, TEXT("ACore_GameMode: GameState class NOT found in Game Mode!"))
 	}
 }
 
 void ACore_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Display, TEXT("%s has initilized!"), *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay: %s has initilized!"), *this->GetName());
 
 	currentWave = 0;
 	corePlayerController = Cast<ACore_PlayerController>(GetWorld()->GetFirstPlayerController());
@@ -87,7 +87,7 @@ void ACore_GameMode::StartEnemyWave()
 	if (!lastWave)
 	{
 		lastWave = spawnerManager->CalculateLastWave();
-		UE_LOG(LogTemp, Warning, TEXT("The last wave of this level is: %i"), lastWave);		
+		UE_LOG(LogTemp, Warning, TEXT("StartEnemyWave: The last wave of this level is: %i"), lastWave);		
 	}
 
 	//Check to see if a wave is already active, if not, start spawning enemies
@@ -95,22 +95,22 @@ void ACore_GameMode::StartEnemyWave()
 	{
 		currentWave++;
 
-		UE_LOG(LogTemp, Warning, TEXT("Wave %d is now active!"), currentWave);
+		UE_LOG(LogTemp, Warning, TEXT("StartEnemyWave: Wave %d is now active!"), currentWave);
 
 		spawnerManager->StartSpawningEnemies(currentWave);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Wave %d is already active!"), currentWave);
+		UE_LOG(LogTemp, Warning, TEXT("StartEnemyWave: Wave %d is already active!"), currentWave);
 	}
 }
 
 void ACore_GameMode::PrepareNewWave()
 {
-	UE_LOG(LogTemp, Display, TEXT("New Wave has been prepared"));
+	UE_LOG(LogTemp, Display, TEXT("PrepareNewWave: New Wave has been prepared"));
 	if (currentWave == lastWave)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Last Wave has been Defeated"));
+		UE_LOG(LogTemp, Display, TEXT("PrepareNewWave: Last Wave has been Defeated"));
 		
 		LevelCompleteEvent.Broadcast();
 	}

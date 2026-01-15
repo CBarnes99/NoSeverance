@@ -49,7 +49,7 @@ protected:
 	FVector GetTraceTargetLocation(FVector traceStartLocation, FVector actorForwardVector);
 	/** Spawns a projectile and adds it to the pool, gets called by initialize pool */
 	UFUNCTION(BlueprintCallable)
-	void spawnProjectile();
+	void SpawnProjectile();
 
 	/** An array of all the pooled projectiles */
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Spawning")

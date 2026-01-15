@@ -16,7 +16,7 @@ EBTNodeResult::Type UBTTask_EnemyAttack::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if (!attackMontages.IsValidIndex(0))
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO VALID ATTACK MONTAGES WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: NO VALID ATTACK MONTAGES WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
@@ -26,7 +26,7 @@ EBTNodeResult::Type UBTTask_EnemyAttack::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if (!pawn)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO PAWN FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: NO PAWN FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
@@ -34,7 +34,7 @@ EBTNodeResult::Type UBTTask_EnemyAttack::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if (!character)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO CHARACTER ACTOR FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: NO CHARACTER ACTOR FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
@@ -42,7 +42,7 @@ EBTNodeResult::Type UBTTask_EnemyAttack::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if (!animInstance)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO ANIM INSTANCE FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: NO ANIM INSTANCE FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
@@ -64,7 +64,7 @@ void UBTTask_EnemyAttack::OnMontageEnded(UAnimMontage* Montage, bool bInterrupte
 	
 	if (!cachedOwnerComp)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO cachedOwnerComp FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("OnMontageEnded: NO cachedOwnerComp FOUND WITHIN - %s"), *this->GetName());
 		return;
 	}
 

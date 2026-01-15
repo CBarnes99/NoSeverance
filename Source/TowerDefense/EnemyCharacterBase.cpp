@@ -85,7 +85,7 @@ void AEnemyCharacterBase::OnDeath()
 		ACore_GameState* coreGameState = Cast<ACore_GameState>(gameState);
 		if (coreGameState)
 		{
-			//UE_LOG(LogTemp, Display, TEXT("Currency Added - %d"), enemyInfo->currencyOnDeath);
+			//UE_LOG(LogTemp, Display, TEXT("OnDeath: Currency Added - %d"), enemyInfo->currencyOnDeath);
 			coreGameState->UpdatePlayerCurrencyAmount(true, enemyInfo->currencyOnDeath);
 		}
 		else
@@ -230,7 +230,7 @@ FVector AEnemyCharacterBase::GetClosestPathNodeLocation()
 		}
 	}
 	pathNodeIndex = nodeIndex;
-	UE_LOG(LogTemp, Display, TEXT("New closest node is - %d, within - %s"), pathNodeIndex, *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("GetClosestPathNodeLocation: New closest node is - %d, within - %s"), pathNodeIndex, *this->GetName());
 	return closestPathNode;
 }
 

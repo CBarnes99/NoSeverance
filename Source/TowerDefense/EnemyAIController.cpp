@@ -32,7 +32,7 @@ void AEnemyAIController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("AI Perception Component NOT SET UP CORRECTLY WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: AI Perception Component NOT SET UP CORRECTLY WITHIN - %s"), *this->GetName());
 	}
 }
 
@@ -57,7 +57,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("BLACKBOARD NULL IN ENEMY AI CONTROLLER - %s"), *this->GetName());
+			UE_LOG(LogTemp, Error, TEXT("OnPossess: BLACKBOARD NULL IN ENEMY AI CONTROLLER - %s"), *this->GetName());
 		}
 
 		Enemy->OnDisableAIControllerEvent.BindUObject(this, &AEnemyAIController::DisableAIController);
@@ -71,7 +71,7 @@ void AEnemyAIController::OnTargetPerceptionUpdated(AActor* actor, FAIStimulus st
 
 	if (!actor->Tags.Contains(FName("Player")))
 	{
-		//UE_LOG(LogTemp, Error, TEXT("%s is not Player Actor"), *actor->GetName());
+		//UE_LOG(LogTemp, Error, TEXT("OnTargetPerceptionUpdated: %s is not Player Actor"), *actor->GetName());
 		return;
 	}
 

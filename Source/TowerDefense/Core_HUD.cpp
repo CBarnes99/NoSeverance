@@ -16,13 +16,13 @@ void ACore_HUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Display, TEXT("%s has initilized!"), *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay: %s has initilized!"), *this->GetName());
 
 	localCorePlayerController = Cast<ACore_PlayerController>(GetOwningPlayerController());
 
 	if (!localCorePlayerController)
 	{
-		UE_LOG(LogTemp, Error, TEXT("PLAYER CONTROLLER WITHIN %s IS NOT SET CORRECTLY!!"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: PLAYER CONTROLLER WITHIN %s IS NOT SET CORRECTLY!!"), *this->GetName());
 	}
 
 	ACore_GameMode* gameMode = Cast<ACore_GameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -97,7 +97,7 @@ void ACore_HUD::SetUpInGameWidgetList()
 	{
 		if (widget == nullptr)
 		{
-			UE_LOG(LogTemp, Fatal, TEXT("WIDGET IS RETURNING NULL WITHIN CORE HUD SET UP IN GAME WIDGET LIST FUNCTION"));
+			UE_LOG(LogTemp, Fatal, TEXT("SetUpInGameWidgetList: WIDGET IS RETURNING NULL WITHIN CORE HUD, SET UP IN GAME WIDGET LIST FUNCTION"));
 			return;
 		}
 		widget->AddToViewport();
@@ -175,7 +175,7 @@ void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 {
 	if (widget == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("WIDGET IS RETURNING NULL WITHIN CORE HUD TOGGLE WIDGET FUNCTION"));
+		UE_LOG(LogTemp, Error, TEXT("ToggleGameMenuWidgets: WIDGET IS RETURNING NULL WITHIN - %s"), *this->GetName());
 		return;
 	}
 	gameMenuWidgetToFocus = widget;
@@ -184,7 +184,7 @@ void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 	{
 		if (widgetInList == nullptr)
 		{
-			UE_LOG(LogTemp, Error, TEXT("widgetInList IS RETURNING NULL WITHIN CORE HUD gameMenusWidgetList"));
+			UE_LOG(LogTemp, Error, TEXT("ToggleGameMenuWidgets: widgetInList IS RETURNING NULL WITHIN CORE HUD gameMenusWidgetList array - %s"), *this->GetName());
 			return;
 		}
 

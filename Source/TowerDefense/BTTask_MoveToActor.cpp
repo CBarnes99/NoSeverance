@@ -16,28 +16,28 @@ EBTNodeResult::Type UBTTask_MoveToActor::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if (!blackboardComp)
 	{
-		UE_LOG(LogTemp, Error, TEXT("BLACKBOARD COMP NOT FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: BLACKBOARD COMP NOT FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
 	cachedTargetActor = Cast<AActor>(blackboardComp->GetValueAsObject(TargetActorKey.SelectedKeyName));
 	if (!cachedTargetActor)
 	{
-		UE_LOG(LogTemp, Error, TEXT("cachedTargetActor NOT FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: cachedTargetActor NOT FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
 	cachedAIController = OwnerComp.GetAIOwner();
 	if (!cachedAIController)
 	{
-		UE_LOG(LogTemp, Error, TEXT("cachedAIController NOT FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: cachedAIController NOT FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
 	cachedControlledPawn = cachedAIController->GetPawn();
 	if (!cachedControlledPawn)
 	{
-		UE_LOG(LogTemp, Error, TEXT("cachedControlledPawn NOT FOUND WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("ExecuteTask: cachedControlledPawn NOT FOUND WITHIN - %s"), *this->GetName());
 		return EBTNodeResult::Failed;
 	}
 
@@ -53,13 +53,13 @@ EBTNodeResult::Type UBTTask_MoveToActor::ExecuteTask(UBehaviorTreeComponent& Own
 
 void UBTTask_MoveToActor::UpdateMove()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("ExecuteTask called, setting timer with UpdateInterval = %f"), UpdateInterval);
-	//UE_LOG(LogTemp, Warning, TEXT("UpdateMove called at time: %f"), FPlatformTime::Seconds());
+	//UE_LOG(LogTemp, Warning, TEXT("UpdateMove: ExecuteTask called, setting timer with UpdateInterval = %f"), UpdateInterval);
+	//UE_LOG(LogTemp, Warning, TEXT("UpdateMove: UpdateMove called at time: %f"), FPlatformTime::Seconds());
 
 
 	if (!cachedTargetActor || !cachedControlledPawn)
 	{
-		UE_LOG(LogTemp, Error, TEXT("cachedTargetActor OR cachedControlledPawn NOT FOUND WITHIN UPDATE MOVE FUNCTION - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("UpdateMove: cachedTargetActor OR cachedControlledPawn NOT FOUND WITHIN UPDATE MOVE FUNCTION - %s"), *this->GetName());
 		FinishLatentTask(*cachedOwnerComp, EBTNodeResult::Failed);
 		return;
 	}
@@ -77,7 +77,7 @@ void UBTTask_MoveToActor::UpdateMove()
 
 	ACharacter* enemy = Cast<ACharacter>(cachedControlledPawn);
 	float adjustedAcceptanceRadius = enemy->GetCapsuleComponent()->GetScaledCapsuleRadius() + acceptanceRadius + 3;
-	//UE_LOG(LogTemp, Error, TEXT("distanceFromActor: %f, acceptanceRadius: %f, adjustedAcceptanceRadius: %f"), distanceFromActor, acceptanceRadius, adjustedAcceptanceRadius);
+	//UE_LOG(LogTemp, Error, TEXT("UpdateMove: distanceFromActor: %f, acceptanceRadius: %f, adjustedAcceptanceRadius: %f"), distanceFromActor, acceptanceRadius, adjustedAcceptanceRadius);
 
 	if (distanceFromActor <= adjustedAcceptanceRadius)
 	{

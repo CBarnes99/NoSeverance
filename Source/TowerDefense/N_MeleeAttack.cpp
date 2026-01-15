@@ -8,13 +8,13 @@ void UN_MeleeAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 
 	if (!MeshComp)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO MESH WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("Notify: NO MESH WITHIN - %s"), *this->GetName());
 		return;
 	}
 
 	if (attackSocketName.IsNone() || !MeshComp->DoesSocketExist(attackSocketName))
 	{
-		UE_LOG(LogTemp, Error, TEXT("ATTACK SOCKET NAME NOT SET CORRECTLY WITHIN - %s, %s, %s"), *MeshComp->GetOwner()->GetName(), *Animation->GetName(), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("Notify: ATTACK SOCKET NAME NOT SET CORRECTLY WITHIN - %s, %s, %s"), *MeshComp->GetOwner()->GetName(), *Animation->GetName(), *this->GetName());
 		return;
 	}
 
@@ -22,13 +22,13 @@ void UN_MeleeAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 
 	if (!enemy)
 	{
-		UE_LOG(LogTemp, Error, TEXT("CASTED TO ENEMY FAILED WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("Notify: CASTED TO ENEMY FAILED WITHIN - %s"), *this->GetName());
 		return;
 	}
 
 	if (!enemy->HasAuthority())
 	{
-		UE_LOG(LogTemp, Error, TEXT("ENEMY DOEST NOT HAVE AUTHORITY WITHIN - %s"), *this->GetName());
+		UE_LOG(LogTemp, Error, TEXT("Notify: ENEMY DOEST NOT HAVE AUTHORITY WITHIN - %s"), *this->GetName());
 		return;
 	}
 
@@ -52,7 +52,7 @@ void UN_MeleeAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 		if (player)
 		{
 			UGameplayStatics::ApplyDamage(player, enemy->GetEnemyDamageAmount(), enemy->GetController(), enemy, nullptr);
-			UE_LOG(LogTemp, Warning, TEXT("Enemy Has Attacked Player!!"));
+			UE_LOG(LogTemp, Warning, TEXT("Notify: Enemy Has Attacked Player!!"));
 			return;
 		}
 	}

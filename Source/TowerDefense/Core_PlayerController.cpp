@@ -12,7 +12,7 @@ void ACore_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Display, TEXT("%s has initilized!"), *this->GetName());
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay: %s has initilized!"), *this->GetName());
 
 	HaveMappingContextsBeenAsigned();
 
@@ -26,14 +26,14 @@ void ACore_PlayerController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("ENHANCED INPUT SUBSYSTEM WAS NOT ASSIGNED CORRECTLY!!!!"));
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: ENHANCED INPUT SUBSYSTEM WAS NOT ASSIGNED CORRECTLY!!!!"));
 	}
 
 	AGameStateBase* gameState = UGameplayStatics::GetGameState(GetWorld());
 	coreGameState = Cast<ACore_GameState>(gameState);
 	if (!coreGameState)
 	{
-		UE_LOG(LogTemp, Error, TEXT("NO GAME STATE FOUND IN PLAYER CONTROLLER!!!"));
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: NO GAME STATE FOUND IN PLAYER CONTROLLER!!!"));
 	}
 
 	hotbarSelectionIndex = 0;
@@ -48,13 +48,13 @@ void ACore_PlayerController::OnPossess(APawn* InPawn)
 	myPlayerCharacter = Cast<APlayerCharacter>(InPawn);
 	if (!myPlayerCharacter)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player Character Not Assigned In Player Controller!"));
+		UE_LOG(LogTemp, Error, TEXT("OnPossess: Player Character Not Assigned In Player Controller!"));
 	}
 
 	coreHUD = Cast<ACore_HUD>(GetHUD());
 	if (!coreHUD)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Core Hud Not Assigned In Player Controller!"));
+		UE_LOG(LogTemp, Error, TEXT("OnPossess: Core Hud Not Assigned In Player Controller!"));
 	}
 }
 
@@ -148,13 +148,13 @@ void ACore_PlayerController::AttackAction()
 
 void ACore_PlayerController::CallGameModeToStartSpawningEnemies()
 {
-	UE_LOG(LogTemp, Display, TEXT("ENTER PRESSED"));
+	UE_LOG(LogTemp, Display, TEXT("CallGameModeToStartSpawningEnemies: ENTER PRESSED"));
 	StartWaveEvent.Broadcast();
 };
 
 void ACore_PlayerController::OpenTurretSelectionMenu()
 {
-	UE_LOG(LogTemp, Display, TEXT("OpenTurretButtonPressed"));
+	UE_LOG(LogTemp, Display, TEXT("OpenTurretSelectionMenu: OpenTurretButtonPressed"));
 
 	hotbarSelectionIndex = 0;
 	UpdateHotbarSelection();
@@ -174,7 +174,7 @@ void ACore_PlayerController::OpenTurretSelectionMenu()
 
 void ACore_PlayerController::ScrollWheelSelectionAction(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *Value.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("ScrollWheelSelectionAction: %s"), *Value.ToString());
 
 	if (Value.Get<float>() > 0)
 	{
@@ -203,7 +203,7 @@ void ACore_PlayerController::CancelTurretPlacementAction()
 
 void ACore_PlayerController::RotateTurret(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Value = %s"), *Value.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("RotateTurret: Value = %s"), *Value.ToString());
 	turretManager->RotateTurretPlacement(Value.Get<float>());
 }
 
@@ -215,18 +215,18 @@ void ACore_PlayerController::UpdateHotbarSelection()
 
 		if (!actor)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Couldn't find turret manager"));
+			UE_LOG(LogTemp, Error, TEXT("UpdateHotbarSelection: Couldn't find turret manager"));
 			return;
 		}
 		turretManager = Cast<ATurretManager>(actor);
 		if (!turretManager)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Cast Failed for turret manager in player character!"));
+			UE_LOG(LogTemp, Error, TEXT("UpdateHotbarSelection: Cast Failed for turret manager in player character!"));
 			return;
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Hotbar Index is %d"), hotbarSelectionIndex);
+	UE_LOG(LogTemp, Warning, TEXT("UpdateHotbarSelection: Hotbar Index is %d"), hotbarSelectionIndex);
 
 	if (hotbarSelectionIndex > 0 && hotbarSelectionIndex != previousHotbarSelectionIndex && GetTurretDAEvent.IsBound())
 	{
@@ -267,23 +267,23 @@ void ACore_PlayerController::HaveMappingContextsBeenAsigned()
 {
 	if (!defaultMappingContext)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("NO DEFUALT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO DEFUALT MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 	if (!combatMappingContext)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("NO COMBAT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO COMBAT MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 	if (!turretPlacingMappingContext)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("NO TURRET MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO TURRET MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 	if (!movementMappingContext)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("NO MOVEMENT MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO MOVEMENT MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 	if (!gameMenuWidgetsActionsMappingContext)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("NO GAME MENUS MAPPING CONTEXT WITHIN %s"), *this->GetName());
+		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO GAME MENUS MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
 }
 ;

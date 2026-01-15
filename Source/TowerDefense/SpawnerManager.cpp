@@ -53,13 +53,13 @@ void ASpawnerManager::StartSpawningEnemies(int currentWave)
 	//If there is a wave currently active, prevent spawning from another wave
 	if (waveActive)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Wave is currently active!"));
+		UE_LOG(LogTemp, Warning, TEXT("StartSpawningEnemies: Wave is currently active!"));
 		return;
 	}
 
 	waveActive = true;
 	amountOfEnemysInRound = 0;
-	UE_LOG(LogTemp, Warning, TEXT("current wave = %d"), currentWave);
+	UE_LOG(LogTemp, Warning, TEXT("StartSpawningEnemies: Current Wave = %d"), currentWave);
 
 	//Adds to the total of enemies that are in this round and then starts spawning enemies
 	for (AEnemySpawner* spawner : enemySpawners)
@@ -72,10 +72,10 @@ void ASpawnerManager::StartSpawningEnemies(int currentWave)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No Spawner Found when spawning calulcating amount of enemies within - %s"), *this->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("StartSpawningEnemies: No Spawner Found when spawning calulcating amount of enemies within - %s"), *this->GetName());
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("There are %d enemies this round"), amountOfEnemysInRound);
+	UE_LOG(LogTemp, Warning, TEXT("StartSpawningEnemies: There are %d enemies this round"), amountOfEnemysInRound);
 };
 
 //Called Within Game Mode
@@ -86,15 +86,15 @@ int ASpawnerManager::CalculateLastWave()
 	{
 		for (auto element : spawner->waveAndEnemyQueue)
 		{
-			//UE_LOG(LogTemp, Display, TEXT("Key/Wave is %d"), element.Key);
+			//UE_LOG(LogTemp, Display, TEXT("CalculateLastWave: Key/Wave is %d"), element.Key);
 			if (element.Key > maxWave)
 			{
 				maxWave = element.Key;
-				//UE_LOG(LogTemp, Display, TEXT("Last Wave = % d"), maxWave);
+				//UE_LOG(LogTemp, Display, TEXT("CalculateLastWave: Last Wave = % d"), maxWave);
 			}
 		}
 	}
-	UE_LOG(LogTemp, Display, TEXT("Last Wave = % d"), maxWave);
+	UE_LOG(LogTemp, Display, TEXT("CalculateLastWave:; Last Wave = % d"), maxWave);
 	return maxWave;
 }
 
@@ -109,15 +109,15 @@ void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 	if (enemy && !enemy->OnEnemyDeathEvent.IsBound())
 	{
 		enemy->OnEnemyDeathEvent.AddUObject(this, &ASpawnerManager::EnemyHasDied);
-		//UE_LOG(LogTemp, Display, TEXT("%s On Death Delegate has been bound in Spawner Manager"), *enemy->GetName());
+		//UE_LOG(LogTemp, Display, TEXT("BindDelegateOnEnemy: %s On Death Delegate has been bound in Spawner Manager"), *enemy->GetName());
 	}
 	//else if(enemy->OnEnemyDeathEvent.IsBound())
 	//{
-	//	UE_LOG(LogTemp, Display, TEXT("Enemy OnEnemyDeathEvent delegate is already bound to - %s"), *this->GetName());
+	//	UE_LOG(LogTemp, Display, TEXT("BindDelegateOnEnemy: Enemy OnEnemyDeathEvent delegate is already bound to - %s"), *this->GetName());
 	//}
 	//else
 	//{
-	//	UE_LOG(LogTemp, Error, TEXT("Binding Delegate to spawner manager not bound correctly"));
+	//	UE_LOG(LogTemp, Error, TEXT("BindDelegateOnEnemy: Binding Delegate to spawner manager not bound correctly"));
 	//}
 
 	if (enemy && !enemy->OnSpawnEnemyDropEvent.IsBound())
@@ -130,7 +130,7 @@ void ASpawnerManager::BindDelegateOnEnemy(AEnemyCharacterBase* enemy)
 void ASpawnerManager::EnemyHasDied(AEnemyCharacterBase* enemy)
 {
 	amountOfEnemysInRound--;
-	UE_LOG(LogTemp, Warning, TEXT("Amount of enemies left in the round = %d"), amountOfEnemysInRound);
+	UE_LOG(LogTemp, Warning, TEXT("EnemyHasDied: Amount of enemies left in the round = %d"), amountOfEnemysInRound);
 
 	if (amountOfEnemysInRound <= 0)
 	{
@@ -161,7 +161,7 @@ void ASpawnerManager::PoolEnemyDrop()
 
 void ASpawnerManager::SetEnemyDrop(EEnemyDrop dropType, FVector spawnLocation)
 {
-	UE_LOG(LogTemp, Display, TEXT("Drop Spawn Location - %s"), *spawnLocation.ToString());
+	UE_LOG(LogTemp, Display, TEXT("SetEnemyDrop: Drop Spawn Location - %s"), *spawnLocation.ToString());
 	for (AEnemyDrop* drop : enemyDropPool)
 	{
 		if (drop->IsDropDisabled())
