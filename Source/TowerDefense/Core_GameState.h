@@ -7,6 +7,7 @@
 class ATurretStatic;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerCurrencyUpdatedSigniture, float, playerCurrencyAmount);
+DECLARE_MULTICAST_DELEGATE(FOnPlayerLostSigniture);
 
 UCLASS()
 class TOWERDEFENSE_API ACore_GameState : public AGameStateBase
@@ -18,6 +19,9 @@ public:
 	/** A Delegete that is called when the player currency amount has been updated */
 	UPROPERTY(BlueprintAssignable)
 	FPlayerCurrencyUpdatedSigniture PlayerCurrencyUpdatedEvent;
+
+	/** Called when the defending base health has reached 0 within PlayerHasLost() */
+	FOnPlayerLostSigniture OnPlayerLostEvent;
 
 	/** Called when you need to recieve the amount of currecy the player currently has to spend 
 	* @return The amount of currency the player has, as a float */
@@ -70,4 +74,8 @@ protected:
 	/** The current amount of turrets the player has on their hotbar, as an int */
 	UPROPERTY(VisibleAnywhere)
 	int currentListSizeInWeaponTurretHud;
+
+	/** This is called from a delegate from the Defending Base, then Broadcasts OnPlayerLostEvent */
+	UFUNCTION(BlueprintCallable)
+	void PlayerHasLost();
 };

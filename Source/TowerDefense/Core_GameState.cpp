@@ -1,11 +1,12 @@
 #include "Core_GameState.h"
+#include "DefendingBase.h"
+#include "Kismet/GameplayStatics.h"
 
 void ACore_GameState::BeginPlay()
 {
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Display, TEXT("BeginPlay: %s has initilized!"), *this->GetName());
-
 
 	if (playerCurrencyAmount == NULL)
 	{
@@ -20,6 +21,19 @@ void ACore_GameState::BeginPlay()
 	}
 	
 	currentListSizeInWeaponTurretHud = 0;
+
+	AActor* actor = UGameplayStatics::GetActorOfClass(GetWorld(), ADefendingBase::StaticClass());
+	ADefendingBase* defendingBase = Cast<ADefendingBase>(actor);
+	if (!defendingBase)
+	{
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: defendingBase NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
+	}
+	defendingBase->BaseHealthReachedZeroEvent.BindUObject(this, &ACore_GameState::PlayerHasLost);
+}
+
+void ACore_GameState::PlayerHasLost()
+{
+	OnPlayerLostEvent.Broadcast();
 }
 
 float ACore_GameState::GetPlayerCurrencyAmount()

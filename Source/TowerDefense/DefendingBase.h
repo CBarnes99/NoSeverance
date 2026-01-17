@@ -40,8 +40,16 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	/** The amount of health the base has */
+	/** The max health the base starts with */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int maxBaseHealth;
+
+	/** The current health the base has */
 	UPROPERTY(VisibleAnywhere)
-	int baseHealth;
+	int currentBaseHealth;
+
+	/** Check to see if the player has lost, prevents the delegate BaseHealthReachedZeroEvent going off multiple times */
+	UPROPERTY(VisibleAnywhere)
+	bool bPlayerLost;
 	
 };
