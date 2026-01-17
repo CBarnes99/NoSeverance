@@ -121,9 +121,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	bool HasImpactPoint(FVector traceStartLocation, FVector actorForwardVector);
 
-	/** The query parmas for the line trace */
-	FCollisionQueryParams params;
-
 	/** The actors you want to ignore for the line trace */
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	UClass* ignoredActorClass;

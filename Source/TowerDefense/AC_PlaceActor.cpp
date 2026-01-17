@@ -35,6 +35,12 @@ void UAC_PlaceActor::StartPlacement(TSubclassOf<AActor> actorClass)
 
 void UAC_PlaceActor::UpdatePlacementLocation(FVector traceStartLocation, FVector forwardVector)
 {
+	if (!currentPreviewActor)
+	{
+		UE_LOG(LogTemp, Error, TEXT("UpdatePlacementLocation: NO CURERNT PREVIEW ACTOR WITHIN - %s"), *this->GetName());
+		return;
+	}
+
 	if (!HasImpactPoint(traceStartLocation, forwardVector))
 	{
 		return;
@@ -152,6 +158,7 @@ FVector UAC_PlaceActor::GetTraceTargetLocation(FVector traceStartLocation, FVect
 	TArray<FHitResult> hits;
 	FVector traceEnd = traceStartLocation + actorForwardVector * traceDistance;
 
+	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
 	params.AddIgnoredActors(actorsToIgnore);
 
@@ -176,6 +183,7 @@ FTransform UAC_PlaceActor::GetTraceTargetLocationAndRotation(FVector traceStartL
 	FVector targetPos = FVector::ZeroVector;
 	TArray<FHitResult> hits;
 
+	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
 	params.AddIgnoredActors(actorsToIgnore);
 
@@ -190,10 +198,8 @@ FTransform UAC_PlaceActor::GetTraceTargetLocationAndRotation(FVector traceStartL
 			{
 				FVector HitNormal = Hit.ImpactNormal;
 
-				// Create rotation aligning local Z+ to the surface normal
 				FRotator AlignRotation = FRotationMatrix::MakeFromZ(HitNormal).Rotator();
 
-				// Construct transform with location + aligned rotation
 				transform.SetLocation(Hit.ImpactPoint);
 				transform.SetRotation(AlignRotation.Quaternion());
 
@@ -201,12 +207,12 @@ FTransform UAC_PlaceActor::GetTraceTargetLocationAndRotation(FVector traceStartL
 			}
 		}
 	}
-	return transform; // returns identity transform if no suitable hit found
+	return transform;
 };
 
 void UAC_PlaceActor::SetIgnoredActors(TArray<AActor*> ignoredActors)
 {
-	params.AddIgnoredActors(ignoredActors);
+	actorsToIgnore = ignoredActors;
 }
 void UAC_PlaceActor::SetIgnoredActor(AActor* ignoredActor)
 {
@@ -219,7 +225,9 @@ bool UAC_PlaceActor::HasImpactPoint(FVector traceStartLocation, FVector actorFor
 	TArray<FHitResult> hits;
 	FVector traceEnd = traceStartLocation + actorForwardVector * traceDistance;
 
+	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
+	params.AddIgnoredActors(actorsToIgnore);
 
 	GetWorld()->LineTraceMultiByChannel(hits, traceStartLocation, traceEnd, ECC_Visibility, params);
 
