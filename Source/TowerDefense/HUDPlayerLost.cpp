@@ -11,6 +11,7 @@ void UHUDPlayerLost::NativeConstruct()
 void UHUDPlayerLost::ReturnToMainMenu()
 {
 	UE_LOG(LogTemp, Display, TEXT("ReturnToMainMenu: Return to Main Menu"));
+	UGameplayStatics::OpenLevel(GetWorld(), FName("MainMenu"));
 }
 
 void UHUDPlayerLost::RestartLevel()

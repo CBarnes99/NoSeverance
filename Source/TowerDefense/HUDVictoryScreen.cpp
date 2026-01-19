@@ -1,5 +1,6 @@
 #include "HUDVictoryScreen.h"
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
 void UHUDVictoryScreen::NativeConstruct()
 {
@@ -10,6 +11,7 @@ void UHUDVictoryScreen::NativeConstruct()
 void UHUDVictoryScreen::OnMainMenuButtonPressed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("OnMainMenuButtonPressed: BUTTON PRESSED!!"));
+	UGameplayStatics::OpenLevel(GetWorld(), FName("MainMenu"));
 }
 
 void UHUDVictoryScreen::OnNextRoundButtonPressed()
