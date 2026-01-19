@@ -18,6 +18,7 @@ class UDA_TurretInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStartWaveSigniture);
 DECLARE_DELEGATE_RetVal_OneParam(UDA_TurretInfo* /*Turret Info To Place Turret*/, FGetTurretDASigniture, int /*Index for Array within UHUDWeaponTurretSelector*/)
+DECLARE_DELEGATE(FPauseGameSigniture);
 
 UCLASS()
 class TOWERDEFENSE_API ACore_PlayerController : public APlayerController
@@ -31,6 +32,9 @@ public:
 
 	/** A delegate to get the current turrets Data Asset the player has selected from the HUDWeaponTurretSelector */
 	FGetTurretDASigniture GetTurretDAEvent;
+
+	/** A Deelgate that is bound the the core hud to open the pause menu when PauseGame() is called */
+	FPauseGameSigniture PauseGameEvent;
 
 protected:
 
@@ -101,6 +105,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	UInputAction* scrollWheelSelectionInput;
 
+	UPROPERTY(EditAnywhere, Category = "Input_Default")
+	UInputAction* pauseGameInput;
+
 	//-------------------------------------------------//
 
 	UPROPERTY(EditAnywhere, Category = "Input_Combat")
@@ -149,7 +156,7 @@ protected:
 	UInputMappingContext* gameMenuWidgetsActionsMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input_GameMenus")
-	UInputAction* openTurretSelectionMenu;
+	UInputAction* openTurretSelectionMenuInput;
 
 	//-------------------------------------------------//
 
@@ -192,4 +199,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void OpenTurretSelectionMenu();
+
+	UFUNCTION(BlueprintCallable)
+	void PauseGame();
 };

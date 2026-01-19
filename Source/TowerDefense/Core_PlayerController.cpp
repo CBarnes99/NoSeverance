@@ -95,7 +95,9 @@ void ACore_PlayerController::SetupInputComponent()
 		Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
 		Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
 
-		Input->BindAction(openTurretSelectionMenu, ETriggerEvent::Triggered, this, &ACore_PlayerController::OpenTurretSelectionMenu);
+		Input->BindAction(openTurretSelectionMenuInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::OpenTurretSelectionMenu);
+
+		Input->BindAction(pauseGameInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::PauseGame);
 	}
 }
 
@@ -151,6 +153,12 @@ void ACore_PlayerController::StopJumpingAction()
 void ACore_PlayerController::AttackAction()
 {
 	myPlayerCharacter->AttackAction();
+}
+
+void ACore_PlayerController::PauseGame()
+{
+	UE_LOG(LogTemp, Display, TEXT("PauseGame: Called from player controller"));
+	PauseGameEvent.ExecuteIfBound();
 }
 
 void ACore_PlayerController::CallGameModeToStartSpawningEnemies()

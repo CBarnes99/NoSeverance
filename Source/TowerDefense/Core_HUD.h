@@ -11,6 +11,7 @@ class UDA_TurretInfo;
 class UHUDVictoryScreen;
 class UHUDPlayerDefeated;
 class UHUDPlayerLost;
+class UHUDPauseMenu;
 
 UCLASS()
 class TOWERDEFENSE_API ACore_HUD : public AHUD
@@ -55,6 +56,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void PlayerLost();
+
+	UFUNCTION(BlueprintCallable)
+	void TogglePauseMenu();
 
 	UPROPERTY(VisibleAnywhere)
 	bool bPlayerHasLost;
@@ -115,8 +119,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - Game Menu")
 	UHUDPlayerLost* playerLostMenu;
-	
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets - Game Menu")
+	TSubclassOf<UHUDPauseMenu> pausedClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Widgets - Game Menu")
+	UHUDPauseMenu* pauseMenu;
 
 	//Menu Widgets-----------------------------------------------------------
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - Menus")

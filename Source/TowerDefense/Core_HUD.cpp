@@ -8,6 +8,7 @@
 #include "HUDVictoryScreen.h"
 #include "HUDPlayerDefeated.h"
 #include "HUDPlayerLost.h"
+#include "HUDPauseMenu.h"
 
 #include "DA_TurretInfo.h"
 #include "Core_PlayerController.h"
@@ -40,7 +41,6 @@ void ACore_HUD::BeginPlay()
 	bPlayerHasLost = false;
 
 	SetUpInGameWidgetList();
-	
 	SetUpGameMenusWidgetList();
 	SetUpMenusWidgetList();
 	SetUpModalWidgetList();
@@ -73,6 +73,10 @@ void ACore_HUD::BindDelegates()
 		return;
 	}
 	coreGameState->OnPlayerLostEvent.AddUObject(this, &ACore_HUD::PlayerLost);
+
+	localCorePlayerController->PauseGameEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
+
+	pauseMenu->ContinueButtonPressedEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
 }
 
 bool ACore_HUD::CheckVaildWidgetPointer(TSubclassOf<UUserWidget> widgetClass)
@@ -113,7 +117,7 @@ void ACore_HUD::SetFocusToWidget()
 	localCorePlayerController->SetInputMode(inputModeGameAndUI);
 	localCorePlayerController->SetShowMouseCursor(true);
 
-	//Sets Mouse Location to the Centre of hte screen.
+	//Sets Mouse Location to the Centre of the screen.
 	FVector2D viewportSize;
 	GEngine->GameViewport->GetViewportSize(viewportSize);
 	localCorePlayerController->SetMouseLocation((viewportSize.X / 2), (viewportSize.Y / 2));
@@ -142,7 +146,6 @@ void ACore_HUD::SetUpInGameWidgetList()
 
 	ToggleInGameWidgets();
 }
-
 
 void ACore_HUD::ToggleInGameWidgets()
 {
@@ -190,6 +193,12 @@ void ACore_HUD::SetUpGameMenusWidgetList()
 	{
 		playerLostMenu = CreateWidget<UHUDPlayerLost>(localCorePlayerController, playerLostClass);
 		gameMenusWidgetList.Add(playerLostMenu);
+	}
+
+	if (CheckVaildWidgetPointer(pausedClass))
+	{
+		pauseMenu = CreateWidget<UHUDPauseMenu>(localCorePlayerController, pausedClass);
+		gameMenusWidgetList.Add(pauseMenu);
 	}
 
 	for (UUserWidget* widget : gameMenusWidgetList)
@@ -295,6 +304,21 @@ void ACore_HUD::PlayerLost()
 		ToggleGameMenuWidgets(playerLostMenu);
 		playerLostMenu->PlayLostAnimation();
 		bPlayerHasLost = true;
+	}
+}
+
+void ACore_HUD::TogglePauseMenu()
+{
+	UE_LOG(LogTemp, Display, TEXT("TogglePauseMenu: Called from core HUD"));
+	ToggleGameMenuWidgets(pauseMenu);
+
+	if (UGameplayStatics::IsGamePaused(GetWorld()))
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+	}
+	else
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }
 
