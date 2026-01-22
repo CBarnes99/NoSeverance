@@ -12,6 +12,7 @@ class UHUDVictoryScreen;
 class UHUDPlayerDefeated;
 class UHUDPlayerLost;
 class UHUDPauseMenu;
+class UHUDTutorial;
 
 UCLASS()
 class NOSEVERANCE_API ACore_HUD : public AHUD
@@ -62,6 +63,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	bool bPlayerHasLost;
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayTutorialHud();
 
 	//In Game Widgets------------------------------------------------------------
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - In Game")
@@ -125,6 +129,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - Game Menu")
 	UHUDPauseMenu* pauseMenu;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets - Game Menu")
+	TSubclassOf<UHUDTutorial> tutorialClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Widgets - Game Menu")
+	UHUDTutorial* tutorialMenu;
 
 	//Menu Widgets-----------------------------------------------------------
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - Menus")

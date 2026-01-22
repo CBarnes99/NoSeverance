@@ -8,6 +8,7 @@ void UHUDPauseMenu::NativeConstruct()
 	ContinueButton->OnClicked.AddDynamic(this, &UHUDPauseMenu::Continue);
 	QuitButton->OnClicked.AddDynamic(this, &UHUDPauseMenu::Quit);
 	ControlsButton->OnClicked.AddDynamic(this, &UHUDPauseMenu::OpenControls);
+	TutorialButton->OnClicked.AddDynamic(this, &UHUDPauseMenu::Tutorial);
 
 	playerControls->SetVisibility(ESlateVisibility::Collapsed);
 }
@@ -28,6 +29,12 @@ void UHUDPauseMenu::OpenControls()
 	{
 		playerControls->SetVisibility(ESlateVisibility::Visible);
 	}
+}
+
+void UHUDPauseMenu::Tutorial()
+{
+	UE_LOG(LogTemp, Display, TEXT("Tutorial: Tutorial Button Pressed"));
+	TutorialButtonPressedEvent.ExecuteIfBound();
 }
 
 void UHUDPauseMenu::Quit()

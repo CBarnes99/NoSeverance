@@ -9,6 +9,7 @@
 #include "HUDPlayerDefeated.h"
 #include "HUDPlayerLost.h"
 #include "HUDPauseMenu.h"
+#include "HUDTutorial.h"
 
 #include "DA_TurretInfo.h"
 #include "Core_PlayerController.h"
@@ -48,6 +49,12 @@ void ACore_HUD::BeginPlay()
 	BindDelegates();
 
 	SetFocusToGame();
+
+	UE_LOG(LogTemp, Error, TEXT("GetManName Test: %s"), *UGameplayStatics::GetCurrentLevelName(GetWorld(), true));;
+	if (UGameplayStatics::GetCurrentLevelName(GetWorld(), true) == "TestLevel")
+	{
+		DisplayTutorialHud();
+	}
 }
 
 void ACore_HUD::BindDelegates()
@@ -75,8 +82,19 @@ void ACore_HUD::BindDelegates()
 	coreGameState->OnPlayerLostEvent.AddUObject(this, &ACore_HUD::PlayerLost);
 
 	localCorePlayerController->PauseGameEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
+	localCorePlayerController->GetTurretDAEvent.BindUObject(playerHud->WeaponAndTurretSelector, &UHUDWeaponTurretSelector::GetTurretClassFromArray);
 
 	pauseMenu->ContinueButtonPressedEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
+	pauseMenu->TutorialButtonPressedEvent.BindUObject(this, &ACore_HUD::DisplayTutorialHud);
+
+	if (!tutorialMenu)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BindDelegates: HUD TUTORIAL MENU NOT SET CORRECTLY WITHIN - %s"), *this->GetName());
+		return;
+	}
+
+	tutorialMenu->CloseTutorialEvent.BindUObject(this, &ACore_HUD::DisplayTutorialHud);
+
 }
 
 bool ACore_HUD::CheckVaildWidgetPointer(TSubclassOf<UUserWidget> widgetClass)
@@ -201,6 +219,12 @@ void ACore_HUD::SetUpGameMenusWidgetList()
 		gameMenusWidgetList.Add(pauseMenu);
 	}
 
+	if (CheckVaildWidgetPointer(tutorialClass))
+	{
+		tutorialMenu = CreateWidget<UHUDTutorial>(localCorePlayerController, tutorialClass);
+		gameMenusWidgetList.Add(tutorialMenu);
+	}
+
 	for (UUserWidget* widget : gameMenusWidgetList)
 	{
 		widget->AddToViewport();
@@ -268,7 +292,7 @@ void ACore_HUD::ToggleTurretSelectionWidget()
 
 void ACore_HUD::ToggleVictoryScreenWidget()
 {
-	////A Check to see if the player has already lost. The last enemy in the level could be defeated by colliding with the defending base, thats why this check this check is here
+	//A Check to see if the player has already lost. The last enemy in the level could be defeated by colliding with the defending base, thats why this check is here
 	if (bPlayerHasLost)
 	{
 		return;
@@ -325,4 +349,20 @@ void ACore_HUD::TogglePauseMenu()
 bool ACore_HUD::GetIsTurretSelectionMenuVisable()
 {
 	return turretSelectionMenu->IsVisible();
+}
+
+void ACore_HUD::DisplayTutorialHud()
+{
+	UE_LOG(LogTemp, Warning, TEXT("DisplayTutorialHud: Display Tutorial Hud was called"));
+
+	ToggleGameMenuWidgets(tutorialMenu);
+
+	if (tutorialMenu->GetVisibility() == ESlateVisibility::Visible)
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+	}
+	else
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+	}
 }

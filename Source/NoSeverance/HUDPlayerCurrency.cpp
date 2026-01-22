@@ -14,5 +14,6 @@ void UHUDPlayerCurrency::NativeConstruct()
 void UHUDPlayerCurrency::SetTextToPlayerCurrency(int amount)
 {
 	FString intAsString = FString::FromInt(amount);
-	CurrencyText->SetText(FText::FromString(intAsString));
+	FString currency = "Currency: " + intAsString;
+	CurrencyText->SetText(FText::FromString(currency));
 }

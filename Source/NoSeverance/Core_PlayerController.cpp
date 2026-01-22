@@ -194,7 +194,7 @@ void ACore_PlayerController::OpenTurretSelectionMenu()
 
 void ACore_PlayerController::ScrollWheelSelectionAction(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("ScrollWheelSelectionAction: %s"), *Value.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("ScrollWheelSelectionAction: %s"), *Value.ToString());
 
 	if (Value.Get<float>() > 0)
 	{
@@ -246,7 +246,7 @@ void ACore_PlayerController::UpdateHotbarSelection()
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("UpdateHotbarSelection: Hotbar Index is %d"), hotbarSelectionIndex);
+	//UE_LOG(LogTemp, Warning, TEXT("UpdateHotbarSelection: Hotbar Index is %d"), hotbarSelectionIndex);
 
 	if (hotbarSelectionIndex > 0 && hotbarSelectionIndex != previousHotbarSelectionIndex && GetTurretDAEvent.IsBound())
 	{

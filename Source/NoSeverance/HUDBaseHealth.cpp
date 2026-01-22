@@ -20,7 +20,7 @@ void UHUDBaseHealth::NativeConstruct()
 
 void UHUDBaseHealth::UpdateBaseHealthHUD(int healthValue)
 {
-	FString valueAsString = FString::FromInt(healthValue);
-
-	baseHealthText->SetText(FText::FromString(valueAsString));
+	FString intAsString = FString::FromInt(healthValue);
+	FString baseHealth = "Base Health: " + intAsString;
+	baseHealthText->SetText(FText::FromString(baseHealth));
 }

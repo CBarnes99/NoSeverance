@@ -8,6 +8,7 @@ class UButton;
 class UHUDPlayerControls;
 
 DECLARE_DELEGATE(FContinueButtonPressedSigniture);
+DECLARE_DELEGATE(FTutorialButtonPressedSigniture);
 
 UCLASS(Abstract)
 class NOSEVERANCE_API UHUDPauseMenu : public UUserWidget
@@ -16,13 +17,18 @@ class NOSEVERANCE_API UHUDPauseMenu : public UUserWidget
 
 public:
 
+	//Both events are bound within Core_Hud
 	FContinueButtonPressedSigniture ContinueButtonPressedEvent;
+	FTutorialButtonPressedSigniture TutorialButtonPressedEvent;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* ContinueButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* ControlsButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* TutorialButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* QuitButton;
@@ -39,6 +45,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void OpenControls();
+
+	UFUNCTION(BlueprintCallable)
+	void Tutorial();
 
 	UFUNCTION(BlueprintCallable)
 	void Quit();

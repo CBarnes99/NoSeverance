@@ -9,9 +9,9 @@
 
 void UHUDWeaponTurretSelector::NativeConstruct()
 {
-	APlayerController* playerController = GetOwningLocalPlayer()->GetPlayerController(GetWorld());
+	/*APlayerController* playerController = GetOwningLocalPlayer()->GetPlayerController(GetWorld());
 	ACore_PlayerController* coreController = Cast<ACore_PlayerController>(playerController);
-	coreController->GetTurretDAEvent.BindUObject(this, &UHUDWeaponTurretSelector::GetTurretClassFromArray);
+	coreController->GetTurretDAEvent.BindUObject(this, &UHUDWeaponTurretSelector::GetTurretClassFromArray);*/
 }
 
 void UHUDWeaponTurretSelector::GetInfoFromTurretMenu(bool bIsChecked, UDA_TurretInfo* turretInformation)
@@ -27,6 +27,7 @@ void UHUDWeaponTurretSelector::GetInfoFromTurretMenu(bool bIsChecked, UDA_Turret
 		arrayOfTurretInfo.Remove(turretInformation);
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("GetInfoFromTurretMenu: arrayOfTurretInfo size = %d"), arrayOfTurretInfo.Num());
 	UpdateWeaponTurretSelector(turretInformation);
 
 }
@@ -73,5 +74,13 @@ void UHUDWeaponTurretSelector::SetCurrentTurretClass()
 
 UDA_TurretInfo* UHUDWeaponTurretSelector::GetTurretClassFromArray(int index)
 {
-	return arrayOfTurretInfo[index];
+	//UE_LOG(LogTemp, Warning, TEXT("GetInfoFromTurretMenu: arrayOfTurretInfo size = %d"), arrayOfTurretInfo.Num());
+
+	if (arrayOfTurretInfo.IsValidIndex(index))
+	{
+		return arrayOfTurretInfo[index];
+	}
+	
+	UE_LOG(LogTemp, Error, TEXT("GetInfoFromTurretMenu: No valud index - %d"), index);
+	return 0;
 }

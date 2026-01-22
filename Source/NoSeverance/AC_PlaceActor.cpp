@@ -125,7 +125,7 @@ AActor* UAC_PlaceActor::GetPreviewActorFromPool(TSubclassOf<AActor> actorClass)
 	{
 		if (actor->IsA(actorClass))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("GetPreviewActorFromPool: Set Current Actor To actor"));
+			//UE_LOG(LogTemp, Warning, TEXT("GetPreviewActorFromPool: Set Current Actor To actor"));
 			return actor;
 		}
 	}
