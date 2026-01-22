@@ -21,7 +21,7 @@ void ACore_PlayerController::BeginPlay()
 	{
 		enhancedInputSubSystem->AddMappingContext(defaultMappingContext, 0);
 		enhancedInputSubSystem->AddMappingContext(movementMappingContext, 0);
-		enhancedInputSubSystem->AddMappingContext(gameMenuWidgetsActionsMappingContext, 0);
+		enhancedInputSubSystem->AddMappingContext(turretSelectionMenuMappingContext, 0);
 		enhancedInputSubSystem->AddMappingContext(combatMappingContext, 0);
 	}
 	else
@@ -82,7 +82,7 @@ void ACore_PlayerController::SetupInputComponent()
 		Input->BindAction(runActionInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RunningAction);
 		Input->BindAction(runActionInput, ETriggerEvent::Completed, this, &ACore_PlayerController::RunningActionStop);
 
-		Input->BindAction(startEnemyWaveActionInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::CallGameModeToStartSpawningEnemies);
+		Input->BindAction(startWaveInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::CallGameModeToStartSpawningEnemies);
 
 		Input->BindAction(attackActionInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::AttackAction);
 
@@ -92,10 +92,10 @@ void ACore_PlayerController::SetupInputComponent()
 
 		Input->BindAction(cancelTurretPlacement, ETriggerEvent::Triggered, this, &ACore_PlayerController::CancelTurretPlacementAction);
 
-		Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
-		Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
+		//Input->BindAction(rotateTurretRightInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
+		//Input->BindAction(rotateTurretLeftInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::RotateTurret);
 
-		Input->BindAction(openTurretSelectionMenuInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::OpenTurretSelectionMenu);
+		Input->BindAction(turretSelectionMenuInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::OpenTurretSelectionMenu);
 
 		Input->BindAction(pauseGameInput, ETriggerEvent::Triggered, this, &ACore_PlayerController::PauseGame);
 	}
@@ -165,6 +165,8 @@ void ACore_PlayerController::CallGameModeToStartSpawningEnemies()
 {
 	UE_LOG(LogTemp, Display, TEXT("CallGameModeToStartSpawningEnemies: ENTER PRESSED"));
 	StartWaveEvent.Broadcast();
+
+	UpdateMappingContext(turretSelectionMenuMappingContext, false, 0);
 };
 
 void ACore_PlayerController::OpenTurretSelectionMenu()
@@ -179,17 +181,20 @@ void ACore_PlayerController::OpenTurretSelectionMenu()
 	{
 		UpdateMappingContext(combatMappingContext, false, 0);
 		UpdateMappingContext(movementMappingContext, false, 0);
+		UpdateMappingContext(startWaveMappingContext, false, 0);
+
 	}
 	else
 	{
 		UpdateMappingContext(combatMappingContext, true, 0);
 		UpdateMappingContext(movementMappingContext, true, 0);
+		UpdateMappingContext(startWaveMappingContext, true, 0);
 	}
 }
 
 void ACore_PlayerController::ScrollWheelSelectionAction(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("ScrollWheelSelectionAction: %s"), *Value.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("ScrollWheelSelectionAction: %s"), *Value.ToString());
 
 	if (Value.Get<float>() > 0)
 	{
@@ -296,7 +301,7 @@ void ACore_PlayerController::HaveMappingContextsBeenAsigned()
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO MOVEMENT MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}
-	if (!gameMenuWidgetsActionsMappingContext)
+	if (!turretSelectionMenuMappingContext)
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("HaveMappingContextsBeenAsigned: NO GAME MENUS MAPPING CONTEXT WITHIN %s"), *this->GetName());
 	}

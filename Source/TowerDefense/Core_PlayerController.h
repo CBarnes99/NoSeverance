@@ -100,13 +100,10 @@ protected:
 	UInputMappingContext* defaultMappingContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* startEnemyWaveActionInput;
+	UInputAction* pauseGameInput;
 
 	UPROPERTY(EditAnywhere, Category = "Input_Default")
 	UInputAction* scrollWheelSelectionInput;
-
-	UPROPERTY(EditAnywhere, Category = "Input_Default")
-	UInputAction* pauseGameInput;
 
 	//-------------------------------------------------//
 
@@ -127,11 +124,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input_Turret")
 	UInputAction* cancelTurretPlacement;
 
-	UPROPERTY(EditAnywhere, Category = "Input_Turret")
-	UInputAction* rotateTurretRightInput;
+	//UPROPERTY(EditAnywhere, Category = "Input_Turret")
+	//UInputAction* rotateTurretRightInput;
 
-	UPROPERTY(EditAnywhere, Category = "Input_Turret")
-	UInputAction* rotateTurretLeftInput;
+	//UPROPERTY(EditAnywhere, Category = "Input_Turret")
+	//UInputAction* rotateTurretLeftInput;
 
 	//-------------------------------------------------//
 
@@ -152,11 +149,19 @@ protected:
 
 	//-------------------------------------------------//
 
-	UPROPERTY(EditAnywhere, Category = "Input_GameMenus")
-	UInputMappingContext* gameMenuWidgetsActionsMappingContext;
+	UPROPERTY(EditAnywhere, Category = "Input_TurretSelectionMenu")
+	UInputMappingContext* turretSelectionMenuMappingContext;
 
-	UPROPERTY(EditAnywhere, Category = "Input_GameMenus")
-	UInputAction* openTurretSelectionMenuInput;
+	UPROPERTY(EditAnywhere, Category = "Input_TurretSelectionMenu")
+	UInputAction* turretSelectionMenuInput;
+	
+	//-------------------------------------------------//
+
+	UPROPERTY(EditAnywhere, Category = "Input_StartWave")
+	UInputMappingContext* startWaveMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input_StartWave")
+	UInputAction* startWaveInput;
 
 	//-------------------------------------------------//
 
