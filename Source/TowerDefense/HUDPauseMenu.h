@@ -5,6 +5,7 @@
 #include "HUDPauseMenu.generated.h"
 
 class UButton;
+class UHUDPlayerControls;
 
 DECLARE_DELEGATE(FContinueButtonPressedSigniture);
 
@@ -21,7 +22,13 @@ public:
 	UButton* ContinueButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* ControlsButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* QuitButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UHUDPlayerControls* playerControls;
 
 protected:
 
@@ -29,6 +36,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void Continue();
+
+	UFUNCTION(BlueprintCallable)
+	void OpenControls();
 
 	UFUNCTION(BlueprintCallable)
 	void Quit();
