@@ -1,0 +1,52 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "AIController.h"
+#include "EnemyAIController.generated.h"
+
+class UAIPerceptionComponent;
+class UAISenseConfig_Sight;
+class UBehaviorTree;
+
+UCLASS()
+class NOSEVERANCE_API AEnemyAIController : public AAIController
+{
+	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void SetIfPawnCanPerceive(bool bCanPercieve);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdatePlayerLost();
+
+protected:
+
+	AEnemyAIController();
+
+	virtual void OnPossess(APawn* InPawn) override;
+
+	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBehaviorTree* cachedBehaviorTree;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBlackboardComponent* cachedAIBlackboard;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAIPerceptionComponent* AIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAISenseConfig_Sight* senseSightConfig;
+
+	UFUNCTION()
+	void OnTargetPerceptionUpdated(AActor* actor, FAIStimulus stimulus);
+
+	UFUNCTION(BlueprintCallable)
+	void DisableAIController();
+
+	UPROPERTY(VisibleAnywhere)
+	bool bHasPlayerLost;
+};
