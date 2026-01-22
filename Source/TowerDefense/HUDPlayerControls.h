@@ -6,7 +6,7 @@
 
 class UTextBlock;
 
-UCLASS()
+UCLASS(Abstract)
 class TOWERDEFENSE_API UHUDPlayerControls : public UUserWidget
 {
 	GENERATED_BODY()
