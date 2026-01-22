@@ -17,5 +17,5 @@ public:
 	UTextBlock* CurrencyText;
 
 	UFUNCTION(BlueprintCallable)
-	void SetTextToPlayerCurrency(float amount);
+	void SetTextToPlayerCurrency(int amount);
 };

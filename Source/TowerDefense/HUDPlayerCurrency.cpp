@@ -7,12 +7,12 @@ void UHUDPlayerCurrency::NativeConstruct()
 {
 	AGameStateBase* gameState = UGameplayStatics::GetGameState(GetWorld());
 	ACore_GameState* coreGameState = Cast<ACore_GameState>(gameState);
-	coreGameState->PlayerCurrencyUpdatedEvent.AddDynamic(this, &UHUDPlayerCurrency::SetTextToPlayerCurrency);
-	coreGameState->PlayerCurrencyUpdatedEvent.Broadcast(coreGameState->GetPlayerCurrencyAmount());
+	coreGameState->PlayerCurrencyUpdatedEvent.BindUObject(this, &UHUDPlayerCurrency::SetTextToPlayerCurrency);
+	coreGameState->PlayerCurrencyUpdatedEvent.ExecuteIfBound(coreGameState->GetPlayerCurrencyAmount());
 }
 
-void UHUDPlayerCurrency::SetTextToPlayerCurrency(float amount)
+void UHUDPlayerCurrency::SetTextToPlayerCurrency(int amount)
 {
-	FString floatAsString = FString::SanitizeFloat(amount);
-	CurrencyText->SetText(FText::FromString(floatAsString));
+	FString intAsString = FString::FromInt(amount);
+	CurrencyText->SetText(FText::FromString(intAsString));
 }
