@@ -1,5 +1,7 @@
 #include "GameMode_MainMenu.h"
 #include "HUDMainMenu.h"
+#include "Core_GameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 void AGameMode_MainMenu::BeginPlay()
 {
@@ -11,6 +13,7 @@ void AGameMode_MainMenu::BeginPlay()
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 
 	mainMenu->GetLevelReferenceEvent.BindUObject(this, &AGameMode_MainMenu::GetLevelForMainMenu);
+	AreLevelButtonsDisabled();
 }
 
 TSoftObjectPtr<UWorld> AGameMode_MainMenu::GetLevelForMainMenu(int levelIndex)
@@ -37,4 +40,13 @@ TSoftObjectPtr<UWorld> AGameMode_MainMenu::GetLevelForMainMenu(int levelIndex)
 		return TSoftObjectPtr<UWorld>();
 		break;
 	}
+}
+
+void AGameMode_MainMenu::AreLevelButtonsDisabled()
+{
+	UGameInstance* gameInstance = UGameplayStatics::GetGameInstance(GetWorld());
+	UCore_GameInstance* coreGameInstance = Cast<UCore_GameInstance>(gameInstance);
+
+	coreGameInstance->LoadGame();
+	
 }

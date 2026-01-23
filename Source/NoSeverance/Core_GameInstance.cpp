@@ -7,7 +7,7 @@ UCore_GameInstance::UCore_GameInstance()
 	saveSlotName = "SaveSlot1";
 	userIndex = 0;
 
-	LoadGame();
+	//LoadGame();
 }
 
 void UCore_GameInstance::LoadGame()

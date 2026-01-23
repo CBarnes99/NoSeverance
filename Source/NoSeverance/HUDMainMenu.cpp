@@ -37,6 +37,18 @@ void UHUDMainMenu::ReturnButtonFunction()
 	MenuSwitcher->SetActiveWidgetIndex(0);
 }
 
+void UHUDMainMenu::IsLevelButtonUnlocked(UButton* levelButton, bool bIsUnlocked)
+{
+	if (bIsUnlocked)
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
 void UHUDMainMenu::LevelOneButtonFunction()
 {
 	TSoftObjectPtr<UWorld> levelRef;

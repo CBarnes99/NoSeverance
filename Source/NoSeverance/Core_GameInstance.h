@@ -14,6 +14,9 @@ class NOSEVERANCE_API UCore_GameInstance : public UGameInstance
 public:
 
 	UFUNCTION(BlueprintCallable)
+	void LoadGame();
+
+	UFUNCTION(BlueprintCallable)
 	void SaveUnlockedLevel(int level);
 
 	UFUNCTION(BlueprintCallable)
@@ -31,9 +34,6 @@ protected:
 
 	UFUNCTION()
 	void SaveGameCompleted(const FString& slotName, const int savedUserIndex, bool success);
-
-	UFUNCTION(BlueprintCallable)
-	void LoadGame();
 
 	UFUNCTION()
 	void LoadGameCompleted(const FString& slotName, const int32 loadedUserIndex, USaveGame* saveGame);

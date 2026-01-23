@@ -26,6 +26,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	TSoftObjectPtr<UWorld> GetLevelForMainMenu(int levelIndex);
 
+	UFUNCTION(BlueprintCallable)
+	void AreLevelButtonsDisabled();
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSoftObjectPtr<UWorld> levelOne;
 

@@ -19,6 +19,9 @@ public:
 	/** Gets the level from GameMode_MainMenu */
 	FGetLevelReferenceSigniture GetLevelReferenceEvent;
 
+	UFUNCTION(BlueprintCallable)
+	void IsLevelButtonUnlocked(UButton* levelButton, bool bIsUnlocked);
+
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* PlayButton;
 
