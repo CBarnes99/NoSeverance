@@ -24,18 +24,18 @@ protected:
 	UHUDMainMenu* mainMenu;
 
 	UFUNCTION(BlueprintCallable)
-	TSoftObjectPtr<UWorld> GetLevelForMainMenu(int levelIndex);
+	void GetLevelForMainMenu(int levelIndex);
 
 	UFUNCTION(BlueprintCallable)
-	void AreLevelButtonsDisabled();
+	void LoadFromSaveData();
+
+	UFUNCTION()
+	void OpenLevelFromSoftObjectPtrAsync(TSoftObjectPtr<UWorld>& levelReference);
+	
+	UFUNCTION()
+	void OpenLevelBySoftObject(TSoftObjectPtr<UWorld> LevelReference);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSoftObjectPtr<UWorld> levelOne;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSoftObjectPtr<UWorld> levelTwo;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSoftObjectPtr<UWorld> levelThree;
+	TMap<int, TSoftObjectPtr<UWorld>> levels;
 
 };

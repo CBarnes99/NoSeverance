@@ -17,7 +17,10 @@ public:
 	void LoadGame();
 
 	UFUNCTION(BlueprintCallable)
-	void SaveUnlockedLevel(int level);
+	void UnlockSpecificLevel(int level);
+
+	UFUNCTION(BlueprintCallable)
+	void UnlockNextLevel();
 
 	UFUNCTION(BlueprintCallable)
 	bool IsLevelUnlocked(int level);
@@ -25,6 +28,9 @@ public:
 protected:
 	
 	UCore_GameInstance();
+
+	UFUNCTION(BlueprintCallable)
+	void CreateSaveGame();
 
 	UPROPERTY(VisibleAnywhere)
 	FString saveSlotName;

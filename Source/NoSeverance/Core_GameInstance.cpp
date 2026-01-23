@@ -33,35 +33,37 @@ void UCore_GameInstance::LoadGameCompleted(const FString& slotName, const int32 
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("LoadComplete: SaveGameInstance IS INVALID, creating Save Game!"));
-		SaveUnlockedLevel(1);
-
+		CreateSaveGame();
+		UnlockSpecificLevel(1);
 	}
 }
 
-void UCore_GameInstance::SaveUnlockedLevel(int level)
+void UCore_GameInstance::UnlockSpecificLevel(int level)
 {
-	if (SaveGameInstance)
+	if (!SaveGameInstance)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SaveUnlockedLevel: SaveGameInstance found, saving to instance!"));
-		FAsyncSaveGameToSlotDelegate SavedDelegate;
-
-		SavedDelegate.BindUObject(this, &UCore_GameInstance::SaveGameCompleted);
-
-		SaveGameInstance->levelUnlockedCheck.Add(level, true);
-		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, saveSlotName, userIndex, SavedDelegate);
+		UE_LOG(LogTemp, Error, TEXT("UnlockSpecificLevel: SAVE GAME INSTANCE DOESNT EXSIST!"));
+		return;
 	}
-	else if (USaveGame_NoSeverance* SaveGame = Cast<USaveGame_NoSeverance>(UGameplayStatics::CreateSaveGameObject(USaveGame_NoSeverance::StaticClass())))
+
+	FAsyncSaveGameToSlotDelegate SavedDelegate;
+	SavedDelegate.BindUObject(this, &UCore_GameInstance::SaveGameCompleted);
+
+	SaveGameInstance->UnlockLevel(level);
+	UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, saveSlotName, userIndex, SavedDelegate);
+}
+
+void UCore_GameInstance::CreateSaveGame()
+{
+	if (!SaveGameInstance)
 	{
-		UE_LOG(LogTemp, Error, TEXT("SaveUnlockedLevel: SaveGameInstance NOT found, creating new save game!"));
+		USaveGame_NoSeverance* SaveGame = Cast<USaveGame_NoSeverance>(UGameplayStatics::CreateSaveGameObject(USaveGame_NoSeverance::StaticClass()));
 		SaveGameInstance = SaveGame;
-
-		FAsyncSaveGameToSlotDelegate SavedDelegate;
-
-		SavedDelegate.BindUObject(this, &UCore_GameInstance::SaveGameCompleted);
-
-		SaveGameInstance->levelUnlockedCheck.Add(level, true);
-		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, saveSlotName, userIndex, SavedDelegate);
 	}
+}
+void UCore_GameInstance::UnlockNextLevel()
+{
+	UnlockSpecificLevel(SaveGameInstance->GetLevelUnlockedCheck().Num() + 1);
 }
 
 void UCore_GameInstance::SaveGameCompleted(const FString& slotName, const int savedUserIndex, bool success)

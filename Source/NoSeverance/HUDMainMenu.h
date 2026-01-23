@@ -7,7 +7,7 @@
 class UButton;
 class UWidgetSwitcher;
 
-DECLARE_DELEGATE_RetVal_OneParam(TSoftObjectPtr<UWorld>, /*Level Reference*/ FGetLevelReferenceSigniture, int /*Level Index From GameMode_MainMenu*/)
+DECLARE_DELEGATE_OneParam(FOpenLevelSigniture, int /*Level Index*/)
 
 UCLASS(Abstract)
 class NOSEVERANCE_API UHUDMainMenu : public UUserWidget
@@ -17,10 +17,10 @@ class NOSEVERANCE_API UHUDMainMenu : public UUserWidget
 public:
 
 	/** Gets the level from GameMode_MainMenu */
-	FGetLevelReferenceSigniture GetLevelReferenceEvent;
+	FOpenLevelSigniture OpenLevelEvent;
 
 	UFUNCTION(BlueprintCallable)
-	void IsLevelButtonUnlocked(UButton* levelButton, bool bIsUnlocked);
+	void IsLevelButtonUnlocked();
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UButton* PlayButton;
@@ -48,6 +48,9 @@ protected:
 
 	virtual void NativeConstruct() override;
 
+	UPROPERTY(VisibleAnywhere)
+	TArray<UButton*> levelButtons;
+
 	UFUNCTION(BlueprintCallable)
 	void PlayButtonFunction();
 
@@ -64,11 +67,8 @@ protected:
 	void LevelThreeButtonFunction();
 
 	UFUNCTION(BlueprintCallable)
-	void ReturnButtonFunction();
+	void LevelButtonPressed(int level);
 
 	UFUNCTION(BlueprintCallable)
-	void OpenLevelFromSoftObjectPtrAsync(TSoftObjectPtr<UWorld>& levelReference);
-
-	void OpenLevelBySoftObject(TSoftObjectPtr<UWorld> LevelReference);
-
+	void ReturnButtonFunction();
 };

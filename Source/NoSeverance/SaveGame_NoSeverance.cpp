@@ -2,14 +2,26 @@
 
 USaveGame_NoSeverance::USaveGame_NoSeverance()
 {
-	levelUnlockedCheck.Add(1, true);
 }
 
 bool USaveGame_NoSeverance::IsLevelUnlocked(int level)
 {
 	if (levelUnlockedCheck.Contains(level))
 	{
-		return *levelUnlockedCheck.Find(level);
+		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
+}
+
+void USaveGame_NoSeverance::UnlockLevel(int level)
+{
+	levelUnlockedCheck.Add(level);
+}
+
+TSet<int> USaveGame_NoSeverance::GetLevelUnlockedCheck()
+{
+	return levelUnlockedCheck;
 }

@@ -17,8 +17,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget));
 	UButton* MainMenuButton;
 
-	UPROPERTY(EditDefaultsOnly, meta = (BindWidget));
-	UButton* NextRoundButton;
+	//UPROPERTY(EditDefaultsOnly, meta = (BindWidget));
+	//UButton* NextRoundButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidgetAnim), Transient)
 	UWidgetAnimation* VictoryAnimation;

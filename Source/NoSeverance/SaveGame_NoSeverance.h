@@ -10,13 +10,20 @@ class NOSEVERANCE_API USaveGame_NoSeverance : public USaveGame
 	GENERATED_BODY()
 
 public:
-
 	USaveGame_NoSeverance();
-
-	UPROPERTY(VisibleAnywhere)
-	TMap<int, bool> levelUnlockedCheck;
 
 	UFUNCTION(BlueprintCallable)
 	bool IsLevelUnlocked(int level);
+
+	UFUNCTION(BlueprintCallable)
+	void UnlockLevel(int level);
+
+	UFUNCTION(BlueprintCallable)
+	TSet<int> GetLevelUnlockedCheck();
+
+protected:
+
+	UPROPERTY(VisibleAnywhere)
+	TSet<int> levelUnlockedCheck;
 
 };

@@ -50,7 +50,6 @@ void ACore_HUD::BeginPlay()
 
 	SetFocusToGame();
 
-	UE_LOG(LogTemp, Error, TEXT("GetManName Test: %s"), *UGameplayStatics::GetCurrentLevelName(GetWorld(), true));;
 	if (UGameplayStatics::GetCurrentLevelName(GetWorld(), true) == "TestLevel")
 	{
 		DisplayTutorialHud();

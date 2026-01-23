@@ -4,6 +4,7 @@
 #include "Core_PlayerController.h"
 #include "SpawnerManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Core_GameInstance.h"
 
 ACore_GameMode::ACore_GameMode()
 {
@@ -123,8 +124,15 @@ void ACore_GameMode::PrepareNewWave()
 	if (currentWave == lastWave)
 	{
 		UE_LOG(LogTemp, Display, TEXT("PrepareNewWave: Last Wave has been Defeated"));
-		
 		LevelCompleteEvent.Broadcast();
+
+		UCore_GameInstance* gameInstance = Cast<UCore_GameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (!gameInstance)
+		{
+			UE_LOG(LogTemp, Error, TEXT("PrepareNewWave: GAME INSTANCE CASE IS INVALID WITHIN - %s, Cant Save Game"), *this->GetName());
+			return;
+		}
+		gameInstance->UnlockNextLevel();
 	}
 	else
 	{

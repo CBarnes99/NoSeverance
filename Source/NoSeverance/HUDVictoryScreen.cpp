@@ -5,7 +5,7 @@
 void UHUDVictoryScreen::NativeConstruct()
 {
 	MainMenuButton->OnPressed.AddDynamic(this, &UHUDVictoryScreen::OnMainMenuButtonPressed);
-	NextRoundButton->OnPressed.AddDynamic(this, &UHUDVictoryScreen::OnNextRoundButtonPressed);
+	//NextRoundButton->OnPressed.AddDynamic(this, &UHUDVictoryScreen::OnNextRoundButtonPressed);
 }
 
 void UHUDVictoryScreen::OnMainMenuButtonPressed()
