@@ -1,5 +1,5 @@
 #include "DefendingBase.h"
-#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 #include "EnemyCharacterBase.h"
 
 ADefendingBase::ADefendingBase()
@@ -9,7 +9,7 @@ ADefendingBase::ADefendingBase()
 	baseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
 	RootComponent = baseMesh;
 
-	enemyCollisionDetection = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Component"));
+	enemyCollisionDetection = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Component"));
 	enemyCollisionDetection->SetupAttachment(baseMesh);
 
 	enemyCollisionDetection->OnComponentBeginOverlap.AddDynamic(this, &ADefendingBase::OnOverlap);
