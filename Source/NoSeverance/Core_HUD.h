@@ -13,6 +13,7 @@ class UHUDPlayerDefeated;
 class UHUDPlayerLost;
 class UHUDPauseMenu;
 class UHUDTutorial;
+class UModalBaseClass;
 
 UCLASS()
 class NOSEVERANCE_API ACore_HUD : public AHUD
@@ -66,6 +67,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void DisplayTutorialHud();
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayStartNextWaveModal();
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayOpenTurretMenuModal();
 
 	//In Game Widgets------------------------------------------------------------
 	UPROPERTY(VisibleAnywhere, Category = "Widgets - In Game")
@@ -150,5 +157,19 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Widgets - Modal")
 	void SetUpModalWidgetList();
 
+	UFUNCTION(BlueprintCallable, Category = "Widgets - Modal")
+	void ToggleModalWidgets(UModalBaseClass* modalWidget);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets - Modal")
+	TSubclassOf<UModalBaseClass> openTurretMenuModalClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Widgets - Modal")
+	UModalBaseClass* openTurretModal;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets - Modal")
+	TSubclassOf<UModalBaseClass> startNextWaveModalClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Widgets - Modal")
+	UModalBaseClass* startNextWaveModal;
 
 };

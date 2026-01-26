@@ -31,7 +31,10 @@ public:
 	UButton* TutorialButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* QuitButton;
+	UButton* RestartLevelButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* MainMenuButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDPlayerControls* playerControls;
@@ -50,6 +53,9 @@ protected:
 	void Tutorial();
 
 	UFUNCTION(BlueprintCallable)
-	void Quit();
+	void RestartLevel();
+
+	UFUNCTION(BlueprintCallable)
+	void MainMenu();
 	
 };

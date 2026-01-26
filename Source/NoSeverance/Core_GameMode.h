@@ -8,6 +8,7 @@ class ASpawnerManager;
 class ACore_PlayerController;
 
 DECLARE_MULTICAST_DELEGATE(FLevelCompleteSigniture)
+DECLARE_MULTICAST_DELEGATE(FWaveDefeatedSigniture)
 
 UCLASS()
 class NOSEVERANCE_API ACore_GameMode : public AGameModeBase
@@ -20,6 +21,9 @@ public:
 
 	/** When the level is completed, this is called within PrepareNewWave() */
 	FLevelCompleteSigniture LevelCompleteEvent;
+
+	/** When you've defeated a wave but not the last wave, this is called within PrepareNewWave() */
+	FWaveDefeatedSigniture WaveDefeatedEvent;
 
 protected:
 

@@ -137,7 +137,7 @@ void ACore_GameMode::PrepareNewWave()
 	else
 	{
 		UE_LOG(LogTemp, Display, TEXT("PrepareNewWave: New Wave has been prepared"));
-		//Do setup phase thing here
+		WaveDefeatedEvent.Broadcast();
 	}
 }
 

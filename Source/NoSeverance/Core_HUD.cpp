@@ -10,6 +10,7 @@
 #include "HUDPlayerLost.h"
 #include "HUDPauseMenu.h"
 #include "HUDTutorial.h"
+#include "ModalBaseClass.h"
 
 #include "DA_TurretInfo.h"
 #include "Core_PlayerController.h"
@@ -38,6 +39,7 @@ void ACore_HUD::BeginPlay()
 		return;
 	}
 	gameMode->LevelCompleteEvent.AddUObject(this, &ACore_HUD::ToggleVictoryScreenWidget);
+	gameMode->WaveDefeatedEvent.AddUObject(this, &ACore_HUD::DisplayStartNextWaveModal);
 
 	bPlayerHasLost = false;
 
@@ -52,8 +54,12 @@ void ACore_HUD::BeginPlay()
 
 	if (UGameplayStatics::GetCurrentLevelName(GetWorld(), true) == "TestLevel")
 	{
-		DisplayTutorialHud();
+		FTimerHandle DisplayTutorialHudHandle;
+		GetWorld()->GetTimerManager().SetTimer(DisplayTutorialHudHandle, this, &ACore_HUD::DisplayTutorialHud, 0.1f, false);
 	}
+
+	FTimerHandle DisplayOpenTurretsModelHandle;
+	GetWorld()->GetTimerManager().SetTimer(DisplayOpenTurretsModelHandle, this, &ACore_HUD::DisplayOpenTurretMenuModal, 0.5f, false);
 }
 
 void ACore_HUD::BindDelegates()
@@ -231,26 +237,6 @@ void ACore_HUD::SetUpGameMenusWidgetList()
 	}
 }
 
-void ACore_HUD::SetUpMenusWidgetList()
-{
-	//menusWidgetList.Add()
-
-	/*for (UUserWidget* widget : menusWidgetList)
-	{
-		widget->SetVisibility(ESlateVisibility::Collapsed);
-	}*/
-}
-
-void ACore_HUD::SetUpModalWidgetList()
-{
-	//modalWidgetList.Add()
-
-	/*for (UUserWidget* widget : modalWidgetList)
-	{
-		widget->SetVisibility(ESlateVisibility::Collapsed);
-	}*/
-}
-
 void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 {
 	if (widget == nullptr)
@@ -260,7 +246,7 @@ void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 	}
 
 	gameMenuWidgetToFocus = widget;
-		
+
 	for (UUserWidget* widgetInList : gameMenusWidgetList)
 	{
 		if (widgetInList == nullptr)
@@ -283,10 +269,80 @@ void ACore_HUD::ToggleGameMenuWidgets(UUserWidget* widget)
 
 }
 
+void ACore_HUD::SetUpMenusWidgetList()
+{
+	//menusWidgetList.Add()
+
+	/*for (UUserWidget* widget : menusWidgetList)
+	{
+		widget->SetVisibility(ESlateVisibility::Collapsed);
+	}*/
+}
+
+void ACore_HUD::SetUpModalWidgetList()
+{
+	if (CheckVaildWidgetPointer(openTurretMenuModalClass))
+	{
+		openTurretModal = CreateWidget<UModalBaseClass>(localCorePlayerController, openTurretMenuModalClass);
+		openTurretModal->SetText(FText::FromString(TEXT("Open Turret Menu By Pressing TAB!")));
+		modalWidgetList.Add(openTurretModal);
+	}
+
+	if (CheckVaildWidgetPointer(startNextWaveModalClass))
+	{
+		startNextWaveModal = CreateWidget<UModalBaseClass>(localCorePlayerController, startNextWaveModalClass);
+		startNextWaveModal->SetText(FText::FromString(TEXT("Start The Next Wave By Pressing ENTER!")));
+		modalWidgetList.Add(startNextWaveModal);
+	}
+
+	for (UUserWidget* widget : modalWidgetList)
+	{
+		widget->AddToViewport();
+		widget->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+void ACore_HUD::ToggleModalWidgets(UModalBaseClass* modalWidget)
+{
+	for (UUserWidget* modal : modalWidgetList)
+	{
+		modal->SetVisibility(ESlateVisibility::Collapsed);
+	}
+	modalWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	modalWidget->PlayStartAnimation();
+}
+
+void ACore_HUD::DisplayStartNextWaveModal()
+{
+	if (!startNextWaveModal)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DisplayStartNextWaveModal: startNextWaveModal NOT SET CORRECTLY WITIN - %s"), *this->GetName());
+		return;
+	}
+	ToggleModalWidgets(startNextWaveModal);
+}
+
+void ACore_HUD::DisplayOpenTurretMenuModal()
+{
+	if (!openTurretModal)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DisplayOpenTurretMenuModal: openTurretModal NOT SET CORRECTLY WITIN - %s"), *this->GetName());
+		return;
+	}
+	ToggleModalWidgets(openTurretModal);
+}
+
+
+
 void ACore_HUD::ToggleTurretSelectionWidget()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ToggleTurretSelectionWidget: Toggle Turret Selection"));
 	ToggleGameMenuWidgets(turretSelectionMenu);
+
+	if (turretSelectionMenu->GetVisibility() == ESlateVisibility::Collapsed)
+	{
+		DisplayStartNextWaveModal();
+	}
 }
 
 void ACore_HUD::ToggleVictoryScreenWidget()
