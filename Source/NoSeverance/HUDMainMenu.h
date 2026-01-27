@@ -6,6 +6,7 @@
 
 class UButton;
 class UWidgetSwitcher;
+class UCore_GameInstance;
 
 DECLARE_DELEGATE_OneParam(FOpenLevelSigniture, int /*Level Index*/)
 
@@ -47,6 +48,9 @@ public:
 protected:
 
 	virtual void NativeConstruct() override;
+
+	UPROPERTY(VisibleAnywhere)
+	UCore_GameInstance* coreGameInstance;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<UButton*> levelButtons;

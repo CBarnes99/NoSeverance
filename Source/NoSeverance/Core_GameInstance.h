@@ -25,6 +25,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsLevelUnlocked(int level);
 
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentLevelInt(int level);
+
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentLevelInt();
+
 protected:
 	
 	UCore_GameInstance();
@@ -46,5 +52,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USaveGame_NoSeverance* SaveGameInstance;
+
+	UPROPERTY(VisibleAnywhere)
+	int currentLevelInt;
 
 };

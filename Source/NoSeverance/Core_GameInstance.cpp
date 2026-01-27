@@ -6,13 +6,13 @@ UCore_GameInstance::UCore_GameInstance()
 {
 	saveSlotName = "SaveSlot1";
 	userIndex = 0;
-
+	currentLevelInt = 0;
 	//LoadGame();
 }
 
 void UCore_GameInstance::LoadGame()
 {
-	UE_LOG(LogTemp, Warning, TEXT("LoadGame: Load Game was called from the game instance!"));
+	UE_LOG(LogTemp, Warning, TEXT("LoadGame: Load Game was called!"));
 
 	FAsyncLoadGameFromSlotDelegate LoadedDelegate;
 	LoadedDelegate.BindUObject(this, &UCore_GameInstance::LoadGameCompleted);
@@ -63,7 +63,8 @@ void UCore_GameInstance::CreateSaveGame()
 }
 void UCore_GameInstance::UnlockNextLevel()
 {
-	UnlockSpecificLevel(SaveGameInstance->GetLevelUnlockedCheck().Num() + 1);
+	int unlockLevel = GetCurrentLevelInt() + 1;
+	UnlockSpecificLevel(unlockLevel);
 }
 
 void UCore_GameInstance::SaveGameCompleted(const FString& slotName, const int savedUserIndex, bool success)
@@ -80,4 +81,19 @@ bool UCore_GameInstance::IsLevelUnlocked(int level)
 		return false;
 	}
 	return SaveGameInstance->IsLevelUnlocked(level);
+}
+
+void UCore_GameInstance::SetCurrentLevelInt(int level)
+{
+	UE_LOG(LogTemp, Display, TEXT("SetCurrentLevelInt: Set currentLevelInt to - %d"), level);
+	currentLevelInt = level;
+}
+
+int UCore_GameInstance::GetCurrentLevelInt()
+{
+	if (currentLevelInt == 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("GetCurrentLevelInt: currentLevelInt = 0"));
+	}
+	return currentLevelInt;
 }

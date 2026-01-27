@@ -18,7 +18,16 @@ bool USaveGame_NoSeverance::IsLevelUnlocked(int level)
 
 void USaveGame_NoSeverance::UnlockLevel(int level)
 {
-	levelUnlockedCheck.Add(level);
+	if (levelUnlockedCheck.Contains(level))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UnlockLevel: Level %d is already unlocked"), level);
+		return;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UnlockLevel: Unlocked level %d"), level);
+		levelUnlockedCheck.Add(level);
+	}
 }
 
 TSet<int> USaveGame_NoSeverance::GetLevelUnlockedCheck()

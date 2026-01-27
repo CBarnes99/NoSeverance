@@ -19,6 +19,12 @@ void UHUDMainMenu::NativeConstruct()
 	levelButtons.Add(LevelTwoButton);
 	levelButtons.Add(LevelThreeButton);
 
+	UGameInstance* gameInstance = UGameplayStatics::GetGameInstance(GetWorld());
+	coreGameInstance = Cast<UCore_GameInstance>(gameInstance);
+	if (!coreGameInstance)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NativeConstruct: CORE GAME INSTANCE FAILED TO CAST WITHIN - %s"), *this->GetName());
+	}
 }
 
 void UHUDMainMenu::PlayButtonFunction()
@@ -43,8 +49,6 @@ void UHUDMainMenu::ReturnButtonFunction()
 
 void UHUDMainMenu::IsLevelButtonUnlocked()
 {
-	UGameInstance* gameInstance = UGameplayStatics::GetGameInstance(GetWorld());
-	UCore_GameInstance* coreGameInstance = Cast<UCore_GameInstance>(gameInstance);
 
 	if (!coreGameInstance)
 	{
@@ -82,11 +86,11 @@ void UHUDMainMenu::LevelThreeButtonFunction()
 
 void UHUDMainMenu::LevelButtonPressed(int level)
 {
-	//TSoftObjectPtr<UWorld> levelRef;
 	if (!OpenLevelEvent.IsBound())
 	{
 		UE_LOG(LogTemp, Error, TEXT("LevelButtonPressed: OpenLevelEvent NOT BOUND WITHIN - %s"), *this->GetName());
 		return;
 	}
+	coreGameInstance->SetCurrentLevelInt(level);
 	OpenLevelEvent.Execute(level);
 }
