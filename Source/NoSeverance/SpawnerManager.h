@@ -9,6 +9,7 @@ class AEnemySpawner;
 class AEnemyDrop;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWaveEndedSignature);
+DECLARE_DELEGATE_OneParam(FEnemyDropsHaveFinishedPoolingSignature, TArray<AActor*> /* Enemy Drops Array */);
 
 UCLASS()
 class NOSEVERANCE_API ASpawnerManager : public AActor
@@ -21,6 +22,9 @@ public:
 	/** A delegate that is called when all the enemies in the wave have been defeated */
 	UPROPERTY(BlueprintAssignable, Category = "Event")
 	FWaveEndedSignature WaveEndedEvent;
+
+	/** A Delegate that is called when the enemy drops have been pooled */
+	FEnemyDropsHaveFinishedPoolingSignature EnemyDropsHaveFinishedPoolingEvent;
 
 	/** An array of spawners for the manager to call from */
 	UPROPERTY(VisibleAnywhere)

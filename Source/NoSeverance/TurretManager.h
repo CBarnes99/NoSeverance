@@ -57,4 +57,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	ACore_GameState* coreGameState;
 
+	UFUNCTION(BlueprintCallable)
+	void AddActorsToIgnoreList(TArray<AActor*> enemyDropArray);
+
 	};

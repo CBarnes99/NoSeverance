@@ -137,7 +137,6 @@ void ASpawnerManager::EnemyHasDied(AEnemyCharacterBase* enemy)
 		WaveEndedEvent.Broadcast();
 		waveActive = false;
 	}
-
 }
 
 void ASpawnerManager::PoolEnemyDrop()
@@ -157,6 +156,17 @@ void ASpawnerManager::PoolEnemyDrop()
 		amountPooled++;
 	}
 	UE_LOG(LogTemp, Display, TEXT("PoolEnemyDrop: Amount of drops pooled - %d, out of - %d"), amountPooled, amountOfDropToPool);
+
+	if (EnemyDropsHaveFinishedPoolingEvent.IsBound())
+	{
+		TArray<AActor*> dropActorArray;
+		for (AEnemyDrop* drop : enemyDropPool)
+		{
+			AActor* dropActor = drop;
+			dropActorArray.Add(dropActor);
+		}
+		EnemyDropsHaveFinishedPoolingEvent.Execute(dropActorArray);
+	}
 }
 
 void ASpawnerManager::SetEnemyDrop(EEnemyDrop dropType, FVector spawnLocation)

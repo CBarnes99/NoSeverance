@@ -4,6 +4,7 @@
 #include "AC_PlaceActor.h"
 #include "Core_GameState.h"
 #include "DA_TurretInfo.h"
+#include "SpawnerManager.h"
 
 ATurretManager::ATurretManager()
 {
@@ -15,6 +16,15 @@ ATurretManager::ATurretManager()
 void ATurretManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AActor* actor = UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnerManager::StaticClass());
+	ASpawnerManager* spawnerManager = Cast<ASpawnerManager>(actor);
+	if (!spawnerManager)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ATurretManager: SPAWNER MANAGER NOT CASTED CORRECTLY!"));
+		return;
+	}
+	spawnerManager->EnemyDropsHaveFinishedPoolingEvent.BindUObject(this, &ATurretManager::AddActorsToIgnoreList);
 }
 
 void ATurretManager::StartTurretPlacement(UDA_TurretInfo* turretInfo)
@@ -87,4 +97,12 @@ void ATurretManager::UpdateIgnoreActors(AActor* actor, bool addToArray)
 void ATurretManager::UpdateTurretPlacementLocation(FVector traceStartLocation, FVector forwardVector)
 {
 	placeActorComponent->UpdatePlacementLocation(traceStartLocation, forwardVector);
+}
+
+void ATurretManager::AddActorsToIgnoreList(TArray<AActor*> enemyDropArray)
+{
+	for (AActor* actor : enemyDropArray)
+	{
+		placeActorComponent->UpdateIgnoreActors(actor, true);
+	}
 }
