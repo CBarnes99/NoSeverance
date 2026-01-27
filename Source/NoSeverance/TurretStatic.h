@@ -48,13 +48,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FTimerHandle activeAndRechargeTimerHandle;
 
-	/** A bool to check if the turret is currently damaging enemies, as a bool */
+	/** A bool to check if the turret is ready to start damaging enemies, as a bool */
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
 	bool turretActive;
-
-	/** A check to see if the turret is recharging, as a bool */
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Turret")
-	bool turretRecharging;
 
 	/** Turn off the damage capabilities for the turret, is called by the activeAndRechargeTimerHandle */
 	UFUNCTION(BlueprintCallable)

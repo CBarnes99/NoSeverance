@@ -31,27 +31,27 @@ ATurretStatic::ATurretStatic()
 	collisionMesh->SetupAttachment(collisionBox);
 }
 
+void ATurretStatic::OnConstruction(const FTransform& Transform)
+{
+	//This sets the visual of the damage zone to the same size as the collision box
+	collisionMesh->SetRelativeScale3D(collisionBoxSize / 125);
+}
+
 void ATurretStatic::BeginPlay()
 {
 	Super::BeginPlay();
 
 	turretActive = true;
-	turretRecharging = false;
-
-}
-void ATurretStatic::OnConstruction(const FTransform& Transform)
-{
-	collisionMesh->SetRelativeScale3D(collisionBoxSize / 125);	
 }
 
 void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if (OtherActor->IsA(AEnemyCharacterBase::StaticClass()) && !damagedActors.Contains(OtherActor))
+    if (OtherActor->IsA(AEnemyCharacterBase::StaticClass()) && !damagedActors.Contains(OtherActor) && turretActive)
     {
-		if (turretActive)
+		AEnemyCharacterBase* enemy = Cast<AEnemyCharacterBase>(OtherActor);
+		if (enemy->GetIsEnemyDisabled())
 		{
-			turretActive = false;
-			GetWorld()->GetTimerManager().SetTimer(activeAndRechargeTimerHandle, this, &ATurretStatic::DisableTurret, turretStats->activeTime, false);
+			return;
 		}
 
 		if (GetLocalRole() == ROLE_Authority)
@@ -60,6 +60,12 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 
 			UGameplayStatics::ApplyDamage(OtherActor, turretStats->damageAmount, GetInstigatorController(), this, UDamageType::StaticClass());
 			damagedActors.Add(OtherActor);
+
+			//A Timer for How long the turret is active for when it is triggered, when the timer goes off, it disables the turret
+			if (!GetWorld()->GetTimerManager().IsTimerActive(activeAndRechargeTimerHandle))
+			{
+				GetWorld()->GetTimerManager().SetTimer(activeAndRechargeTimerHandle, this, &ATurretStatic::DisableTurret, turretStats->activeTime, false);
+			}
 		}
     }
 }
@@ -68,7 +74,7 @@ void ATurretStatic::DisableTurret()
 {
 	UE_LOG(LogTemp, Display, TEXT("DisableTurret: %s is disabled"), *this->GetName());
 	collisionBox->SetGenerateOverlapEvents(false);
-	turretRecharging = true;
+	turretActive = false;
 	damagedActors.Empty();
 	GetWorld()->GetTimerManager().SetTimer(activeAndRechargeTimerHandle, this, &ATurretStatic::EnableTurret, turretStats->rechargeTime, false);
 }
@@ -76,7 +82,11 @@ void ATurretStatic::DisableTurret()
 void ATurretStatic::EnableTurret()
 {
 	UE_LOG(LogTemp, Display, TEXT("EnableTurret: %s is enabled"), *this->GetName());
-	collisionBox->SetGenerateOverlapEvents(true);
-	turretRecharging = false;
+	if (GetWorld()->GetTimerManager().IsTimerActive(activeAndRechargeTimerHandle))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(activeAndRechargeTimerHandle);
+	}
+
 	turretActive = true;
+	collisionBox->SetGenerateOverlapEvents(true);
 }
