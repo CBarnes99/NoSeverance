@@ -52,7 +52,7 @@ void ACore_HUD::BeginPlay()
 
 	SetFocusToGame();
 
-	if (UGameplayStatics::GetCurrentLevelName(GetWorld(), true) == "TestLevel")
+	if (UGameplayStatics::GetCurrentLevelName(GetWorld(), true) == "Level1")
 	{
 		FTimerHandle DisplayTutorialHudHandle;
 		GetWorld()->GetTimerManager().SetTimer(DisplayTutorialHudHandle, this, &ACore_HUD::DisplayTutorialHud, 0.1f, false);
