@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentLevelInt();
 
+	UFUNCTION(BlueprintCallable)
+	void DeleteSave();
+
 protected:
 	
 	UCore_GameInstance();

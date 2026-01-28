@@ -13,7 +13,10 @@ void UHUDMainMenu::NativeConstruct()
 	LevelOneButton->OnPressed.AddDynamic(this, &UHUDMainMenu::LevelOneButtonFunction);
 	LevelTwoButton->OnPressed.AddDynamic(this, &UHUDMainMenu::LevelTwoButtonFunction);
 	LevelThreeButton->OnPressed.AddDynamic(this, &UHUDMainMenu::LevelThreeButtonFunction);
-	ReturnButton->OnPressed.AddDynamic(this, &UHUDMainMenu::ReturnButtonFunction);
+	ReturnFromLevelSelectButton->OnPressed.AddDynamic(this, &UHUDMainMenu::ReturnButtonFunction);
+	DeleteSaveButton->OnPressed.AddDynamic(this, &UHUDMainMenu::DeleteSaveMenu);
+	ConfirmSaveDeleteButton->OnPressed.AddDynamic(this, &UHUDMainMenu::ConfirmDeleteSave);
+	CancelSaveDeleteButton->OnPressed.AddDynamic(this, &UHUDMainMenu::ReturnButtonFunction);
 
 	levelButtons.Add(LevelOneButton);
 	levelButtons.Add(LevelTwoButton);
@@ -25,6 +28,7 @@ void UHUDMainMenu::NativeConstruct()
 	{
 		UE_LOG(LogTemp, Error, TEXT("NativeConstruct: CORE GAME INSTANCE FAILED TO CAST WITHIN - %s"), *this->GetName());
 	}
+	coreGameInstance->LoadGame();
 }
 
 void UHUDMainMenu::PlayButtonFunction()
@@ -33,6 +37,18 @@ void UHUDMainMenu::PlayButtonFunction()
 	IsLevelButtonUnlocked();
 	MenuSwitcher->SetActiveWidgetIndex(1);
 
+}
+
+void UHUDMainMenu::DeleteSaveMenu()
+{
+	MenuSwitcher->SetActiveWidgetIndex(2);
+}
+
+void UHUDMainMenu::ConfirmDeleteSave()
+{
+	coreGameInstance->DeleteSave();
+	coreGameInstance->LoadGame();
+	MenuSwitcher->SetActiveWidgetIndex(0);
 }
 
 void UHUDMainMenu::QuitGameFunction()
@@ -94,3 +110,4 @@ void UHUDMainMenu::LevelButtonPressed(int level)
 	coreGameInstance->SetCurrentLevelInt(level);
 	OpenLevelEvent.Execute(level);
 }
+

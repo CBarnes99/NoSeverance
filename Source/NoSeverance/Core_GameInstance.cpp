@@ -7,7 +7,6 @@ UCore_GameInstance::UCore_GameInstance()
 	saveSlotName = "SaveSlot1";
 	userIndex = 0;
 	currentLevelInt = 0;
-	//LoadGame();
 }
 
 void UCore_GameInstance::LoadGame()
@@ -96,4 +95,19 @@ int UCore_GameInstance::GetCurrentLevelInt()
 		UE_LOG(LogTemp, Error, TEXT("GetCurrentLevelInt: currentLevelInt = 0"));
 	}
 	return currentLevelInt;
+}
+
+void UCore_GameInstance::DeleteSave()
+{
+	bool bSaveGameDeleted = UGameplayStatics::DeleteGameInSlot(saveSlotName, userIndex);
+
+	if (bSaveGameDeleted)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DeleteSave: Save is deleted in slot - %s"), *saveSlotName);
+		SaveGameInstance = nullptr;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DeleteSave: Failed to delete save in slot - %s (slot may not exist)"), *saveSlotName);
+	}
 }

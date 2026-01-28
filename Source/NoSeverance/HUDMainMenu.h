@@ -42,7 +42,16 @@ public:
 	UButton* LevelThreeButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* ReturnButton;
+	UButton* ReturnFromLevelSelectButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* DeleteSaveButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* ConfirmSaveDeleteButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UButton* CancelSaveDeleteButton;
 
 
 protected:
@@ -75,4 +84,10 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void ReturnButtonFunction();
+
+	UFUNCTION(BlueprintCallable)
+	void DeleteSaveMenu();
+
+	UFUNCTION(BlueprintCallable)
+	void ConfirmDeleteSave();
 };

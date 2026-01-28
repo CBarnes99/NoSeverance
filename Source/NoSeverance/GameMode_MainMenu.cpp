@@ -16,7 +16,7 @@ void AGameMode_MainMenu::BeginPlay()
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 
 	mainMenu->OpenLevelEvent.BindUObject(this, &AGameMode_MainMenu::GetLevelForMainMenu);
-	LoadFromSaveData();
+	//LoadFromSaveData();
 }
 
 void AGameMode_MainMenu::LoadFromSaveData()
