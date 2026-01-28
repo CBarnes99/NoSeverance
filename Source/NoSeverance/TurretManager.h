@@ -57,7 +57,19 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	ACore_GameState* coreGameState;
 
+	UPROPERTY(VisibleAnywhere)
+	TArray<ATurretStatic*> placedTurretsArray;
+
+	UFUNCTION(BlueprintCallable)
+	void AddTurretToArray(AActor* actor);
+
 	UFUNCTION(BlueprintCallable)
 	void AddActorsToIgnoreList(TArray<AActor*> enemyDropArray);
+
+	UFUNCTION(BlueprintCallable)
+	void EnableAllTurrets();
+
+	UFUNCTION(BlueprintCallable)
+	void BindDelegates();
 
 	};

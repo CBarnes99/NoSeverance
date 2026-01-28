@@ -95,6 +95,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnDeathAnimationStarted();
 
+	/** Called to check if the enemy has reached 0 hp */
+	UFUNCTION(BlueprintCallable)
+	float GetEnemyHealth();
+
 protected:
 	virtual void BeginPlay() override;
 

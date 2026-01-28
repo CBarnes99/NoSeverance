@@ -4,6 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "AC_PlaceActor.generated.h"
 
+DECLARE_DELEGATE_OneParam(FPlacedActorSigniture, AActor* /*Actor Placed*/)
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class NOSEVERANCE_API UAC_PlaceActor : public UActorComponent
 {
@@ -11,6 +13,9 @@ class NOSEVERANCE_API UAC_PlaceActor : public UActorComponent
 
 public:	
 	UAC_PlaceActor();
+
+	/** Delegate called when the actor is placed and sends out the actor */
+	FPlacedActorSigniture PlacedActorEvent;
 
 	/** Called when you want to start placing an actor
 	* @param chosenActorClass The class of the actor you want to place */

@@ -49,7 +49,7 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
     if (OtherActor->IsA(AEnemyCharacterBase::StaticClass()) && !damagedActors.Contains(OtherActor) && turretActive)
     {
 		AEnemyCharacterBase* enemy = Cast<AEnemyCharacterBase>(OtherActor);
-		if (enemy->GetIsEnemyDisabled())
+		if (enemy->GetIsEnemyDisabled() || enemy->GetEnemyHealth() <= 0)
 		{
 			return;
 		}
@@ -73,6 +73,7 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 void ATurretStatic::DisableTurret()
 {
 	UE_LOG(LogTemp, Display, TEXT("DisableTurret: %s is disabled"), *this->GetName());
+	collisionMesh->SetVisibility(false);
 	collisionBox->SetGenerateOverlapEvents(false);
 	turretActive = false;
 	damagedActors.Empty();
@@ -87,6 +88,7 @@ void ATurretStatic::EnableTurret()
 		GetWorld()->GetTimerManager().ClearTimer(activeAndRechargeTimerHandle);
 	}
 
+	collisionMesh->SetVisibility(true);
 	turretActive = true;
 	collisionBox->SetGenerateOverlapEvents(true);
 }

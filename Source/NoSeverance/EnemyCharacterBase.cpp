@@ -264,3 +264,8 @@ void AEnemyCharacterBase::IncreasePathNodeIndex()
 {
 	pathNodeIndex++;
 }
+
+float AEnemyCharacterBase::GetEnemyHealth()
+{
+	return healthComponent->GetCurrentHealth();
+}

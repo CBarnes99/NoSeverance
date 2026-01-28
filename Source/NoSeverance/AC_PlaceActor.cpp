@@ -67,8 +67,8 @@ void UAC_PlaceActor::ConfirmPlacement()
 	}
 
 	FActorSpawnParameters spawnParams;
-	GetWorld()->SpawnActor<AActor>(actorClassToSpawn, currentPreviewActor->GetActorTransform(), spawnParams);
-	
+	AActor* spawnedActor = GetWorld()->SpawnActor<AActor>(actorClassToSpawn, currentPreviewActor->GetActorTransform(), spawnParams);
+	PlacedActorEvent.ExecuteIfBound(spawnedActor);
 }
 
 void UAC_PlaceActor::CancelPlacement()

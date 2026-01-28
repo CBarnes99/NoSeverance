@@ -15,6 +15,11 @@ class NOSEVERANCE_API ATurretStatic : public AActor
 public:	
 	ATurretStatic();
 
+	/** Turn on the damage capabilities for the turret, is called by the activeAndRechargeTimerHandle */
+	UFUNCTION(BlueprintCallable)
+	void EnableTurret();
+
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,10 +60,6 @@ protected:
 	/** Turn off the damage capabilities for the turret, is called by the activeAndRechargeTimerHandle */
 	UFUNCTION(BlueprintCallable)
 	void DisableTurret();
-
-	/** Turn on the damage capabilities for the turret, is called by the activeAndRechargeTimerHandle */
-	UFUNCTION(BlueprintCallable)
-	void EnableTurret();
 
 	/** When the turret damages an enemy, it puts a reference to it here so that it can only damage it once per active cycle */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
