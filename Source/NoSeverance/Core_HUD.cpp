@@ -3,8 +3,6 @@
 
 #include "HUDTurretSelectionMenu.h"
 #include "HUDPlayerHud.h"
-#include "HUDHealthAndMana.h"
-#include "HUDWeaponTurretSelector.h"
 #include "HUDVictoryScreen.h"
 #include "HUDPlayerDefeated.h"
 #include "HUDPlayerLost.h"
@@ -32,15 +30,6 @@ void ACore_HUD::BeginPlay()
 		return;
 	}
 
-	ACore_GameMode* gameMode = Cast<ACore_GameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (!gameMode)
-	{
-		UE_LOG(LogTemp, Error, TEXT("BeginPlay: CORE GAME MODE NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
-		return;
-	}
-	gameMode->LevelCompleteEvent.AddUObject(this, &ACore_HUD::ToggleVictoryScreenWidget);
-	gameMode->WaveDefeatedEvent.AddUObject(this, &ACore_HUD::DisplayStartNextWaveModal);
-
 	bPlayerHasLost = false;
 
 	SetUpInGameWidgetList();
@@ -64,7 +53,20 @@ void ACore_HUD::BeginPlay()
 
 void ACore_HUD::BindDelegates()
 {
-	turretSelectionMenu->OnMenuSelectionEvent.AddDynamic(playerHud->WeaponAndTurretSelector, &UHUDWeaponTurretSelector::GetInfoFromTurretMenu);
+	ACore_GameMode* gameMode = Cast<ACore_GameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!gameMode)
+	{
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: CORE GAME MODE NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
+		return;
+	}
+	gameMode->LevelCompleteEvent.AddUObject(this, &ACore_HUD::ToggleVictoryScreenWidget);
+	gameMode->WaveDefeatedEvent.AddUObject(this, &ACore_HUD::DisplayStartNextWaveModal);
+	gameMode->LastWaveEvent.BindUObject(playerHud, &UHUDPlayerHud::SetLastWaveText);
+	gameMode->NewWaveStartedEvent.AddUObject(playerHud, &UHUDPlayerHud::UpdateCurretWaveText);
+	gameMode->AmountOfEnemiesWithinARoundEvent.BindUObject(playerHud, &UHUDPlayerHud::SetMaxAmountOfEnemiesText);
+	gameMode->EnemyHasBeenDefeatedEvent.AddUObject(playerHud, &UHUDPlayerHud::UpdateCurrentAmountOfEnemiesText);
+
+	turretSelectionMenu->OnMenuSelectionEvent.AddDynamic(playerHud, &UHUDPlayerHud::GetInfoFromTurretMenu);
 
 	APlayerCharacter* player = Cast<APlayerCharacter>(localCorePlayerController->GetPawn());
 	if (!player)
@@ -72,8 +74,8 @@ void ACore_HUD::BindDelegates()
 		UE_LOG(LogTemp, Warning, TEXT("BindDelegates: PLAYER NOT CASTED CORRECTLY WITHIN - %s"), *this->GetName());
 		return;
 	}
-	player->OnHealthUpdatedEvent.AddUObject(playerHud->HealthAndMana, &UHUDHealthAndMana::UpdateHealthBar);
-	player->OnManaUpdatedEvent.AddUObject(playerHud->HealthAndMana, &UHUDHealthAndMana::UpdateManaBar);
+	player->OnHealthUpdatedEvent.AddUObject(playerHud, &UHUDPlayerHud::UpdateHealthBar);
+	player->OnManaUpdatedEvent.AddUObject(playerHud, &UHUDPlayerHud::UpdateManaBar);
 	player->OnPlayerDeathStateEvent.AddUObject(this, &ACore_HUD::PlayerDefeatedState);
 
 
@@ -87,7 +89,7 @@ void ACore_HUD::BindDelegates()
 	coreGameState->OnPlayerLostEvent.AddUObject(this, &ACore_HUD::PlayerLost);
 
 	localCorePlayerController->PauseGameEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
-	localCorePlayerController->GetTurretDAEvent.BindUObject(playerHud->WeaponAndTurretSelector, &UHUDWeaponTurretSelector::GetTurretClassFromArray);
+	localCorePlayerController->GetTurretDAEvent.BindUObject(playerHud, &UHUDPlayerHud::GetTurretClassFromArray);
 
 	pauseMenu->ContinueButtonPressedEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
 	pauseMenu->TutorialButtonPressedEvent.BindUObject(this, &ACore_HUD::DisplayTutorialHud);
@@ -99,7 +101,6 @@ void ACore_HUD::BindDelegates()
 	}
 
 	tutorialMenu->CloseTutorialEvent.BindUObject(this, &ACore_HUD::DisplayTutorialHud);
-
 }
 
 bool ACore_HUD::CheckVaildWidgetPointer(TSubclassOf<UUserWidget> widgetClass)

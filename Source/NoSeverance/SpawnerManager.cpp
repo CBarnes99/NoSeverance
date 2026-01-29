@@ -76,6 +76,7 @@ void ASpawnerManager::StartSpawningEnemies(int currentWave)
 		}
 	}
 	UE_LOG(LogTemp, Warning, TEXT("StartSpawningEnemies: There are %d enemies this round"), amountOfEnemysInRound);
+	AmountOfEnemiesInTheWaveEvent.ExecuteIfBound(amountOfEnemysInRound);
 };
 
 //Called Within Game Mode
@@ -131,7 +132,7 @@ void ASpawnerManager::EnemyHasDied(AEnemyCharacterBase* enemy)
 {
 	amountOfEnemysInRound--;
 	UE_LOG(LogTemp, Warning, TEXT("EnemyHasDied: Amount of enemies left in the round = %d"), amountOfEnemysInRound);
-
+	EnemyHasDiedEvent.ExecuteIfBound();
 	if (amountOfEnemysInRound <= 0)
 	{
 		WaveEndedEvent.Broadcast();

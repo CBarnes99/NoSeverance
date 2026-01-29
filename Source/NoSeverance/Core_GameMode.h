@@ -9,6 +9,10 @@ class ACore_PlayerController;
 
 DECLARE_MULTICAST_DELEGATE(FLevelCompleteSigniture)
 DECLARE_MULTICAST_DELEGATE(FWaveDefeatedSigniture)
+DECLARE_MULTICAST_DELEGATE(FNewWaveStartedSigniture)
+DECLARE_DELEGATE_OneParam(FLastWaveSigniture, int /* Last Wave */)
+DECLARE_DELEGATE_OneParam(FAmountOfEnmiesWithinARoundSigiture, int /* Last Wave */)
+DECLARE_MULTICAST_DELEGATE(FEnemyHasBeenDefeatedSigniture)
 
 UCLASS()
 class NOSEVERANCE_API ACore_GameMode : public AGameModeBase
@@ -24,6 +28,18 @@ public:
 
 	/** When you've defeated a wave but not the last wave, this is called within PrepareNewWave() */
 	FWaveDefeatedSigniture WaveDefeatedEvent;
+
+	/** Is called when a new wave has started, called within StartEnemyWave() */
+	FNewWaveStartedSigniture NewWaveStartedEvent;
+
+	/** When the last wave is caluclated within StartEnemyWave(), this is called to notifiy the UI */
+	FLastWaveSigniture LastWaveEvent;
+
+	/** Called when the amount of enemies in the round has been calculated and the called within AmountOfEnemiesWithinWave() */
+	FAmountOfEnmiesWithinARoundSigiture AmountOfEnemiesWithinARoundEvent;
+
+	/** Called when the delegate within the spawner manager is called so the game mode can no notifiy other things */
+	FEnemyHasBeenDefeatedSigniture EnemyHasBeenDefeatedEvent;
 
 protected:
 
@@ -58,4 +74,10 @@ protected:
 	* @param playerRespawnTime Unnecessary for this function, doesn't get used */
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerDeathStateChange(bool bDefeatedState, float playerRespawnTime);
+
+	UFUNCTION(BlueprintCallable)
+	void AmountOfEnemiesWithinWave(int amount);
+
+	UFUNCTION(BlueprintCallable)
+	void EnemyHasBeenDefeated();
 };

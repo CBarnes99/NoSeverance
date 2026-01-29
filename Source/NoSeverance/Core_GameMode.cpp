@@ -88,6 +88,8 @@ void ACore_GameMode::StartEnemyWave()
 		spawnerManager = Cast<ASpawnerManager>(actor);
 	
 		spawnerManager->WaveEndedEvent.AddDynamic(this, &ACore_GameMode::PrepareNewWave);
+		spawnerManager->AmountOfEnemiesInTheWaveEvent.BindUObject(this, &ACore_GameMode::AmountOfEnemiesWithinWave);
+		spawnerManager->EnemyHasDiedEvent.BindUObject(this, &ACore_GameMode::EnemyHasBeenDefeated);
 	}
 
 	//Check to see if the spawner manager has all the spawners refereneced
@@ -101,6 +103,7 @@ void ACore_GameMode::StartEnemyWave()
 	{
 		lastWave = spawnerManager->CalculateLastWave();
 		UE_LOG(LogTemp, Warning, TEXT("StartEnemyWave: The last wave of this level is: %i"), lastWave);		
+		LastWaveEvent.ExecuteIfBound(lastWave);
 	}
 
 	//Check to see if a wave is already active, if not, start spawning enemies
@@ -111,7 +114,7 @@ void ACore_GameMode::StartEnemyWave()
 		UE_LOG(LogTemp, Warning, TEXT("StartEnemyWave: Wave %d is now active!"), currentWave);
 
 		spawnerManager->StartSpawningEnemies(currentWave);
-
+		NewWaveStartedEvent.Broadcast();
 	}
 	else
 	{
@@ -154,4 +157,14 @@ void ACore_GameMode::OnPlayerDeathStateChange(bool bPlayerDefeatedCheck, float p
 	}
 
 	spawnerManager->ShouldEnemiesPerceptPlayer(bPlayerDefeatedCheck);
+}
+
+void ACore_GameMode::AmountOfEnemiesWithinWave(int amount)
+{
+	AmountOfEnemiesWithinARoundEvent.ExecuteIfBound(amount);
+}
+
+void ACore_GameMode::EnemyHasBeenDefeated()
+{
+	EnemyHasBeenDefeatedEvent.Broadcast();
 }

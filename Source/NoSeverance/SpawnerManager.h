@@ -10,6 +10,8 @@ class AEnemyDrop;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWaveEndedSignature);
 DECLARE_DELEGATE_OneParam(FEnemyDropsHaveFinishedPoolingSignature, TArray<AActor*> /* Enemy Drops Array */);
+DECLARE_DELEGATE_OneParam(FAmountOfEnemiesInTheWaveSignature, int /* Amount of Enemies in the wave */);
+DECLARE_DELEGATE(FEnemyHasDiedSignature);
 
 UCLASS()
 class NOSEVERANCE_API ASpawnerManager : public AActor
@@ -25,6 +27,12 @@ public:
 
 	/** A Delegate that is called when the enemy drops have been pooled */
 	FEnemyDropsHaveFinishedPoolingSignature EnemyDropsHaveFinishedPoolingEvent;
+
+	/** A Delegate that is called when the amount of enemies have been caculated within StartSpawningEnemies() */
+	FAmountOfEnemiesInTheWaveSignature AmountOfEnemiesInTheWaveEvent;
+
+	/** Called within EnemyHasDied() to notify core game mode */
+	FEnemyHasDiedSignature EnemyHasDiedEvent;
 
 	/** An array of spawners for the manager to call from */
 	UPROPERTY(VisibleAnywhere)
