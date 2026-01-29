@@ -52,6 +52,34 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "DropValue")
 	TMap<EEnemyDrop, TSoftObjectPtr<UStaticMesh>> meshMap;
 
+	///** Health potion mesh reference */
+	//UPROPERTY(EditAnywhere, Category = "DropMesh")
+	//TSoftObjectPtr<UStaticMesh> healthPotionMesh;
+
+	///** Mana potion mesh reference */
+	//UPROPERTY(EditAnywhere, Category = "DropMesh")
+	//TSoftObjectPtr<UStaticMesh> manaPotionMesh;
+
+	///** Currency mesh reference */
+	//UPROPERTY(EditAnywhere, Category = "DropMesh")
+	//TSoftObjectPtr<UStaticMesh> currencyMesh;
+
+	///** The amount of health the player is healed for when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//float healthPotionHealAmount;
+
+	///** The amount of mana the player gains when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//float manaPotionGainAmount;
+
+	///** The amount of currency the player gets when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//int smallCurrencyGainAmount;
+
+	///** The amount of currency the player gets when picked up */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropValue")
+	//int largeCurrencyGainAmount;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UDA_EnemyDropInfo* enemyDropInfo;
 

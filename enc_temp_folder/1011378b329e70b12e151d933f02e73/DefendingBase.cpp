@@ -14,7 +14,7 @@ ADefendingBase::ADefendingBase()
 
 	enemyCollisionDetection->OnComponentBeginOverlap.AddDynamic(this, &ADefendingBase::OnOverlap);
 
-	maxBaseHealth = 30;
+	maxBaseHealth = 5;
 
 }
 

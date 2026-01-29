@@ -62,7 +62,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	/** The amount of currecy the player currently has, as an int */
+	/** The amount of currecy the player currently has, as a float */
 	UPROPERTY(EditDefaultsOnly)
 	int playerCurrencyAmount;
 

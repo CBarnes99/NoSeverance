@@ -10,14 +10,14 @@ void ACore_GameState::BeginPlay()
 
 	if (playerCurrencyAmount == NULL)
 	{
-		playerCurrencyAmount = 150;
-		UE_LOG(LogTemp, Error, TEXT("BeginPlay: Player Currency was not set! Set to 100 by Default within - %s"), *this->GetName())
+		playerCurrencyAmount = 100;
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: Player Currency was not set! Set to 100 by Default!"))
 	}
 
 	if (maxListSizeInWeaponTurretHud == NULL)
 	{
 		maxListSizeInWeaponTurretHud = 5;
-		UE_LOG(LogTemp, Error, TEXT("BeginPlay: amountInWeaponTurretHud was not set! Set to 5 by Defaultwithin - %s"), *this->GetName())
+		UE_LOG(LogTemp, Error, TEXT("BeginPlay: amountInWeaponTurretHud was not set! Set to 5 by Default!"))
 	}
 	
 	currentListSizeInWeaponTurretHud = 0;
