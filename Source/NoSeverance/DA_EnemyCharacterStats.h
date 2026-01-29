@@ -33,6 +33,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	int currencyOnDeath;
 
+	/** Is the enemy able to see and attack the player, true = yes, false = no */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	bool bCanSeePlayer;
+
 	/** The AI Controller for the enemy */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	TSubclassOf<AEnemyAIController> AIControllerClass;

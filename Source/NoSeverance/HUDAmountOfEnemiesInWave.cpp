@@ -19,7 +19,7 @@ void UHUDAmountOfEnemiesInWave::UpdateText()
 {
 	currentEnemiesInWave--;
 
-	FText formatText = FText::FromString(TEXT("Enemies: {current}/{max}"));
+	FText formatText = FText::FromString(TEXT("Empolyees: {current}/{max}"));
 	FFormatNamedArguments args;
 	args.Add(TEXT("current"), currentEnemiesInWave);
 	args.Add(TEXT("max"), maxEnemiesInWave);

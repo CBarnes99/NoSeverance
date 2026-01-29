@@ -21,8 +21,6 @@ AEnemyCharacterBase::AEnemyCharacterBase()
 	StimuliSourceComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimuli Source Component"));
 	StimuliSourceComponent->RegisterForSense(UAISense_Sight::StaticClass());
 	StimuliSourceComponent->RegisterWithPerceptionSystem();
-	bCanDetectEnemy = true;
-
 
 	healthComponent = CreateDefaultSubobject<UAC_Health>(TEXT("Health Componenet"));
 
@@ -130,9 +128,6 @@ void AEnemyCharacterBase::DisableEnemy()
 
 	DisableOrEnablePerceptionComponent(true);
 
-	/*StimuliSourceComponent->Deactivate();
-	StimuliSourceComponent->UnregisterFromPerceptionSystem();*/
-
 	if (GetController() && enemyAIController)
 	{
 		OnDisableAIControllerEvent.ExecuteIfBound();
@@ -156,9 +151,6 @@ void AEnemyCharacterBase::EnableEnemy()
 
 	GetMesh()->Activate(true);
 
-	//StimuliSourceComponent->Activate();
-	//StimuliSourceComponent->RegisterWithPerceptionSystem();
-
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	SetActorTickEnabled(true);
@@ -172,7 +164,7 @@ void AEnemyCharacterBase::EnableEnemy()
 		enemyAIController->RunBehaviorTree(enemyBehaviorTree);
 	}
 
-	if (bCanDetectEnemy)
+	if (enemyInfo->bCanSeePlayer)
 	{
 		DisableOrEnablePerceptionComponent(false);
 	}

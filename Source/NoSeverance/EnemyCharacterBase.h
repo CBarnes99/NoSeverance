@@ -102,10 +102,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	/** A Check for if the enemy is able to detect the player, set to true by defualt */
-	UPROPERTY(EditAnywhere, Category = "AI")
-	bool bCanDetectEnemy;
-
 	/** A pointer to the the Behaviour Tree assigned in the editor */
 	UPROPERTY(EditAnywhere, Category = "AI")
 	UBehaviorTree* enemyBehaviorTree;

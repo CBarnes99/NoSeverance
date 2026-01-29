@@ -56,10 +56,10 @@ void ATurretStatic::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 
 		if (GetLocalRole() == ROLE_Authority)
 		{
-			UE_LOG(LogTemp, Display, TEXT("OnOverlap: %s Overlaps %s"), *OtherActor->GetName(), *this->GetName());
-
 			UGameplayStatics::ApplyDamage(OtherActor, turretStats->damageAmount, GetInstigatorController(), this, UDamageType::StaticClass());
 			damagedActors.Add(OtherActor);
+
+			UE_LOG(LogTemp, Error, TEXT("OnOverlap: %s Overlaps %s, Damage = %f"), *OtherActor->GetName(), *this->GetName(), turretStats->damageAmount);
 
 			//A Timer for How long the turret is active for when it is triggered, when the timer goes off, it disables the turret
 			if (!GetWorld()->GetTimerManager().IsTimerActive(activeAndRechargeTimerHandle))
