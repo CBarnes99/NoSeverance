@@ -19,6 +19,8 @@ class UDA_TurretInfo;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStartWaveSigniture);
 DECLARE_DELEGATE_RetVal_OneParam(UDA_TurretInfo* /*Turret Info To Place Turret*/, FGetTurretDASigniture, int /*Index for Array within UHUDWeaponTurretSelector*/)
 DECLARE_DELEGATE(FPauseGameSigniture);
+DECLARE_DELEGATE_OneParam(FIsPlacingTurretSigniture, bool /* Are you currently placing a turret, true = yes, false = no */)
+DECLARE_DELEGATE_OneParam(FCostOfTurretSigniture, int /* The cost of the turret you are placing */)
 
 UCLASS()
 class NOSEVERANCE_API ACore_PlayerController : public APlayerController
@@ -33,8 +35,14 @@ public:
 	/** A delegate to get the current turrets Data Asset the player has selected from the HUDWeaponTurretSelector */
 	FGetTurretDASigniture GetTurretDAEvent;
 
-	/** A Deelgate that is bound the the core hud to open the pause menu when PauseGame() is called */
+	/** A Delegate that is bound the the core hud to open the pause menu when PauseGame() is called */
 	FPauseGameSigniture PauseGameEvent;
+
+	/** A Delegate that is bound in the core hud to show the turret price hud */
+	FIsPlacingTurretSigniture IsPlacingTurretEvent;
+
+	/** A Delegate that is bound in the core hud to give the price of the turret you are currently placing */
+	FCostOfTurretSigniture CostOfTurretEvent;
 
 protected:
 

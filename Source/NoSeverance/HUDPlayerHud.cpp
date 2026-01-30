@@ -3,6 +3,7 @@
 #include "HUDAmountOfEnemiesInWave.h"
 #include "HUDHealthAndMana.h"
 #include "HUDWeaponTurretSelector.h"
+#include "HUDTurretCost.h"
 
 void UHUDPlayerHud::SetLastWaveText(int lastWave)
 {
@@ -42,4 +43,14 @@ void UHUDPlayerHud::UpdateHealthBar(float currentHealth, float maxHealth)
 void UHUDPlayerHud::UpdateManaBar(float currentMana, float maxMana)
 {
 	HealthAndMana->UpdateManaBar(currentMana, maxMana);
+}
+
+void UHUDPlayerHud::SetTurretCostText(int cost)
+{
+	turretCost->SetTurretCost(cost);
+}
+
+void UHUDPlayerHud::SetTurretPriceVisability(bool bIsVisable)
+{
+	turretCost->IsTurretPriceVisable(bIsVisable);
 }

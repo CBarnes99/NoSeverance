@@ -12,7 +12,7 @@ class UHUDBaseHealth;
 class UHUDAmountOfEnemiesInWave;
 class UHUDAmountOfWaves;
 class UDA_TurretInfo;
-
+class UHUDTurretCost;
 
 UCLASS(Abstract)
 class NOSEVERANCE_API UHUDPlayerHud : public UUserWidget
@@ -42,6 +42,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDAmountOfEnemiesInWave* AmountOfEnemies;
 
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	UHUDTurretCost* turretCost;
 
 	UFUNCTION(BlueprintCallable)
 	void SetLastWaveText(int lastWave);
@@ -67,7 +69,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateManaBar(float currentMana, float maxMana);
 
+	UFUNCTION(BlueprintCallable)
+	void SetTurretCostText(int cost);
 
+	UFUNCTION(BlueprintCallable)
+	void SetTurretPriceVisability(bool bIsVisable);
 
 
 };

@@ -90,6 +90,9 @@ void ACore_HUD::BindDelegates()
 
 	localCorePlayerController->PauseGameEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
 	localCorePlayerController->GetTurretDAEvent.BindUObject(playerHud, &UHUDPlayerHud::GetTurretClassFromArray);
+	localCorePlayerController->IsPlacingTurretEvent.BindUObject(playerHud, &UHUDPlayerHud::SetTurretPriceVisability);
+	localCorePlayerController->CostOfTurretEvent.BindUObject(playerHud, &UHUDPlayerHud::SetTurretCostText);
+
 
 	pauseMenu->ContinueButtonPressedEvent.BindUObject(this, &ACore_HUD::TogglePauseMenu);
 	pauseMenu->TutorialButtonPressedEvent.BindUObject(this, &ACore_HUD::DisplayTutorialHud);
@@ -101,6 +104,7 @@ void ACore_HUD::BindDelegates()
 	}
 
 	tutorialMenu->CloseTutorialEvent.BindUObject(this, &ACore_HUD::DisplayTutorialHud);
+
 }
 
 bool ACore_HUD::CheckVaildWidgetPointer(TSubclassOf<UUserWidget> widgetClass)

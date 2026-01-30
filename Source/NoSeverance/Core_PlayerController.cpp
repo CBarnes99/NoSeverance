@@ -7,6 +7,7 @@
 #include "Core_GameState.h"
 #include "TurretManager.h"
 #include "PlayerCharacter.h"
+#include "DA_TurretInfo.h"
 
 void ACore_PlayerController::BeginPlay()
 {
@@ -260,6 +261,8 @@ void ACore_PlayerController::UpdateHotbarSelection()
 		turretManager->StartTurretPlacement(turretDA);
 		turretManager->UpdateTurretPlacementLocation(myPlayerCharacter->GetCameraLocation(), myPlayerCharacter->GetCameraForwardVector());
 
+		IsPlacingTurretEvent.ExecuteIfBound(true);
+		CostOfTurretEvent.ExecuteIfBound(turretDA->cost);
 	}
 	else if (hotbarSelectionIndex == 0 && turretManager->IsPlacingTurret())
 	{
@@ -268,6 +271,9 @@ void ACore_PlayerController::UpdateHotbarSelection()
 		UpdateMappingContext(turretPlacingMappingContext, false, 0);
 
 		previousHotbarSelectionIndex = 0;
+
+		IsPlacingTurretEvent.ExecuteIfBound(false);
+
 	}
 }
 void ACore_PlayerController::UpdateMappingContext(UInputMappingContext* mappingContext, bool addContext, int priority)
