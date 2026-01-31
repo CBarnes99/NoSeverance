@@ -4,7 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HUDVictoryScreen.generated.h"
 
-class UButton;
+class UHUDButton;
 class UWidgetAnimation;
 
 UCLASS(Abstract)
@@ -15,10 +15,7 @@ class NOSEVERANCE_API UHUDVictoryScreen : public UUserWidget
 public:
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget));
-	UButton* MainMenuButton;
-
-	//UPROPERTY(EditDefaultsOnly, meta = (BindWidget));
-	//UButton* NextRoundButton;
+	UHUDButton* MainMenuButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidgetAnim), Transient)
 	UWidgetAnimation* VictoryAnimation;

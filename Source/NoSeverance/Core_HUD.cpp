@@ -337,8 +337,6 @@ void ACore_HUD::DisplayOpenTurretMenuModal()
 	ToggleModalWidgets(openTurretModal);
 }
 
-
-
 void ACore_HUD::ToggleTurretSelectionWidget()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ToggleTurretSelectionWidget: Toggle Turret Selection"));

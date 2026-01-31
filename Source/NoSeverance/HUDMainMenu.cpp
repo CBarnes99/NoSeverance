@@ -1,8 +1,9 @@
 #include "HUDMainMenu.h"
-#include "Components/Button.h"
+#include "HUDButton.h"
 #include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
 #include "Core_GameInstance.h"
+#include "HUDButton.h"
 
 void UHUDMainMenu::NativeConstruct()
 {

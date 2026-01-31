@@ -4,9 +4,9 @@
 #include "Blueprint/UserWidget.h"
 #include "HUDMainMenu.generated.h"
 
-class UButton;
 class UWidgetSwitcher;
 class UCore_GameInstance;
+class UHUDButton;
 
 DECLARE_DELEGATE_OneParam(FOpenLevelSigniture, int /*Level Index*/)
 
@@ -24,34 +24,34 @@ public:
 	void IsLevelButtonUnlocked();
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* PlayButton;
+	UHUDButton* PlayButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* QuitGameButton;
+	UHUDButton* QuitGameButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UWidgetSwitcher* MenuSwitcher;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* LevelOneButton;
+	UHUDButton* LevelOneButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* LevelTwoButton;
+	UHUDButton* LevelTwoButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* LevelThreeButton;
+	UHUDButton* LevelThreeButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* ReturnFromLevelSelectButton;
+	UHUDButton* ReturnFromLevelSelectButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* DeleteSaveButton;
+	UHUDButton* DeleteSaveButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* ConfirmSaveDeleteButton;
+	UHUDButton* ConfirmSaveDeleteButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* CancelSaveDeleteButton;
+	UHUDButton* CancelSaveDeleteButton;
 
 
 protected:
@@ -62,7 +62,7 @@ protected:
 	UCore_GameInstance* coreGameInstance;
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<UButton*> levelButtons;
+	TArray<UHUDButton*> levelButtons;
 
 	UFUNCTION(BlueprintCallable)
 	void PlayButtonFunction();

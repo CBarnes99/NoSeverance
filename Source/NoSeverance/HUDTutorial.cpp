@@ -1,5 +1,5 @@
 #include "HUDTutorial.h"
-#include "Components/Button.h"
+#include "HUDButton.h"
 
 void UHUDTutorial::NativeConstruct()
 {

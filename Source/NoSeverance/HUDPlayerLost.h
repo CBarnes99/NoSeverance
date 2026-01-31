@@ -4,7 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HUDPlayerLost.generated.h"
 
-class UButton;
+class UHUDButton;
 class UWidgetAnimation;
 
 UCLASS(Abstract)
@@ -15,10 +15,10 @@ class NOSEVERANCE_API UHUDPlayerLost : public UUserWidget
 public:
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* MainMenuButton;
+	UHUDButton* MainMenuButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* RestartLevelButton;
+	UHUDButton* RestartLevelButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidgetAnim), Transient)
 	UWidgetAnimation* LostAnimation;

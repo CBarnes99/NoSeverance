@@ -1,5 +1,5 @@
 #include "HUDPlayerLost.h"
-#include "Components/Button.h"
+#include "HUDButton.h"
 #include "Kismet/GameplayStatics.h"
 
 void UHUDPlayerLost::NativeConstruct()

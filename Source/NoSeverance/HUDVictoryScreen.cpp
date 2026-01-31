@@ -1,5 +1,5 @@
 #include "HUDVictoryScreen.h"
-#include "Components/Button.h"
+#include "HUDButton.h"
 #include "Kismet/GameplayStatics.h"
 
 void UHUDVictoryScreen::NativeConstruct()

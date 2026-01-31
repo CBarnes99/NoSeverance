@@ -4,7 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HUDTutorial.generated.h"
 
-class UButton;
+class UHUDButton;
 
 DECLARE_DELEGATE(FCloseTutorialSigniture)
 
@@ -19,7 +19,7 @@ public:
 	FCloseTutorialSigniture CloseTutorialEvent;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* closeButton;
+	UHUDButton* closeButton;
 
 protected:
 

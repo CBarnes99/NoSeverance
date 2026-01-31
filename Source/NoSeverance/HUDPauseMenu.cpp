@@ -1,5 +1,5 @@
 #include "HUDPauseMenu.h"
-#include "Components/Button.h"
+#include "HUDButton.h"
 #include "Kismet/GameplayStatics.h"
 #include "HUDPlayerControls.h"
 

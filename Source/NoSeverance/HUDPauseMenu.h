@@ -4,7 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HUDPauseMenu.generated.h"
 
-class UButton;
+class UHUDButton;
 class UHUDPlayerControls;
 
 DECLARE_DELEGATE(FContinueButtonPressedSigniture);
@@ -22,19 +22,19 @@ public:
 	FTutorialButtonPressedSigniture TutorialButtonPressedEvent;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* ContinueButton;
+	UHUDButton* ContinueButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* ControlsButton;
+	UHUDButton* ControlsButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* TutorialButton;
+	UHUDButton* TutorialButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* RestartLevelButton;
+	UHUDButton* RestartLevelButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
-	UButton* MainMenuButton;
+	UHUDButton* MainMenuButton;
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	UHUDPlayerControls* playerControls;
