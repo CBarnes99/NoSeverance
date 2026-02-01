@@ -2,6 +2,8 @@
 #include <Kismet/GameplayStatics.h>
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 
 AProjectileBase::AProjectileBase()
 {
@@ -26,6 +28,11 @@ AProjectileBase::AProjectileBase()
 	projectileMesh->SetupAttachment(RootComponent.Get());
 	projectileMesh->SetSimulatePhysics(false);
 	projectileMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	projectileMesh->SetVisibility(false, false);
+
+	niagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Component"));
+	niagaraComponent->SetupAttachment(RootComponent.Get());
+	niagaraComponent->SetAutoActivate(false);
 
 	lifeTime = 5.f;
 
@@ -39,12 +46,13 @@ void AProjectileBase::BeginPlay()
 	DeactivateProjectile();
 }
 
-void AProjectileBase::SetProjectileDefaults(float damageAmount, float speed, float projectileLifetime)
+void AProjectileBase::SetProjectileDefaults(float damageAmount, float speed, float projectileLifetime, UNiagaraSystem* particalEffect)
 {
 	damageDelt = damageAmount;
 	projectileMovementComponent->InitialSpeed = speed;
 	projectileMovementComponent->MaxSpeed = speed;
 	lifeTime = projectileLifetime;
+	niagaraComponent->SetAsset(particalEffect);
 
 	hasDefaultsBeenSet = true;
 }
@@ -70,6 +78,7 @@ void AProjectileBase::ActivateProjectile()
 	collisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
 
 	projectileMovementComponent->Activate();
+	niagaraComponent->Activate(true);
 
 	GetWorld()->GetTimerManager().SetTimer(lifeTimeTimerHandle, this, &AProjectileBase::DeactivateProjectile, lifeTime, false);
 
@@ -79,9 +88,11 @@ void AProjectileBase::ActivateProjectile()
 void AProjectileBase::DeactivateProjectile()
 {
 	projectileMovementComponent->Deactivate();
+	niagaraComponent->Deactivate();
 	SetActorEnableCollision(false);
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
+
 
 	if (GetWorld()->GetTimerManager().IsTimerActive(lifeTimeTimerHandle))
 	{

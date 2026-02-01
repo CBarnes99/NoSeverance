@@ -7,6 +7,8 @@
 class UStaticMeshComponent;
 class USphereComponent;
 class UProjectileMovementComponent;
+class UNiagaraSystem;
+class UNiagaraComponent;
 
 UCLASS()
 class NOSEVERANCE_API AProjectileBase : public AActor
@@ -24,9 +26,10 @@ public:
 	/** Set the default variables for the projectile
 	* @param damageAmount The amount of Damage, as a float 
 	* @param speed The speed of the projectile, as a float 
-	* @param lifetime the lifetime of the projectile, as a float*/
+	* @param lifetime the lifetime of the projectile, as a float
+	* @param particalEffect The partical Effect that follows the projectilem as a UNiagaraSystem */
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	void SetProjectileDefaults(float damageAmount, float speed, float projectileLifetime);
+	void SetProjectileDefaults(float damageAmount, float speed, float projectileLifetime, UNiagaraSystem* particalEffect);
 
 	UFUNCTION(BlueprintCallable)
 	bool GetDefualtsBeenSet();
@@ -58,6 +61,10 @@ protected:
 	/** The collision for the projectile */
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	USphereComponent* collisionComponent;
+
+	/** The Partical Effect Component for the projectile */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UNiagaraComponent* niagaraComponent;
 
 	/** The timer handle for the lifetime of the projectile	*/
 	FTimerHandle lifeTimeTimerHandle;

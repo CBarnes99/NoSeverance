@@ -8,6 +8,7 @@
 class UAC_SpawnProjectile;
 class UStaticMeshComponent;
 class UDA_WeaponInfo;
+class UNiagaraSystem;
 
 UCLASS()
 class NOSEVERANCE_API AWeaponBase : public AActor
@@ -15,11 +16,47 @@ class NOSEVERANCE_API AWeaponBase : public AActor
 	GENERATED_BODY()
 	
 public:	
+	/** Gets the resource cost for the weapon 
+	* @return The resource cost, as an float */
+	UFUNCTION(BlueprintCallable)
+	float GetResourceCost();
+
+	/** Called from the player character to fire the projectile */
+	UFUNCTION(BlueprintCallable)
+	void FireProjectile(FVector fireStartLoc, FVector forwardVector);
+
+	/** A check to see if the weapon can fire */
+	UFUNCTION(BlueprintCallable)
+	bool CanWeaponFire();
+
+protected:
+
+	virtual void BeginPlay() override;
+
 	AWeaponBase();
 
 	/** Actor Component that handles spawning the projectile */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 	UAC_SpawnProjectile* spawnProjectileComponent;
+
+	/** The mesh for the weapon */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* weaponMesh;
+
+	/** A Data Asset that holds the default values for the weapon */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UDA_WeaponInfo* weaponStats;
+
+	/** A Check to see if the weapon can fire, based of the weapons fire rate */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bCanFire;
+
+	/** A function that starts the fireRateHandle timer and at the timers end, it calls EnableCanFire */
+	UFUNCTION(BlueprintCallable)
+	void StartWeaponFireRateCooldown();
+
+	/** The timer handle for the fire rate of the weapon */
+	FTimerHandle fireRateHandle;
 
 	/** Gets the weapons muzzle location for where to spawn the projectile
 	* @return The location of the muzzle, as a FVector */
@@ -41,40 +78,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetProjectileLifetime();
 
-	/** Gets the resource cost for the weapon 
-	* @return The resource cost, as an float */
+	/** Gets the partical system from the data asset
+	* @return The partical system, as a UNiagaraSystem */
 	UFUNCTION(BlueprintCallable)
-	float GetResourceCost();
-
-	/** Called from the player character to fire the projectile */
-	UFUNCTION(BlueprintCallable)
-	void FireProjectile(FVector fireStartLoc, FVector forwardVector);
-
-	/** A check to see if the weapon can fire */
-	UFUNCTION(BlueprintCallable)
-	bool CanWeaponFire();
-
-protected:
-	virtual void BeginPlay() override;
-
-	/** The mesh for the weapon */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* weaponMesh;
-
-	/** A Data Asset that holds the default values for the weapon */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UDA_WeaponInfo* weaponStats;
-
-	/** A Check to see if the weapon can fire, based of the weapons fire rate */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool bCanFire;
-
-	/** A function that starts the fireRateHandle timer and at the timers end, it calls EnableCanFire */
-	UFUNCTION(BlueprintCallable)
-	void StartWeaponFireRateCooldown();
-
-	/** The timer handle for the fire rate of the weapon */
-	FTimerHandle fireRateHandle;
+	UNiagaraSystem* GetParticalSystem();
 
 	/** A Function called by the fireRateHandle Timer to enable the weapon to fire */
 	UFUNCTION(BlueprintCallable)
@@ -83,4 +90,5 @@ protected:
 	/** Called after a projectile has been fired to disable the ability to fire again until the fireRateHandle Timer has been called */
 	UFUNCTION(BlueprintCallable)
 	void DisableCanFire();
+
 };

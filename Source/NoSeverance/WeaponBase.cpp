@@ -60,7 +60,8 @@ void AWeaponBase::FireProjectile(FVector fireStartLoc, FVector forwardVector)
 		forwardVector,
 		GetDamageDelt(),
 		GetProjectileSpeed(),
-		GetProjectileLifetime()
+		GetProjectileLifetime(),
+		GetParticalSystem()
 	);
 	StartWeaponFireRateCooldown();
 	DisableCanFire();
@@ -74,6 +75,11 @@ bool AWeaponBase::CanWeaponFire()
 void AWeaponBase::StartWeaponFireRateCooldown()
 {
 	GetWorld()->GetTimerManager().SetTimer(fireRateHandle, this, &AWeaponBase::EnableCanFire, 1 / weaponStats->fireRate, false);
+}
+
+UNiagaraSystem* AWeaponBase::GetParticalSystem()
+{
+	return weaponStats->particalEffect;
 }
 
 void AWeaponBase::EnableCanFire()

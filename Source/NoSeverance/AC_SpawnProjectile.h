@@ -5,6 +5,7 @@
 #include "AC_SpawnProjectile.generated.h"
 
 class AProjectileBase;
+class UNiagaraSystem;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class NOSEVERANCE_API UAC_SpawnProjectile : public UActorComponent
@@ -24,9 +25,10 @@ public:
 	* @param actorForwardVector A FVector of the forward vector of the actor you want this to spawn from.
 	* @param damageDelt A Float of the amount of damage you want the projectile to deal.
 	* @param projectileSpeed A Float of the speed you want the projectile to travel. 
-	* @param projectileLifetime The lifetime of the projectile, how long it take to deactivate itself if it hasnt collided with anything */
+	* @param projectileLifetime The lifetime of the projectile, how long it take to deactivate itself if it hasnt collided with anything
+	* @param particalEffect The partical effect that follows the projectile */
 	UFUNCTION(BlueprintCallable)
-	void FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed, float projectileLifetime);
+	void FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed, float projectileLifetime, UNiagaraSystem* particalEffect);
 
 protected:
 

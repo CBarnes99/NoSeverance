@@ -5,6 +5,7 @@
 #include "DA_WeaponInfo.generated.h"
 
 class AWeaponBase;
+class UNiagaraSystem;
 
 UCLASS(Blueprintable)
 class NOSEVERANCE_API UDA_WeaponInfo : public UDataAsset
@@ -24,6 +25,10 @@ public:
 	/** The Class of the Weapon */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<AWeaponBase> weaponClass;
+
+	/** The partical effect that follows the projectile */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UNiagaraSystem* particalEffect;
 
 	/** The amout of damage you want your weapon do deal */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

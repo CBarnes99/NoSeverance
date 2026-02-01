@@ -18,7 +18,8 @@ public class NoSeverance : ModuleRules
 			"AIModule",
 			"NavigationSystem",
 			"GameplayTasks",
-			"UMG"
+			"UMG",
+			"Niagara"
         });
 		
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

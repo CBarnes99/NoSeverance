@@ -57,7 +57,7 @@ void UAC_SpawnProjectile::SpawnProjectile()
 
 }
 
-void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed, float projectileLifetime)
+void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector weaponMuzzleLocation, FVector actorForwardVector, float damageDelt, float projectileSpeed, float projectileLifetime, UNiagaraSystem* particalEffect)
 {
 	TRACE_BOOKMARK(TEXT("FiredProjectile"));
 	if (!projectile)
@@ -97,7 +97,7 @@ void UAC_SpawnProjectile::FireProjectile(FVector traceStartLocation, FVector wea
 
 	if (!currentProjectile->GetDefualtsBeenSet())
 	{
-		currentProjectile->SetProjectileDefaults(damageDelt, projectileSpeed, projectileLifetime);
+		currentProjectile->SetProjectileDefaults(damageDelt, projectileSpeed, projectileLifetime, particalEffect);
 	}
 	currentProjectile->FireInDirection(shootDirection);
 	currentProjectile->ActivateProjectile();
