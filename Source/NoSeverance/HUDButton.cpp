@@ -26,9 +26,6 @@ void UHUDButton::SynchronizeProperties()
 
 void UHUDButton::PlaySoundEffect()
 {
-	UE_LOG(LogTemp, Error, TEXT("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
-
-
 	if (clickSound)
 	{
 		UGameplayStatics::PlaySound2D(GetWorld(), clickSound);
