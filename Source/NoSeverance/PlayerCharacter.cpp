@@ -162,16 +162,6 @@ FVector APlayerCharacter::GetCameraLocation()
 	return camera->GetComponentLocation();
 }
 
-float& APlayerCharacter::GetMovementSpeed()
-{
-	return DA_playerInfo->movementSpeed;
-}
-
-float& APlayerCharacter::GetRunSpeed()
-{
-	return DA_playerInfo->runSpeed;
-}
-
 float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	healthComponent->RecieveDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
@@ -244,4 +234,14 @@ void APlayerCharacter::ReceiveManaDelegate(float currentMana, float maxMana)
 void APlayerCharacter::SetPlayerLost()
 {
 	bHasPlayerLost = true;
+}
+
+void APlayerCharacter::SetToRunSpeed()
+{
+	GetCharacterMovement()->MaxWalkSpeed = DA_playerInfo->runSpeed;
+}
+
+void APlayerCharacter::SetToWalkSpeed()
+{
+	GetCharacterMovement()->MaxWalkSpeed = DA_playerInfo->movementSpeed;
 }

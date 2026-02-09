@@ -41,12 +41,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	TObjectPtr<UDA_PlayerCharacterStats> DA_playerInfo;
 
-	UFUNCTION(BlueprintCallable)
-	float& GetMovementSpeed();
-
-	UFUNCTION(BlueprintCallable)
-	float& GetRunSpeed();
-
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	AWeaponBase* equippedWeapon;
 
@@ -79,7 +73,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReceiveMana(float manaAmount);
 
+	/** Sets movement speed to run speed, called in player controller */
+	UFUNCTION(BlueprintCallable)
+	void SetToRunSpeed();
+
+	/** Sets movement speed to walk speed, called in player controller */
+	UFUNCTION(BlueprintCallable)
+	void SetToWalkSpeed();
+
 protected:
+
 	virtual void BeginPlay() override;
 
 	/** Camera Component */

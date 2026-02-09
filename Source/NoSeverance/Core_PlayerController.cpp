@@ -131,14 +131,12 @@ void ACore_PlayerController::MouseLookAction(const FInputActionValue& Value)
 
 void ACore_PlayerController::RunningAction()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Shift"));
-	myPlayerCharacter->GetCharacterMovement()->MaxWalkSpeed = myPlayerCharacter->GetRunSpeed();
+	myPlayerCharacter->SetToRunSpeed();
 }
 
 void ACore_PlayerController::RunningActionStop()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Shift"));
-	myPlayerCharacter->GetCharacterMovement()->MaxWalkSpeed = myPlayerCharacter->GetMovementSpeed();
+	myPlayerCharacter->SetToWalkSpeed();
 }
 
 void ACore_PlayerController::JumpAction()
