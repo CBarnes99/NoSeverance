@@ -114,20 +114,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetIgnoredActors(TArray<AActor*> ignoredActors);
 
-	/** Set a singular actor to be ignored by the line trace before calling GetTraceTargetLocation
-	* @param ignoredActor An actor you want the trace to ignore, as an AActor* */
-	UFUNCTION(BlueprintCallable)
-	void SetIgnoredActor(AActor* ignoredActor);
-
 	/** A Check to see if there is an impact point from the line trace
 	* @param traceStartLocation The starting location for the line trace
 	* @param actorForwardVector The forward vector of the actor you want to trace from
 	* @return If the line trace has an impact, as a Bool */
 	UFUNCTION(BlueprintCallable)
 	bool HasImpactPoint(FVector traceStartLocation, FVector actorForwardVector);
-
-	/** The actors you want to ignore for the line trace */
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	UClass* ignoredActorClass;
 		
 };

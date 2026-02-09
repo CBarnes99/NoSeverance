@@ -167,7 +167,7 @@ FVector UAC_PlaceActor::GetTraceTargetLocation(FVector traceStartLocation, FVect
 
 	for (const FHitResult& Hit : hits)
 	{
-		if (Hit.GetActor() && !Hit.GetActor()->IsA(ignoredActorClass))
+		if (Hit.GetActor())
 		{
 			return Hit.ImpactPoint;
 		}
@@ -194,7 +194,7 @@ FTransform UAC_PlaceActor::GetTraceTargetLocationAndRotation(FVector traceStartL
 	{
 		for (const FHitResult& Hit : hits)
 		{
-			if (Hit.GetActor() && !Hit.GetActor()->IsA(ignoredActorClass))
+			if (Hit.GetActor())
 			{
 				FVector HitNormal = Hit.ImpactNormal;
 
@@ -214,16 +214,13 @@ void UAC_PlaceActor::SetIgnoredActors(TArray<AActor*> ignoredActors)
 {
 	actorsToIgnore = ignoredActors;
 }
-void UAC_PlaceActor::SetIgnoredActor(AActor* ignoredActor)
-{
-	ignoredActorClass = ignoredActor->GetClass();
-}
 
 bool UAC_PlaceActor::HasImpactPoint(FVector traceStartLocation, FVector actorForwardVector)
 {
+
+	FVector traceEnd = traceStartLocation + actorForwardVector * traceDistance;
 	FVector targetPos = FVector::ZeroVector;
 	TArray<FHitResult> hits;
-	FVector traceEnd = traceStartLocation + actorForwardVector * traceDistance;
 
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
@@ -235,11 +232,10 @@ bool UAC_PlaceActor::HasImpactPoint(FVector traceStartLocation, FVector actorFor
 
 	for (const FHitResult& Hit : hits)
 	{
-		if (Hit.GetActor() && !Hit.GetActor()->IsA(ignoredActorClass))
+		if (Hit.GetActor())
 		{
 			return true;
 		}
 	}
-
 	return false;
 }
